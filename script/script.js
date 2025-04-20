@@ -4,16 +4,17 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(response => response.text())
       .then(data => {
         document.getElementById(id).innerHTML = data;
-        if (callback) callback(); // Call burger setup only after nav is loaded
+        if (callback) callback();
       })
       .catch(error => {
         console.error('Error loading ' + url, error);
       });
   }
 
-  loadHTML('nav', 'template/nav.html', setupBurgerMenu); 
+  loadHTML('nav', 'template/nav.html', setupBurgerMenu);
   loadHTML('footer', 'template/footer.html');
 });
+
 
 function setupBurgerMenu() {
   const burger = document.getElementById("burger");
