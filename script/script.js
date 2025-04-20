@@ -1,3 +1,7 @@
+document.addEventListener("DOMContentLoaded", function () {
+  setupBurgerMenu();
+});
+
 function setupBurgerMenu() {
   const burger = document.getElementById("burger");
   const navLinks = document.getElementById("nav-links");
