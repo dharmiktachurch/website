@@ -1,21 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-  function loadHTML(id, url, callback) {
-    fetch(url)
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById(id).innerHTML = data;
-        if (callback) callback();
-      })
-      .catch(error => {
-        console.error('Error loading ' + url, error);
-      });
-  }
-
-  loadHTML('nav', '../docs/nav.html', setupBurgerMenu);
-  loadHTML('footer', '../docs/footer.html');
-});
-
-
 function setupBurgerMenu() {
   const burger = document.getElementById("burger");
   const navLinks = document.getElementById("nav-links");
@@ -27,7 +9,6 @@ function setupBurgerMenu() {
   }
 }
 
-// Typewriter Effect for Hero Title
 const message = "Welcome to Dharmikta Church";
 let i = 0;
 
