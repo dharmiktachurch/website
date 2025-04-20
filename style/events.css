@@ -1,0 +1,114 @@
+/* Modern Long Card Style for Events Page */
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f6fb;
+  color: #333;
+}
+
+.hero {
+  background: linear-gradient(to right, #3498db, #6dd5fa);
+  color: #fff;
+  text-align: center;
+  padding: 90px 20px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 1.25rem;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.events {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.event-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Long Event Card Style */
+.event {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  transition: all 0.3s ease;
+  position: relative;
+  border-left: 6px solid #3498db;
+}
+
+.event:hover {
+  transform: scale(1.01);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.event h2 {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+.event-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+.event-details p {
+  font-size: 0.95rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #555;
+}
+
+.event-details p i {
+  color: #3498db;
+}
+
+.event-description {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .event {
+    padding: 20px;
+  }
+
+  .event h2 {
+    font-size: 1.5rem;
+  }
+
+  .event-details {
+    flex-direction: column;
+  }
+}

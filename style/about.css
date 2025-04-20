@@ -1,0 +1,75 @@
+/* Reset and base styles */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f7f9fb;
+  color: #2c3e50;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, #2980b9, #6dd5fa);
+  color: #ffffff;
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Content Section */
+.content {
+  padding: 4rem 2rem;
+  background-color: #ffffff;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.container h2 {
+  font-size: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #2980b9;
+}
+
+.container p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #555;
+}
+
+/* Footer + Nav placeholders can inherit shared styles if needed */
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero p,
+  .container p {
+    font-size: 1rem;
+  }
+
+  .container h2 {
+    font-size: 1.5rem;
+  }
+}
