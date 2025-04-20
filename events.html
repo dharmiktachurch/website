@@ -3,35 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dharmikta Mandali</title>
-  <link rel="icon" type="image/png" href="../static/Favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style/index.css">
-  <script src="../script/script.js" defer></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
-  </style>
+  <title>Events - Dharmikta Church</title>
+  <link rel="stylesheet" href="style/events.css">
+  <link rel="icon" type="image/png" href="static/Favicon.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <script src="script/script.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/tabletop@1.6.1"></script>
+  <script src="script/events.js" defer></script>
 </head>
 <body>
-
   <nav class="navbar">
-    <a href="../docs/index.html" class="logo-link">
+    <a href="index.html" class="logo-link">
       <div class="logo-container">
-        <img src="../static/logo.png" alt="Church Logo" class="church-logo" />
+        <img src="static/logo.png" alt="Church Logo" class="church-logo" />
         <div class="logo-text">Dharmikta Church</div>
       </div>
     </a>
     
   
     <ul class="nav-links" id="nav-links">
-      <li><a href="../docs/index.html">Home</a></li>
-      <li><a href="../docs/about.html">About Us</a></li>
-      <li><a href="../docs/services.html">Services</a></li>
-      <li><a href="../docs/events.html">Events</a></li>
-      <li><a href="../docs/contact.html">Contact</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
   
     <div class="burger" id="burger">
@@ -41,32 +36,13 @@
 
   <section class="hero">
     <div class="hero-content">
-      <h1 id="hero-title"></h1>
-      <p class="subtitle">Experience faith, community, and spiritual growth together.</p>
-      <p class="verse">"Righteousness exalts a nation" - Proverbs 14:34</p>
-      <a href="#contact" class="cta-button">Join Us This Saturday</a>
+      <h1>Upcoming Events</h1>
+      <p>Stay updated with our community events and join us for inspiring and meaningful gatherings.</p>
     </div>
   </section>
 
-  <section class="support">
-    <h2>Support Us</h2>
-    <div class="support-grid">
-      <div class="support-card">
-        <i class="fas fa-hands-praying"></i>
-        <h3>Fellowships</h3>
-        <p>Join us for weekly fellowship and grow spiritually with the community.</p>
-      </div>
-      <div class="support-card">
-        <i class="fas fa-bible"></i>
-        <h3>Trainings</h3>
-        <p>Participate in leadership and biblical training workshops to enhance your spiritual journey.</p>
-      </div>
-      <div class="support-card">
-        <i class="fas fa-church"></i>
-        <h3>Saturday Services</h3>
-        <p>Join us for uplifting worship services every Saturday at 10 AM.</p>
-      </div>
-    </div>
+  <section class="events">
+    <div id="event-container" class="event-container"></div>
   </section>
 
   <footer class="footer">
@@ -94,9 +70,9 @@
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="../docs/index.html">Home</a></li>
-          <li><a href="../docs/services.html">Services</a></li>
-          <li><a href="../docs/events.html">Events</a></li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="events.html">Events</a></li>
         </ul>
       </div>
   
@@ -116,6 +92,5 @@
       <p class="copyright">&copy; 2025 Dharmikta Mandali. All Rights Reserved.</p>
     </div>
   </footer>
-
 </body>
 </html>
