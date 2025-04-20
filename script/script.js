@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  loadHTML('nav', 'template/nav.html', setupBurgerMenu);
-  loadHTML('footer', 'template/footer.html');
+  loadHTML('nav', '../template/nav.html', setupBurgerMenu);
+  loadHTML('footer', '../template/footer.html');
 });
 
 
