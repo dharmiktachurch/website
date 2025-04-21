@@ -1,18 +1,19 @@
-/* Modern Long Card Style for Events Page */
-
+/* Global Styles */
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f6fb;
-  color: #333;
+  background-color: #ffffff; /* Matches the white theme */
+  color: #222; /* Dark text for readability */
 }
 
+/* Hero Section */
 .hero {
-  background: linear-gradient(to right, #3498db, #6dd5fa);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8)); /* Dark gradient to match previous theme */
   color: #fff;
   text-align: center;
   padding: 90px 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .hero h1 {
@@ -28,6 +29,7 @@ body {
   line-height: 1.6;
 }
 
+/* Events Section */
 .events {
   padding: 60px 20px;
   max-width: 1200px;
@@ -37,20 +39,20 @@ body {
 .event-container {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 30px;
 }
 
-/* Long Event Card Style */
+/* Event Card */
 .event {
   display: flex;
   flex-direction: column;
-  background-color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  background-color: #ffffff; /* White background for consistency */
+  border-radius: 12px; /* Softer rounded corners */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* Light shadow for depth */
   padding: 30px;
   transition: all 0.3s ease;
   position: relative;
-  border-left: 6px solid #3498db;
+  border-left: 6px solid #222; /* Accent border to match theme */
 }
 
 .event:hover {
@@ -58,39 +60,39 @@ body {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
+/* Event Title */
 .event h2 {
   font-size: 1.8rem;
-  color: #2c3e50;
+  color: #222; /* Dark color for headings to match the theme */
   margin-bottom: 12px;
 }
 
+/* Event Details */
 .event-details {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-direction: column;
+  gap: 15px;
   margin-bottom: 12px;
 }
 
 .event-details p {
-  font-size: 0.95rem;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #555;
+  font-size: 1rem;
+  color: #555; /* Darker text for readability */
 }
 
-.event-details p i {
-  color: #3498db;
+.event-details strong {
+  color: #222; /* Accent color for labels */
 }
 
+/* Event Description */
 .event-description {
   font-size: 1rem;
-  color: #444;
+  color: #444; /* Slightly darker text for description */
   line-height: 1.6;
   margin-top: 10px;
 }
 
+/* Error Message */
 .error-message {
   color: red;
   text-align: center;
@@ -110,5 +112,13 @@ body {
 
   .event-details {
     flex-direction: column;
+  }
+
+  .hero h1 {
+    font-size: 2.4rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
   }
 }

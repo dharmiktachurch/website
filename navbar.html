@@ -1,138 +1,175 @@
+<!-- Navbar HTML -->
 <nav class="navbar">
-    <a href="index.html" class="logo-link">
-      <div class="logo-container">
-        <img src="static/logo.png" alt="Church Logo" class="church-logo" />
-        <div class="logo-text">Dharmikta Church</div>
-      </div>
-    </a>
-  
-    <ul class="nav-links" id="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  
-    <div class="burger" id="burger">
-      <i class="fas fa-bars"></i>
+  <a href="index.html" class="logo-link">
+    <div class="logo-container">
+      <img src="static/logo.png" alt="Church Logo" class="church-logo" />
+      <div class="logo-text">Dharmikta Church</div>
     </div>
-  </nav>
+  </a>
+
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+
+  <div class="burger" id="burger">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
+</nav>
+
+<!-- Navbar CSS -->
 <style>
-    .navbar {
+  .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 0.8rem 2rem;
     background-color: #fff;
     border-bottom: 1px solid #ddd;
     position: sticky;
     top: 0;
     z-index: 1000;
     font-family: 'Poppins', sans-serif;
-    }
+    transition: all 0.3s ease;
+  }
 
-    .logo-link {
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    }
-
-    .logo-link:hover {
-    cursor: pointer;
-    }
-
-
-    /* Logo Section */
-    .logo-container {
+  .logo-link {
     display: flex;
     align-items: center;
-    }
+    text-decoration: none;
+  }
 
-    .church-logo {
-    height: 50px;
-    margin-right: 10px;
-    }
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    .logo-text {
-    font-size: 1.5rem;
+  .church-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .logo-text {
+    font-size: 1.4rem;
     font-weight: 600;
     color: #2c3e50;
-    }
+  }
 
-    /* Navbar Links */
-    .nav-links {
+  .nav-links {
     list-style: none;
     display: flex;
     gap: 1.5rem;
     margin: 0;
     padding: 0;
-    }
+    transition: all 0.3s ease;
+  }
 
-    .nav-links li {
-    display: inline-block;
-    }
+  .nav-links li {
+    position: relative;
+  }
 
-    .nav-links li a {
+  .nav-links li a {
+    position: relative;
     text-decoration: none;
     color: #333;
     font-weight: 500;
-    padding: 0.5rem 1rem;  /* Added padding for easier clicking */
-    transition: color 0.3s;
-    display: block; /* Make the entire block clickable */
-    text-align: center; /* Center text for better appearance */
-    }
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: color 0.3s ease;
+    display: inline-block;
+  }
 
-    .nav-links li a:hover {
-    color: #3498db;
-    }
+  .nav-links li a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 0%;
+    height: 2px;
+    background-color: #000000;
+    transition: width 0.3s ease;
+  }
 
-    /* Burger Menu (for mobile) */
-    .burger {
+  .nav-links li a:hover {
+    color: #000000;
+  }
+
+  .nav-links li a:hover::after {
+    width: 100%;
+  }
+
+  .burger {
     display: none;
-    font-size: 1.5rem;
+    flex-direction: column;
+    gap: 5px;
     cursor: pointer;
-    color: #333;
-    }
+  }
 
-    /* Responsive Styles */
-    @media (max-width: 768px) {
-    /* Show Burger Menu */
+  .burger .line {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    border-radius: 3px;
+    transition: all 0.4s ease;
+  }
+
+  .burger.active .line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .burger.active .line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .burger.active .line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  @media (max-width: 768px) {
     .burger {
-        display: block;
+      display: flex;
     }
 
-    /* Hide Navigation Links by default */
     .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 70px;
-        right: 2rem;
-        background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 1rem;
-        width: 200px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        margin: 0;
+      flex-direction: column;
+      position: absolute;
+      top: 70px;
+      right: 2rem;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 1rem 0;
+      width: 220px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
+      transition: all 0.3s ease;
     }
 
-    /* Show Navigation Links when burger is clicked */
     .nav-links.active {
-        display: flex;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
-    /* Align links to the left in mobile view */
     .nav-links li {
-        width: 100%;
-        text-align: left;
+      width: 100%;
+      text-align: left;
     }
 
-    /* Make the links larger and easier to click in mobile */
     .nav-links li a {
-        padding: 1rem;
-        width: 100%; /* Ensure the entire area of the item is clickable */
+      padding: 1rem 1.5rem;
+      width: 100%;
+      display: block;
     }
-    }
-</style>  
+  }
+</style>

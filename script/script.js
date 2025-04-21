@@ -21,6 +21,7 @@ function setupBurgerMenu() {
 
   if (burger && navLinks) {
     burger.addEventListener("click", function () {
+      burger.classList.toggle("active");
       navLinks.classList.toggle("active");
     });
   }

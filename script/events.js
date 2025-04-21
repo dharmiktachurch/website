@@ -19,10 +19,12 @@ window.onload = function () {
           eventElement.classList.add('event');
           eventElement.innerHTML = `
             <h2>${cells[0].textContent.trim()}</h2>
-            <p><strong>Date:</strong> ${cells[1].textContent.trim()}</p>
-            <p><strong>Time:</strong> ${cells[2].textContent.trim()}</p>
-            <p><strong>Location:</strong> ${cells[3].textContent.trim()}</p>
-            <p>${cells[4].textContent.trim()}</p>
+            <div class="event-details">
+              <p><strong>Date:</strong> ${cells[1].textContent.trim()}</p>
+              <p><strong>Time:</strong> ${cells[2].textContent.trim()}</p>
+              <p><strong>Location:</strong> ${cells[3].textContent.trim()}</p>
+            </div>
+            <p class="event-description">${cells[4].textContent.trim()}</p>
           `;
           container.appendChild(eventElement);
         });
