@@ -7,37 +7,32 @@
   <link rel="icon" type="image/png" href="static/Favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style/about.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <script src="script/script.js"></script>
+  <script src="script/script.js" defer></script>
+  <script src="script/about.js" defer></script>
 </head>
 <body>
 
   <!-- Navbar -->
   <div id="navbar-include"></div>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>About Dharmikta Mandali</h1>
-      <p>Founded in 1990, our mission is to spread God's love across our community.</p>
-    </div>
-  </section>
-
-  <!-- About Content Section -->
-  <section class="content">
+  <!-- About Sub-Navigation -->
+  <section class="about-nav">
     <div class="container">
-      <h2>Who We Are</h2>
-      <p>Dharmikta Mandali is a Christ-centered church serving the local community with love, faith, and purpose. We are a diverse congregation united by our belief in God's grace and the power of fellowship. Our mission is to share the Gospel, strengthen believers, and impact lives through worship, prayer, and outreach.</p>
-
-      <h2>Our Mission</h2>
-      <p>To make disciples, build leaders, and serve the world through God's truth and love.</p>
-
-      <h2>Our Vision</h2>
-      <p>A community transformed by the Gospel, living in faith and serving in love.</p>
+      <nav>
+        <ul>
+          <li><a href="#" data-page="about-jesus">Jesus</a></li>
+          <li><a href="#" data-page="about-church">Our Church</a></li>
+          <li><a href="#" data-page="about-team">Our Team</a></li>
+        </ul>
+      </nav>
     </div>
   </section>
 
-  <!-- Placeholder for footer -->
+  <!-- Dynamic Content Placeholder -->
+  <div id="about-content"></div>
+
+  <!-- Footer -->
   <div id="footer-include"></div>
+
 </body>
 </html>

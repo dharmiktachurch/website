@@ -28,45 +28,44 @@ function setupBurgerMenu() {
 }
 
 // Typewriter effect for hero title
-let i = 0; // Initialize the index for typing
 const welcomeText = "Welcome to";
 const churchNameText = "Dharmikta Church";
 
-// Function to perform the typing effect
 function typeWriter() {
   const welcomeEl = document.querySelector('.welcome');
   const churchNameEl = document.querySelector('.church-name');
 
-  // Type for the "Welcome to" part
+  // Check if the elements exist before running the typewriter
+  if (!welcomeEl || !churchNameEl) return;
+
+  let i = 0;
+
   const welcomeInterval = setInterval(() => {
     welcomeEl.textContent += welcomeText.charAt(i);
     i++;
     if (i === welcomeText.length) {
       clearInterval(welcomeInterval);
-      // Once "Welcome to" finishes, type "Dharmikta Church"
-      typeChurchName();
+      typeChurchName(churchNameEl);
     }
-  }, 100); // Adjust the speed here (100ms per character)
+  }, 100);
 }
 
-function typeChurchName() {
-  let j = 0; // Reset index for the second part
-  const churchNameEl = document.querySelector('.church-name');
-  
+function typeChurchName(churchNameEl) {
+  let j = 0;
+
   const churchInterval = setInterval(() => {
     churchNameEl.textContent += churchNameText.charAt(j);
     j++;
     if (j === churchNameText.length) {
       clearInterval(churchInterval);
     }
-  }, 100); // Adjust the speed here (100ms per character)
+  }, 100);
 }
 
-// On DOM load: load navbar & footer and start the typing effect
+// On DOM load: load navbar & footer and start the typing effect (if applicable)
 document.addEventListener("DOMContentLoaded", function () {
   loadHTML("navbar-include", "navbar.html");
   loadHTML("footer-include", "footer.html");
 
-  // Start typewriter effect after DOM is ready
-  typeWriter();
+  typeWriter(); // Now only runs if the correct elements exist
 });

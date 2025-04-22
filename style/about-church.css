@@ -1,0 +1,179 @@
+.hero.about-hero::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: url('../static/about-church.jpg') center center/cover no-repeat;
+  background-color: rgba(0, 0, 0, 0.75);
+  filter: blur(6px) brightness(0.5);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hero.about-hero {
+  position: relative;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.8);
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+
+.about-section {
+  padding: 4rem 2rem;
+  background-color: #f9f9f9;
+  border-top: 5px solid #020202;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #222;
+  font-weight: 600;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 3px;
+  background-color: #020202;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.lead-text {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #555;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.history-section,
+.journey-section,
+.mission-section {
+  margin-bottom: 4rem;
+}
+
+.section-heading {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.journey-section .journey-images {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.journey-img {
+  width: 32%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.journey-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+.values-list {
+  list-style: none;
+  padding-left: 0;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.values-list li {
+  margin-bottom: 1.2rem;
+  color: #555;
+}
+
+.values-list li strong {
+  color: #3c3c3c;
+}
+
+.mission-section ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1.5rem;
+}
+
+.branch-section {
+  margin-bottom: 4rem;
+  padding: 2rem 1rem;
+  background-color: #f9f9f9;
+  border-top: 3px solid #020202;
+}
+
+.branch-list-simple {
+  list-style-type: disc;
+  padding-left: 2rem;
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  color: #444;
+  line-height: 1.8;
+}
+
+.branch-list-simple li {
+  margin-bottom: 0.5rem;
+}
+
+.mission-section li {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.mission-section li strong {
+  color: #3c3c3c;
+}
+
+/* Smooth Scroll for Links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Animation for Content */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.about-section, .journey-section, .mission-section {
+  animation: fadeIn 1.5s ease-in-out;
+}

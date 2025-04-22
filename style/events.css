@@ -92,6 +92,14 @@ body {
   margin-top: 10px;
 }
 
+.no-events {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  padding: 2rem;
+}
+
+
 /* Error Message */
 .error-message {
   color: red;
