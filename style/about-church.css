@@ -81,6 +81,8 @@
 .history-section,
 .journey-section,
 .mission-section {
+  border-top: 3px solid #020202;
+  padding: 2rem 1rem;
   margin-bottom: 4rem;
 }
 

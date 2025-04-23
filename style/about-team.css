@@ -1,4 +1,4 @@
-/* Team Intro Banner */
+/* Team Section Banner (if you use it) */
 .team-intro-banner {
   background: linear-gradient(to right, #000, #444);
   color: #fff;
@@ -20,7 +20,7 @@
   line-height: 1.6;
 }
 
-/* Section Title */
+/* Section Titles */
 .section-title {
   text-align: center;
   font-size: 2rem;
@@ -41,10 +41,10 @@
   margin: 0.5rem auto 0;
 }
 
-/* Team Profiles Grid */
+/* Grid Container for Team Members */
 .team-profiles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   padding: 2rem;
   max-width: 1200px;
@@ -78,7 +78,7 @@
   color: #fff;
 }
 
-/* Profile Image */
+/* Profile Images */
 .team-member img {
   width: 120px;
   height: 120px;
@@ -93,7 +93,7 @@
   border-color: #fff;
 }
 
-/* Member Name */
+/* Team Member Name */
 .team-member h3 {
   font-size: 1.2rem;
   font-weight: 600;
@@ -116,7 +116,7 @@
   color: #ddd;
 }
 
-/* Fade In Animation */
+/* Fade-in Animation */
 @keyframes fadeInUp {
   0% {
     transform: translateY(40px);
