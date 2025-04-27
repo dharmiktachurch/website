@@ -1,6 +1,6 @@
 .hero.about-hero {
   position: relative;
-  background: url('../static/about-jesus.jpg') center center/cover no-repeat;
+  background: url('../static/images/about-jesus.jpg') center center/cover no-repeat;
   height: 100vh;
   display: flex;
   align-items: center;
