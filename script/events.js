@@ -57,7 +57,8 @@ window.onload = function () {
             <div class="event-details">
               <div class="event-detail">
                 <i class="far fa-clock"></i>
-                <span>${eventTimeStr}</span>
+                <span>${fullDateTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}</span>
+
               </div>
               <div class="event-detail">
                 <i class="fas fa-map-marker-alt"></i>
