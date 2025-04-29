@@ -308,7 +308,7 @@ body {
   }
 
   .event-date {
-    padding: 15px;
+    padding: 20px 15px 40px 15px;
   }
 
   .event-date .day {
@@ -322,4 +322,11 @@ body {
   .event-content {
     padding: 20px;
   }
+  .event-status {
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    font-size: 0.7rem;
+  }
+  
 }

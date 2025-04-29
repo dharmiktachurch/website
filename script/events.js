@@ -36,7 +36,13 @@ window.onload = function () {
         if (fullDateTime > now) {
           status = 'Upcoming';
           statusClass = 'upcoming';
-        } else {
+        } 
+        else if(fullDateTime = now){
+          status = 'Today';
+          statusClass = 'upcoming';
+        }
+        
+        else {
           status = 'Past';
           statusClass = 'past';
         }
