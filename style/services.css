@@ -111,14 +111,20 @@ body {
   line-height: 1.6;
 }
 
-/* Service Image Styling */
 .service-image img {
   width: 100%;
   height: auto;
   object-fit: cover;
   border-radius: 10px;
   max-height: 250px;
+  filter: saturate(0.9) contrast(1) brightness(0.98);
+  transition: filter 0.3s ease;
 }
+
+.service-image img:hover {
+  filter: saturate(1) contrast(1.05) brightness(1);
+}
+
 
 /* Alternate layout for even items */
 .service:nth-child(even) {
