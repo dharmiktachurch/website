@@ -161,15 +161,15 @@ body {
   }
 }
 
-/* Enhanced Join Us Section */
 .support {
   padding: 6rem 2rem 5rem;
-  background-color: #f8f8f8;
+  background-color: #fff; /* changed from #f8f8f8 to pure white */
   text-align: center;
   position: relative;
   clip-path: polygon(0 2%, 100% 0, 100% 98%, 0% 100%);
   margin: -2% 0;
   z-index: 1;
+  box-shadow: inset 0 10px 20px rgba(0,0,0,0.03); /* subtle inner shadow for depth */
 }
 
 .support::before {
@@ -178,7 +178,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 10px;
+  height: 8px; /* slightly thinner */
   background: linear-gradient(90deg, #020202, #969696);
 }
 
@@ -198,30 +198,37 @@ body {
   bottom: -15px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(90deg, #020202, #969696);
+  width: 60px;
+  height: 3px;
+  background: #020202;
   border-radius: 4px;
 }
 
 .support-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 3rem;
-  max-width: 1200px;
-  margin: 4rem auto 0;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .support-card {
-  padding: 3rem 2rem;
+  padding: 2.8rem 2rem;
   background: #fff;
-  border-radius: 20px 0 20px 0;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: none;
+  border-radius: 22px; /* smoother roundness */
+  box-shadow: 0 18px 35px rgba(0,0,0,0.08);
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid #ddd; /* subtle border for clean separation */
   position: relative;
   overflow: hidden;
-  background: linear-gradient(145deg, #ffffff 0%, #f9f9f9 100%);
+  background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
+  cursor: pointer;
+
+  /* Animate fade-up on load */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUpSupport 0.6s forwards;
+  animation-delay: var(--delay, 0s);
 }
 
 .support-card::before {
@@ -229,35 +236,43 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   background: linear-gradient(45deg, #020202, #969696);
   clip-path: polygon(0 0, 100% 0, 100% 100%);
+  opacity: 0.12; /* softer */
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.support-card:hover::before {
+  opacity: 0.22;
 }
 
 .support-card:hover {
-  transform: translateY(-15px) scale(1.03);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-  border-radius: 0 20px 0 20px;
+  transform: translateY(-12px) scale(1.05);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+  border-color: #333;
+  border-radius: 25px;
 }
 
 .support-card i {
-  font-size: 3rem;
+  font-size: 3.2rem;
   color: #020202;
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
   transition: all 0.4s ease;
   position: relative;
   z-index: 2;
 }
 
 .support-card:hover i {
-  transform: rotate(15deg) scale(1.2);
+  transform: rotate(15deg) scale(1.25);
   color: #6a6a6a;
 }
 
 .support-card h3 {
-  margin-bottom: 1.5rem;
-  font-size: 1.6rem;
+  margin-bottom: 1.3rem;
+  font-size: 1.65rem;
   font-weight: 700;
   color: #222;
   position: relative;
@@ -266,185 +281,272 @@ body {
 
 .support-card p {
   color: #555;
-  line-height: 1.8;
+  line-height: 1.75;
   font-size: 1.1rem;
   position: relative;
   z-index: 2;
 }
 
-/* Enhanced Pastors Section */
-.pastors {
-  padding: 7rem 2rem;
-  background-color: #fff;
-  text-align: center;
-  position: relative;
-  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,248,248,0.95) 100%);
-  clip-path: polygon(0 0, 100% 2%, 100% 100%, 0% 98%);
-  margin: -2% 0;
-  z-index: 2;
+/* Fade-up keyframe */
+@keyframes fadeUpSupport {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.pastors::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 10px;
-  background: linear-gradient(90deg, #020202, #969696);
+/* Pastors Section */
+.pastors {
+  padding: 5rem 2rem 6rem;
+  background: linear-gradient(135deg, #111, #222);
+  color: #eee;
+  text-align: center;
+  position: relative;
+  clip-path: polygon(0 2%, 100% 0, 100% 98%, 0% 100%);
+  margin: -2% 0 3rem;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
 }
 
 .section-header {
-  max-width: 800px;
-  margin: 0 auto 4rem;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  position: relative;
 }
 
 .pastors h2 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 2rem;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #fafafa;
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.2);
 }
 
 .pastors h2::after {
   content: '';
   position: absolute;
-  bottom: -15px;
+  bottom: -14px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(90deg, #020202, #969696);
-  border-radius: 4px;
-}
-
-.section-header .divider {
-  width: 100px;
-  height: 4px;
-  background: linear-gradient(to right, #020202, #969696);
-  margin: 0 auto;
-  border-radius: 4px;
+  width: 60px;
+  height: 3px;
+  background: #fff;
+  border-radius: 3px;
+  opacity: 0.8;
 }
 
 .pastors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 3rem;
-  max-width: 1100px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2.8rem;
+  max-width: 1000px;
   margin: 0 auto;
+  perspective: 1200px; /* for 3D effect */
 }
 
+/* Pastor Card */
 .pastor-card {
-  background: #fff;
-  border-radius: 25px;
-  overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: none;
-  position: relative;
+  background: #1c1c1c;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.07);
+  border: 1.5px solid #444;
+  padding: 2.2rem 1.8rem 2.8rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), 
+              box-shadow 0.4s ease, border-color 0.4s ease;
+  opacity: 0;
+  animation: fadeUp 0.6s forwards;
+  animation-delay: var(--delay);
 }
 
-.pastor-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 6px;
-  background: linear-gradient(90deg, #020202, #969696);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.6s ease;
+/* Staggered animation */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 }
 
+/* Hover: lift + subtle glow + rotate */
 .pastor-card:hover {
-  transform: translateY(-15px);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+  transform: translateY(-15px) rotateX(4deg) rotateY(4deg);
+  box-shadow: 0 28px 50px rgba(255, 255, 255, 0.18);
+  border-color: #bbb;
 }
 
-.pastor-card:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
+/* Circle Image with subtle grayscale to soft glow on hover */
 .pastor-image-container {
-  height: 320px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
   overflow: hidden;
-  clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+  border: 3px solid #555;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.05);
+  transition: border 0.4s ease, box-shadow 0.4s ease, filter 0.5s ease;
+  margin-bottom: 1.8rem;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  filter: grayscale(70%) brightness(0.9);
+  background: #222;
 }
 
+.pastor-card:hover .pastor-image-container {
+  filter: grayscale(0) brightness(1);
+  border-color: #eee;
+  box-shadow: 0 0 16px 4px rgba(255, 255, 255, 0.3);
+}
+
+/* Image inside circle */
 .pastor-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s ease;
+  border-radius: 50%;
+  display: block;
+  transition: transform 0.5s ease;
 }
 
 .pastor-card:hover .pastor-photo {
   transform: scale(1.1);
 }
 
+/* Info Text */
 .pastor-info {
-  padding: 2.5rem 2rem;
-  background: #fff;
-  margin: -40px 20px 20px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  position: relative;
-  z-index: 2;
+  text-align: center;
 }
 
 .pastor-info h3 {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  color: #333;
-  margin-bottom: 0.8rem;
+  color: #eee;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.6px;
+  user-select: none;
 }
 
 .post {
-  color: #3b3b3ba2;
+  color: #aaa;
   font-weight: 600;
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
+  font-size: 1rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  opacity: 0.8;
+  user-select: none;
 }
 
-/* Enhanced Mission & Vision Section */
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .pastors-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .pastor-image-container {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .pastor-card {
+    padding: 2rem 1.5rem 2.5rem;
+  }
+}
+
+
+/*Senior pastor Message */
+.senior-message {
+  background: #fff;
+  padding: 3rem 1.5rem 4rem;
+  max-width: 800px;
+  margin: 0 auto 4rem;
+  border-radius: 16px 0 16px 0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  color: #111;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.senior-message .section-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #111;
+  position: relative;
+  display: inline-block;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.08);
+}
+
+.message-content {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.message-photo img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #000;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+  transition: transform 0.3s ease;
+}
+
+.message-photo img:hover {
+  transform: scale(1.05);
+}
+
+.message-text {
+  max-width: 500px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  font-style: italic;
+  text-align: left;
+}
+
+.message-text .signature {
+  margin-top: 1.2rem;
+  font-weight: 700;
+  font-style: normal;
+  color: #000;
+  text-align: right;
+}
+
+
 .mission-vision {
-  padding: 7rem 2rem;
-  background-color: #f8f8f8;
+  padding: 6rem 2rem;
+  background: #fff;
   text-align: center;
   position: relative;
   clip-path: polygon(0 2%, 100% 0, 100% 98%, 0% 100%);
   margin: -2% 0;
   z-index: 1;
-  background: linear-gradient(145deg, #f5f5f5 0%, #f0f0f0 100%);
-}
-
-.mission-vision::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 10px;
-  background: repeating-linear-gradient(
-    45deg,
-    #030303,
-    #171717 15px,
-    #2b2b2b 15px,
-    #4a4a4a 30px
-  );
 }
 
 .mission-vision h2 {
   font-size: 2.5rem;
   margin-bottom: 4rem;
   font-weight: 700;
-  color: #333;
+  color: #000;
   position: relative;
   display: inline-block;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .mission-vision h2::after {
@@ -453,82 +555,331 @@ body {
   bottom: -15px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(90deg, #020202, #969696);
-  border-radius: 4px;
+  width: 60px;
+  height: 3px;
+  background: #000;
+  border-radius: 2px;
 }
 
 .mission-vision-content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
   max-width: 1100px;
   margin: 0 auto;
 }
 
-.mission, .vision {
-  padding: 20px;
-  border-radius: 25px;
+.mission-card,
+.vision-card {
+  text-decoration: none;
   background: #fff;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  overflow: hidden;
-  position: relative;
-  border: none;
+  color: #000;
+  padding: 3rem 2rem;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.mission::before, .vision::before {
+.mission-card:hover,
+.vision-card:hover {
+  border-color: #000;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+.mission-card i,
+.vision-card i {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: #000;
+  background: #f0f0f0;
+  padding: 1rem;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.mission-card:hover i,
+.vision-card:hover i {
+  transform: scale(1.1);
+  background: #000;
+  color: #fff;
+}
+
+.mission-card h3,
+.vision-card h3 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.mission-card p,
+.vision-card p {
+  font-size: 1.05rem;
+  color: #444;
+  line-height: 1.7;
+  text-align: center;
+}
+
+
+/* Events Section */
+.events-section {
+  padding: 6rem 2rem 5rem;
+  background-color: #fff;
+  text-align: center;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+}
+
+.events-section .section-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  color: #111;
+  position: relative;
+  display: inline-block;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+.events-section .section-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: #020202;
+  border-radius: 4px;
+}
+
+/* Grid container */
+.event-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 3rem;
+  margin-top: 3rem;
+  padding-top: 3rem;
+}
+
+/* Base Event */
+.event {
+  padding: 5rem 2rem 2rem; /* Increased top padding from 3.5rem to 5rem */
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  position: relative;
+  color: #111;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  overflow: visible;
+  border-left: 5px solid #111;
+  background-color: #f7f7f7;
+}
+
+
+.event:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 35px rgba(0,0,0,0.12);
+}
+
+/* Decorative top-left triangle for all events */
+.event::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 10px;
-  background: linear-gradient(90deg, #020202, #969696);
+  border-top: 10px solid #111;
+  border-right: 10px solid transparent;
+  width: 0;
+  height: 0;
 }
 
-.mission-content, .vision-content {
-  padding: 3rem 2.5rem;
+/* Distinction for big event */
+.event.big-event {
+  background-color: #eaeaea;
+  border-left: 6px solid #000;
+  transform: scale(1.01);
+  position: relative;
+  overflow: visible;
+}
+
+.event.big-event::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.02),
+    rgba(0, 0, 0, 0.02) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  z-index: 0;
+}
+
+.event.big-event .event-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Distinction for small event */
+.event.small-event {
+  background-color: #fafafa;
+  border-left: 4px solid #444;
   position: relative;
 }
 
-.mission:hover, .vision:hover {
-  transform: translateY(-15px);
-  box-shadow: 0 30px 50px rgba(0,0,0,0.15);
+.event.small-event::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-bottom: 12px dotted #ccc;
+  border-right: 12px dotted #ccc;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
 }
 
-.mission i, .vision i {
-  font-size: 3.5rem;
-  margin-bottom: 2.5rem;
-  color: #020202;
-  background: rgba(11, 11, 11, 0.1);
-  padding: 2rem;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.6s ease;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+/* Date badge */
+.event-date {
+  position: absolute;
+  top: -1.8rem;
+  left: 1.5rem;
+  background-color: #111;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  width: 64px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.mission:hover i, .vision:hover i {
-  transform: rotate(360deg) scale(1.1);
-  background: rgba(14, 14, 14, 0.2);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+.event-date .day {
+  font-size: 1.7rem;
+  line-height: 1;
 }
 
-.mission h3, .vision h3 {
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
+.event-date .month {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+/* Content */
+.event-content {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.event-title {
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #333;
+  color: #111;
+  margin-bottom: 0.6rem;
 }
 
-.mission p, .vision p {
-  font-size: 1.1rem;
-  line-height: 1.8;
+.event-details {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.95rem;
   color: #555;
+  margin-bottom: 1rem;
+}
+
+.event-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.event-detail i {
+  font-size: 1rem;
+  color: #888;
+}
+
+/* Description */
+.event-description {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* Status badge */
+.event-status {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  padding: 0.25rem 1rem;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: #111;
+  color: #fff;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+}
+
+.event-status.today {
+  background-color: #444;
+}
+
+.event-status.recent {
+  background-color: #777;
+}
+
+/* No events */
+.no-events {
+  font-size: 1.2rem;
+  color: #666;
+  grid-column: 1 / -1;
+  margin-top: 3rem;
+  font-weight: 500;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  margin: 3rem auto;
+  border: 5px solid #ccc;
+  border-top: 5px solid #111;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* More Events link */
+.events-section .more-events {
+  margin-top: 3rem;
+  display: inline-block;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #111;
+  text-decoration: none;
+  padding: 0.5rem 1.2rem;
+  border: 2px solid #111;
+  border-radius: 30px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.events-section .more-events:hover {
+  background-color: #111;
+  color: #fff;
 }
 
 /* Responsive Styles */
@@ -562,7 +913,7 @@ body {
   }
   
   .pastor-image-container {
-    clip-path: none;
+    width: 280px; /* Add this line */
     height: 280px;
   }
   
@@ -593,7 +944,8 @@ body {
     padding: 2rem 1.5rem;
   }
   
-  .pastor-image-container {
+   .pastor-image-container {
+    width: 240px; /* Add this line */
     height: 240px;
   }
 }

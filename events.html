@@ -10,25 +10,25 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <script src="script/script.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/tabletop@1.6.1"></script>
-  <script src="script/events.js" defer></script>
+    <script src="script/events.js" defer></script>
 </head>
 <body>
+    <!-- Navbar -->
   <div id="navbar-include"></div>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Upcoming Events</h1>
-      <p>Stay updated with our community events and join us for inspiring and meaningful gatherings.</p>
-    </div>
-  </section>
+  <div class="events-nav">
+    <nav>
+      <ul>
+        <li><a href="#" data-page="events-upcoming" class="active">Upcoming Events</a></li>
+        <li><a href="#" data-page="events-past">Past Events</a></li>
+      </ul>
+    </nav>
+  </div>
 
-  <section class="events">
-    <div class="container">
-      <div id="event-container" class="event-container">
-        <div class="loading-spinner"></div>
-      </div>
-    </div>
-  </section>
+    
+  <div id="events-content">
+      <!-- Content will be loaded here dynamically -->
+  </div>
 
   <div id="footer-include"></div>
 </body>

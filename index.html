@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style/index.css">
   <script src="script/script.js" defer></script>
+  <script src="script/events.js" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
     html {
@@ -42,17 +43,17 @@
   <section class="support">
     <h2>Join Us</h2>
     <div class="support-grid">
-      <div class="support-card">
+      <div class="support-card" style="--delay: 0s">
         <i class="fas fa-church"></i>
         <h3>Saturday Services</h3>
         <p>Join us for uplifting worship services every Saturday at 10 AM.</p>
       </div>
-      <div class="support-card">
+      <div class="support-card" style="--delay: 0.15s">
         <i class="fas fa-hands-praying"></i>
         <h3>Fellowships</h3>
         <p>Join us for weekly fellowship and grow spiritually with the community.</p>
       </div>
-      <div class="support-card">
+      <div class="support-card" style="--delay: 0.3s">
         <i class="fas fa-bible"></i>
         <h3>Trainings</h3>
         <p>Participate in leadership and biblical training workshops to enhance your spiritual journey.</p>
@@ -72,7 +73,7 @@
           <img src="static/pics/pastor1.jpg" alt="Pastor Padam Nath Parajuli" class="pastor-photo">
         </div>
         <div class="pastor-info">
-          <h3>Pastor Padam Nath Parajuli</h3>
+          <h3>Ps. Padam Nath Parajuli</h3>
           <p class="post">Senior Pastor</p>
         </div>
       </div>
@@ -82,7 +83,7 @@
           <img src="static/pics/pastor2.jpeg" alt="Pastor Naya Kaji Shrestha" class="pastor-photo">
         </div>
         <div class="pastor-info">
-          <h3>Pastor Naya Kaji Shrestha</h3>
+          <h3>Ps. Naya Kaji Shrestha</h3>
           <p class="post">Associate Pastor</p>
         </div>
       </div>
@@ -92,34 +93,63 @@
           <img src="static/pics/pastor3.jpg" alt="Pastor Rudra B.K." class="pastor-photo">
         </div>
         <div class="pastor-info">
-          <h3>Pastor Rudra B.K.</h3>
+          <h3>Ps. Rudra B.K.</h3>
           <p class="post">Youth Pastor</p>
         </div>
       </div>
     </div>
   </section>
+
+  <section class="senior-message">
+    <div class="section-header">
+      <h2>Message from Our Senior Pastor</h2>
+    </div>
+    <div class="message-content">
+      <div class="message-photo">
+        <img src="static/pics/pastor1.jpg" alt="Senior Pastor Padam Nath Parajuli">
+      </div>
+      <div class="message-text">
+        <p>
+          "Welcome to Dharmikta Mandali! Our mission is to nurture faith and community,
+          guiding you on a spiritual journey filled with love and hope. Join us to grow
+          in faith and fellowship."
+        </p>
+        <p class="signature">— Pastor Padam Nath Parajuli</p>
+      </div>
+    </div>
+  </section>
+
   
   <section class="mission-vision">
     <h2>Our Mission & Vision</h2>
     <div class="mission-vision-content">
-      <a href="about.html?page=about-church&section=mission-values" class="mission" style="text-decoration: none;">
-        <div>
-          <i class="fas fa-bullhorn"></i>
-          <h3>Our Mission</h3>
-          <p>Our mission is to spread God's love through outreach, support, and nurturing individuals on their spiritual journeys, building a united community.</p>
-        </div>
+      <a href="about.html?page=about-church&section=mission-values" class="mission-card">
+        <i class="fas fa-bullhorn"></i>
+        <h3>Our Mission</h3>
+        <p>To spread God's love through outreach, support, and nurturing individuals on their spiritual journeys.</p>
       </a>
-      <a href="about.html?page=about-church&section=mission-values" class="vision" style="text-decoration: none;">
-        <div>
-          <i class="fas fa-eye"></i>
-          <h3>Our Vision</h3>
-          <p>Our vision is to cultivate a vibrant and inclusive community where individuals can grow spiritually, serving the world with love and compassion.</p>
-        </div>
+      <a href="about.html?page=about-church&section=mission-values" class="vision-card">
+        <i class="fas fa-eye"></i>
+        <h3>Our Vision</h3>
+        <p>To cultivate a vibrant and inclusive community where individuals grow spiritually and serve the world with love.</p>
       </a>
     </div>
   </section>
+
+
   
-  
+  <section class="events-section">
+    <div class="section-header">
+      <h2>Upcoming Events</h2>
+      <p class="section-subtitle">Stay informed and engaged with our latest gatherings.</p>
+    </div>
+    <div id="event-container" class="event-container">
+      <!-- Events will be dynamically loaded here -->
+    </div>
+    <a href="events.html" class="more-events" aria-label="See all events">
+      See All Events &rarr;
+    </a>
+  </section>
 
   <div id="footer-include"></div>
 
