@@ -468,67 +468,214 @@ body {
 
 
 /*Senior pastor Message */
-.senior-message {
-  background: #fff;
-  padding: 3rem 1.5rem 4rem;
-  max-width: 800px;
-  margin: 0 auto 4rem;
-  border-radius: 16px 0 16px 0;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  color: #111;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-}
+  .senior-message-modern {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 20px;
+    color: #2d2d2d;
+  }
 
-.senior-message .section-header h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  color: #111;
-  position: relative;
-  display: inline-block;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.08);
-}
+  .senior-message-modern .section-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
 
-.message-content {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+  .senior-message-modern .section-header h2 {
+    font-size: 2.4rem;
+    font-weight: 300;
+    margin-bottom: 15px;
+    color: #000;
+    position: relative;
+    display: inline-block;
+  }
 
-.message-photo img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 3px solid #000;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.12);
-  transition: transform 0.3s ease;
-}
+  .senior-message-modern .section-header h2:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: #000;
+  }
 
-.message-photo img:hover {
-  transform: scale(1.05);
-}
+  .senior-message-modern .english-heading {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #555;
+    margin-top: 5px;
+  }
 
-.message-text {
-  max-width: 500px;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #333;
-  font-style: italic;
-  text-align: left;
-}
+  .senior-message-modern .message-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    align-items: flex-start;
+  }
 
-.message-text .signature {
-  margin-top: 1.2rem;
-  font-weight: 700;
-  font-style: normal;
-  color: #000;
-  text-align: right;
-}
+  .senior-message-modern .message-photo {
+    flex: 1;
+    min-width: 320px;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
 
+  .senior-message-modern .message-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .senior-message-modern .message-photo:hover img {
+    transform: scale(1.02);
+  }
+
+  .senior-message-modern .message-text {
+    flex: 2;
+    min-width: 300px;
+  }
+
+  .senior-message-modern .excerpt {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    color: #444;
+    position: relative;
+    padding-left: 25px;
+  }
+
+  .senior-message-modern .excerpt:before {
+    content: '"';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 3rem;
+    line-height: 1;
+    color: rgba(0,0,0,0.1);
+  }
+
+  .senior-message-modern .full-message {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #555;
+    display: none;
+    animation: fadeInMessage 0.5s ease;
+  }
+
+  .senior-message-modern .full-message p {
+    margin-bottom: 20px;
+  }
+
+  .senior-message-modern .full-message ol {
+    margin: 30px 0;
+    padding-left: 25px;
+  }
+
+  .senior-message-modern .full-message ol li {
+    margin-bottom: 18px;
+    position: relative;
+    padding-left: 25px;
+  }
+
+  .senior-message-modern .full-message ol li:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 10px;
+    height: 2px;
+    background: #000;
+  }
+
+  .senior-message-modern .full-message blockquote {
+    background: #f8f8f8;
+    padding: 25px;
+    margin: 35px 0;
+    border-left: 4px solid #000;
+    font-style: italic;
+    position: relative;
+  }
+
+  .senior-message-modern .full-message blockquote:before {
+    content: '"';
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    font-size: 3rem;
+    color: rgba(0,0,0,0.1);
+  }
+
+  .senior-message-modern .full-message blockquote footer {
+    display: block;
+    margin-top: 15px;
+    font-style: normal;
+    font-weight: 600;
+    color: #000;
+  }
+
+  .senior-message-modern .signature {
+    font-weight: 600;
+    margin-top: 40px;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .senior-message-modern .signature:before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 0;
+    width: 50px;
+    height: 1px;
+    background: #000;
+  }
+
+  .senior-message-modern .read-more-btn {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin: 20px 0 40px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+    display: inline-block;
+    border-radius: 2px;
+  }
+
+  .senior-message-modern .read-more-btn:hover {
+    background: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+
+  @keyframes fadeInMessage {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    .senior-message-modern .message-content {
+      flex-direction: column;
+    }
+    
+    .senior-message-modern .message-photo {
+      max-width: 100%;
+    }
+    
+    .senior-message-modern .section-header h2 {
+      font-size: 1.9rem;
+    }
+  }
 
 .mission-vision {
   padding: 6rem 2rem;

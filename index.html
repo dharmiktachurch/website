@@ -100,25 +100,62 @@
     </div>
   </section>
 
-  <section class="senior-message">
-    <div class="section-header">
-      <h2>Message from Our Senior Pastor</h2>
+<section class="senior-message-modern">
+  <div class="section-header">
+    <h2>Message from Our Senior Pastor</h2>
+    <h3 class="english-heading">Followers of Christ: Health Workers in Health Service</h3>
+  </div>
+  <div class="message-content">
+    <div class="message-photo">
+      <img src="static/pics/pastor1.jpg" alt="Senior Pastor Padam Nath Parajuli">
     </div>
-    <div class="message-content">
-      <div class="message-photo">
-        <img src="static/pics/pastor1.jpg" alt="Senior Pastor Padam Nath Parajuli">
+    <div class="message-text">
+      <p class="excerpt">
+        "Those who follow the Lord must be filled with all the qualities found in Christ—His nature, character, speech, conduct, and deeds—like beloved children. Be imitators of God and walk in love, just as Christ loved us..."
+      </p>
+      <div class="full-message" style="display: none;">
+        <p>In the current situation, the relationship between pastors, leaders, and the believer families must be like super glue—strong and inseparable. Otherwise, the devil will find ways to create problems.</p>
+        <ol>
+          <li>Therefore, you must be filled with all the qualities found in Christ—His nature, character, speech, conduct, and deeds—like beloved children. Be obedient and pleasing to the Father.</li>
+          <li>Be imitators of God. Learn by observing His works. Every leader and believing family should reflect the character of Christ.</li>
+          <li>Walk in love, just as Christ loved us. A leader's life must also be filled with Christ's love and a strong relationship with Him.</li>
+          <li>Live as a fragrant offering and sacrifice to God, being a testimony and example—whether in your family or in the church.</li>
+          <li>Just as He offered Himself for us.</li>
+          <li>Be dissolved like salt and sugar—completely united and blended in service.</li>
+        </ol>
+        <p><em>Ephesians 5:1–2</em></p>
+        <p>Do we have these qualities in us today? If not, let us seek them and make a firm decision to live as true sons and daughters of God.</p>
+        <blockquote>
+          'Therefore, as God's chosen people, holy and dearly loved, clothe yourselves with compassion, kindness, humility, gentleness and patience. Bear with each other and forgive one another if any of you has a grievance against someone. Forgive as the Lord forgave you. And over all these virtues put on love, which binds them all together in perfect unity. Let the peace of Christ rule in your hearts, since as members of one body you were called to peace. And be thankful. Let the message of Christ dwell among you richly as you teach and admonish one another with all wisdom through psalms, hymns, and songs from the Spirit, singing to God with gratitude in your hearts. And whatever you do, whether in word or deed, do it all in the name of the Lord Jesus, giving thanks to God the Father through him.'
+          <footer>Colossians 3:12-17</footer>
+        </blockquote>
+        <p>May God bless us all.</p>
       </div>
-      <div class="message-text">
-        <p>
-          "Welcome to Dharmikta Mandali! Our mission is to nurture faith and community,
-          guiding you on a spiritual journey filled with love and hope. Join us to grow
-          in faith and fellowship."
-        </p>
-        <p class="signature">— Pastor Padam Nath Parajuli</p>
-      </div>
+      <button class="read-more-btn">Read More</button><br>
+      <p class="signature">— Pastor Padam Nath Parajuli</p>
     </div>
-  </section>
+  </div>
+</section>
 
+<script>
+  // Scoped JavaScript for this component
+  (function() {
+    const readMoreBtn = document.querySelector('.senior-message-modern .read-more-btn');
+    const fullMessage = document.querySelector('.senior-message-modern .full-message');
+    
+    if (readMoreBtn && fullMessage) {
+      readMoreBtn.addEventListener('click', function() {
+        if (fullMessage.style.display === 'none' || !fullMessage.style.display) {
+          fullMessage.style.display = 'block';
+          readMoreBtn.textContent = 'Read Less';
+        } else {
+          fullMessage.style.display = 'none';
+          readMoreBtn.textContent = 'Read More';
+        }
+      });
+    }
+  })();
+</script>
   
   <section class="mission-vision">
     <h2>Our Mission & Vision</h2>

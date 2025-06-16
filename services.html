@@ -12,203 +12,504 @@
 </head>
 <body>
   <div id="navbar-include"></div>
-
-  <!-- Hero Section -->
+  <!-- Hero Section - Sophisticated Pattern Design -->
   <section class="hero services-hero">
-    <div class="gradient-background"></div>
+    <!-- Background with dark blue gradient -->
+    <div class="hero-background">
+      <div class="gradient-overlay"></div>
+    </div>
+    
     <div class="hero-content">
-      <h1>Saturday Services</h1>
-      <p>Our church is located at Bhaisepati Lalitpur. Every Saturday our church service begins at 10:00am.</p>
+      <!-- Decorative corner elements -->
+      <div class="corner-decoration top-left"></div>
+      <div class="corner-decoration top-right"></div>
+      <div class="corner-decoration bottom-left"></div>
+      <div class="corner-decoration bottom-right"></div>
+      
+      <!-- Main heading -->
+      <div class="heading-container">
+        <div class="ornate-frame">
+          <div class="frame-decoration left"></div>
+          <div class="frame-decoration right"></div>
+          <h1 class="elegant-heading">Saturday Service</h1>
+          <div class="heading-subtext">Weekly Gathering</div>
+        </div>
+        <div class="ornamental-divider">
+          <svg width="200" height="24" viewBox="0 0 200 24" fill="none">
+            <path d="M0 12H85" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2,4"/>
+            <path d="M115 12H200" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2,4"/>
+            <circle cx="100" cy="12" r="10" fill="none" stroke="white" stroke-width="1.5"/>
+            <path d="M100 2V22M90 12H110" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      
+      <!-- Countdown timer -->
+      <div class="countdown-wrapper">
+        <div class="countdown-container glass-card">
+          <p class="countdown-label">Next service begins in</p>
+          <div class="countdown-timer">
+            <div class="countdown-unit">
+              <span id="countdown-days">00</span>
+              <span class="unit-label">Days</span>
+            </div>
+            <div class="countdown-separator">
+              <svg width="16" height="16" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="2" fill="white"/>
+              </svg>
+            </div>
+            <div class="countdown-unit">
+              <span id="countdown-hours">00</span>
+              <span class="unit-label">Hours</span>
+            </div>
+            <div class="countdown-separator">
+              <svg width="16" height="16" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="2" fill="white"/>
+              </svg>
+            </div>
+            <div class="countdown-unit">
+              <span id="countdown-minutes">00</span>
+              <span class="unit-label">Minutes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service details -->
+      <div class="service-details-card glass-card">
+        <div class="service-details">
+          <div class="detail-item">
+            <div class="icon-container">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.5"/>
+                <path d="M12 6V12L16 14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span>10:00 AM</span>
+          </div>
+          <div class="detail-item">
+            <div class="icon-container">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2Z" stroke="white" stroke-width="1.5"/>
+                <circle cx="12" cy="9" r="2.5" fill="white"/>
+              </svg>
+            </div>
+            <span>Bhaisepati, Lalitpur</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Call to action -->
+      <div class="cta-section">
+        <div class="cta-buttons">
+          <a href="/contact.html" class="cta-button secondary">
+            <span>Contact Us</span>
+            <svg width="16" height="16" viewBox="0 0 24 24">
+              <path d="M22 12H2M10 6L2 12L10 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="https://www.google.com/maps/place/27%C2%B038'30.4%22N+85%C2%B018'39.0%22E" target="_blank" class="cta-button primary">
+            <span>Get Directions</span>
+            <svg width="16" height="16" viewBox="0 0 24 24">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+        <div class="scroll-hint">
+          <svg width="24" height="40" viewBox="0 0 24 40">
+            <rect x="11" y="0" width="2" height="12" rx="1" fill="white" opacity="0.6">
+              <animate attributeName="y" from="0" to="8" dur="1.5s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" from="0.6" to="0.2" dur="1.5s" repeatCount="indefinite"/>
+            </rect>
+            <rect x="11" y="16" width="2" height="16" rx="1" fill="white" opacity="0.4">
+              <animate attributeName="y" from="16" to="24" dur="1.5s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" from="0.4" to="0.1" dur="1.5s" repeatCount="indefinite"/>
+            </rect>
+          </svg>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Services Section -->
-  <section class="services-section">
-    <div class="container service-container">
-
-      <!-- Repeat this structure for each service -->
-      <div class="service">
-        <div class="service-image">
-          <img src="static/images/main-service2.jpg" alt="Main Service" />
-        </div>
-        <div class="service-text">
-          <h2>Main Service</h2>
-          <p class="short-desc">Experience our uplifting main service each Saturday morning.<br><br></p>
-          <p class="short-desc"><u>See more</u></p>
-          <div class="service-details">
-            <p>Join us every Saturday at 10:00am for a time of worship, teaching, and fellowship in our main service.</p>
-            <p>Highlights include:</p>
-            <ul>
-              <li>Dynamic worship led by our Worship Team</li>
-              <li>Spirit-filled teaching from the Word</li>
-              <li>Time for prayer and community announcements</li>
-            </ul>
-            <p>Experience the power of God’s presence and connect with a welcoming community.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="service-image">
-          <img src="static/images/Womens_Fellowship.jpg" alt="Women Ministry" />
-        </div>
-        <div class="service-text">
-          <h2>Women Ministry</h2>
-          <p class="short-desc">Women fellowship meetings every Saturday and Wednesday to nurture community.<br><br></p>
-          <p class="short-desc"><u>See more</u></p>
-          <div class="service-details">
-            <p>Our Women’s Ministry offers encouragement and spiritual growth through fellowship every Saturday and Wednesday.</p>
-            <ul>
-              <li>Bible studies focused on women’s spiritual growth</li>
-              <li>Fasting Prayers and Counselling sessions</li>
-              <li>Supportive sisterhood and mentorship</li>
-            </ul>
-            <p>It’s a place to build lasting friendships and deepen your faith.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="service-image">
-          <img src="#" alt="Father Ministry" />
-        </div>
-        <div class="service-text">
-          <h2>Father Ministry</h2>
-          <p class="short-desc">Father's fellowship meetings held once a month on Saturdays.<br><br></p>
-          <p class="short-desc"><u>See more</u></p>
-          <div class="service-details">
-            <p>The Father’s Ministry is dedicated to empowering men as spiritual leaders in their homes and communities.</p>
-            <ul>
-              <li>Monthly gatherings for worship and teaching</li>
-              <li>Workshops on biblical fatherhood</li>
-              <li>Group discussions and mentoring</li>
-            </ul>
-            <p>This ministry equips men to lead with faith and integrity.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="service-image">
-          <img src="#" alt="Children Ministry" />
-        </div>
-        <div class="service-text">
-          <h2>Children Ministry</h2>
-          <p class="short-desc">A special service for children with fun and engaging activities Every Saturday.<br><br></p>
-          <p class="short-desc"><u>See more</u></p>
-          <div class="service-details">
-            <p>Our Children’s Ministry creates a fun and safe environment for kids to grow in their faith.</p>
-            <ul>
-              <li>Bible stories and lessons</li>
-              <li>Creative crafts and worship songs</li>
-              <li>Games and interactive group activities</li>
-            </ul>
-            <p>We aim to build strong foundations in Christ from an early age.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="service-image">
-          <img src="static/images/Youth_Fellowship.jpg" alt="Youth Ministry" />
-        </div>
-        <div class="service-text">
-          <h2>Youth Ministry</h2>
-          <p class="short-desc">Engaging and meaningful Fellowship for our youth every Saturday.<br><br></p>
-          <p class="short-desc"><u>See more</u></p>
-          <div class="service-details">
-            <p>The Youth Ministry is a vibrant space for young people to explore faith and identity.</p>
-            <ul>
-              <li>Weekly gatherings with games, discussion and prayers</li>
-              <li>Youth-led worship and testimonies</li>
-              <li>Mentorship and leadership development</li>
-            </ul>
-            <p>We’re raising the next generation of Christ-centered leaders.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="service-image">
-          <img src="static/images/Pillars_Academy.jpg" alt="Pillars Academy" />
-        </div>
-        <div class="service-text">
-          <h2>Pillars Academy</h2>
-          <p class="short-desc">A transformative 6-month discipleship and Leadership Training held once a year.<br><br></p>
-          <p class="short-desc"><u>See more</u></p>
-          <div class="service-details">
-            <p>Pillars Academy is a 6-month journey into biblical leadership and discipleship.</p>
-            <ul>
-              <li>Weekly intensive classes</li>
-              <li>Hands-on ministry experience</li>
-              <li>Spiritual and personal growth sessions</li>
-            </ul>
-            <p>It lays a strong foundation in God’s Word and practical ministry.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="service-image">
-          <img src="static/images/Vocational_Training.jpg" alt="Vocational Training" />
-        </div>
-        <div class="service-text">
-          <h2>Vocational Training</h2>
-          <p class="short-desc">Empowering individuals with hands-on skills and a Christ-centered approach to work and service.<br><br></p>
-          <p class="short-desc"><u>See more</u></p>
-          <div class="service-details">
-            <p>This 6-month training equips individuals with practical skills and godly work ethics.</p>
-            <ul>
-              <li>Courses in tailoring and Animal husbandary Trainings</li>
-              <li>Spiritual formation and character development</li>
-              <li>Job placement support and business startup guidance</li>
-            </ul>
-            <p>It’s more than skill—it's service through vocation.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
+  <!-- Countdown Timer Script -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const serviceCards = document.querySelectorAll('.service');
-
-    // Function to close all expanded cards
-    const closeAllCards = () => {
-      serviceCards.forEach(card => {
-        card.classList.remove('expanded');
-      });
-    };
-
-    // Toggle card expansion on click
-    serviceCards.forEach(card => {
-      card.addEventListener('click', (event) => {
-        // Prevent click event from propagating to the document
-        event.stopPropagation();
-
-        // Collapse all other cards
-        serviceCards.forEach(otherCard => {
-          if (otherCard !== card) {
-            otherCard.classList.remove('expanded');
-          }
-        });
-
-        // Toggle this card
-        card.classList.toggle('expanded');
-      });
-    });
-
-    // Close all cards if click is outside
-    document.addEventListener('click', (event) => {
-      const isClickInside = Array.from(serviceCards).some(card => card.contains(event.target));
-
-      if (!isClickInside) {
-        closeAllCards();
+    function updateCountdown() {
+      const now = new Date();
+      const currentDay = now.getDay();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      
+      let daysUntilSaturday = (currentDay === 6 && currentHour < 10) ? 0 : (6 - currentDay + 7) % 7;
+      
+      const targetDate = new Date(now);
+      targetDate.setDate(now.getDate() + daysUntilSaturday);
+      targetDate.setHours(10, 0, 0, 0);
+      
+      if (currentDay === 6 && (currentHour > 10 || (currentHour === 10 && currentMinute >= 0))) {
+        targetDate.setDate(targetDate.getDate() + 7);
       }
-    });
-  });
+      
+      const timeDifference = targetDate - now;
+      const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      
+      document.getElementById('countdown-days').textContent = days.toString().padStart(2, '0');
+      document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
+      document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
+    }
+    
+    updateCountdown();
+    setInterval(updateCountdown, 60000);
   </script>
+
+  <section class="modern-services">
+        <div class="section-intro">
+            <h2 class="section-title">Our Ministries & Services</h2>
+            <p class="section-subtitle">Experience spiritual growth through our diverse programs and fellowship opportunities</p>
+            <div class="divider"></div>
+        </div>
+
+        <div class="services-container">
+            <!-- Main Service -->
+            <div class="service-card">
+                <div class="service-visual">
+                    <img src="static/images/main-service.jpg" alt="Main Service" class="service-image"/>
+                    <div class="service-frequency">Weekly</div>
+                </div>
+                <div class="service-info">
+                    <div class="service-header">
+                        <h3>Main Service</h3>
+                        <div class="service-schedule">
+                            <span class="schedule-day">Saturdays</span>
+                            <span class="schedule-time">10:00 AM</span>
+                        </div>
+                    </div>
+                    <p class="service-description">Join our uplifting worship service featuring inspiring messages, prayer, and community fellowship.</p>
+                    <div class="service-details">
+                        <p>Our main service is the cornerstone of our weekly gatherings, designed to strengthen your faith and connect you with our church family.</p>
+                        <div class="highlight-box">
+                            <p class="highlight-title">Service Features:</p>
+                            <ul class="highlight-list">
+                                <li>Dynamic worship with our talented music team</li>
+                                <li>Biblical teaching that applies to daily life</li>
+                                <li>Special prayer moments for individual needs</li>
+                                <li>Children's program available during service</li>
+                                <li>Community announcements and updates</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="expand-button">
+                        <span class="expand-text">View Details</span>
+                        <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Women Ministry -->
+            <div class="service-card">
+                <div class="service-visual">
+                    <img src="static/images/Womens_Fellowship.jpg" alt="Women Ministry" class="service-image"/>
+                    <div class="service-frequency">Weekly</div>
+                </div>
+                <div class="service-info">
+                    <div class="service-header">
+                        <h3>Women's Ministry</h3>
+                        <div class="service-schedule">
+                            <span class="schedule-day">Wednesday</span>
+                            <span class="schedule-time">10:00 AM</span>
+                        </div>
+                    </div>
+                    <p class="service-description">A supportive community for women to grow spiritually and build meaningful relationships.</p>
+                    <div class="service-details">
+                        <p>Our Women's Ministry provides a safe space for women of all ages to connect, share, and deepen their faith journey together.</p>
+                        <div class="highlight-box">
+                            <p class="highlight-title">What We Offer:</p>
+                            <ul class="highlight-list">
+                                <li>Bible study groups tailored for women</li>
+                                <li>Monthly prayer breakfasts</li>
+                                <li>Annual women's Combined Fellowship</li>
+                                <li>Mentorship programs</li>
+                                <li>Community service opportunities</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="expand-button">
+                        <span class="expand-text">View Details</span>
+                        <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Father Ministry -->
+            <div class="service-card">
+                <div class="service-visual">
+                    <img src="static/images/Fathers_Fellowship.jpg" alt="Father Ministry" class="service-image"/>
+                    <div class="service-frequency">Monthly</div>
+                </div>
+                <div class="service-info">
+                    <div class="service-header">
+                        <h3>Men's Fellowship</h3>
+                        <div class="service-schedule">
+                            <span class="schedule-day">First Saturday</span>
+                            <span class="schedule-time">8:00 AM</span>
+                        </div>
+                    </div>
+                    <p class="service-description">Equipping men to lead with integrity in their families, workplaces, and communities.</p>
+                    <div class="service-details">
+                        <p>Our Men's Fellowship focuses on building godly character and providing practical tools for biblical manhood.</p>
+                        <div class="highlight-box">
+                            <p class="highlight-title">Program Highlights:</p>
+                            <ul class="highlight-list">
+                                <li>Monthly breakfast meetings</li>
+                                <li>Accountability groups</li>
+                                <li>Fatherhood workshops</li>
+                                <li>Annual camping trip</li>
+                                <li>Community outreach projects</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="expand-button">
+                        <span class="expand-text">View Details</span>
+                        <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Children Ministry -->
+            <div class="service-card">
+                <div class="service-visual">
+                    <img src="static/images/Children_Ministry.jpg" alt="Children Ministry" class="service-image"/>
+                    <div class="service-frequency">Weekly</div>
+                </div>
+                <div class="service-info">
+                    <div class="service-header">
+                        <h3>Children's Ministry</h3>
+                        <div class="service-schedule">
+                            <span class="schedule-day">Saturdays</span>
+                            <span class="schedule-time">10:00 AM</span>
+                        </div>
+                    </div>
+                    <p class="service-description">A fun, safe environment where children learn about God's love through age-appropriate activities.</p>
+                    <div class="service-details">
+                        <p>We provide engaging programs that help children build a strong spiritual foundation while having fun.</p>
+                        <div class="highlight-box">
+                            <p class="highlight-title">Our Programs:</p>
+                            <ul class="highlight-list">
+                                <li>Sunday School classes by age group</li>
+                                <li>Vacation Bible School (annual)</li>
+                                <li>Children's choir</li>
+                                <li>Bible memory programs</li>
+                                <li>Special holiday events</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="expand-button">
+                        <span class="expand-text">View Details</span>
+                        <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Youth Ministry -->
+            <div class="service-card">
+                <div class="service-visual">
+                    <img src="static/images/Youth_Fellowship.jpg" alt="Youth Ministry" class="service-image"/>
+                    <div class="service-frequency">Monthly</div>
+                </div>
+                <div class="service-info">
+                    <div class="service-header">
+                        <h3>Youth Ministry</h3>
+                        <div class="service-schedule">
+                            <span class="schedule-day">Saturday</span>
+                            <span class="schedule-time">2:00 PM</span>
+                        </div>
+                    </div>
+                    <p class="service-description">A vibrant community where teens can explore faith, build friendships, and grow spiritually.</p>
+                    <div class="service-details">
+                        <p>Our youth program creates a relevant space for teenagers to connect with God and each other.</p>
+                        <div class="highlight-box">
+                            <p class="highlight-title">What We Do:</p>
+                            <ul class="highlight-list">
+                                <li>Weekly youth group Prayes</li>
+                                <li>Monthly outreach events</li>
+                                <li>Annual mission trips</li>
+                                <li>Worship band opportunities</li>
+                                <li>Leadership development</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="expand-button">
+                        <span class="expand-text">View Details</span>
+                        <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pillars Academy -->
+            <div class="service-card">
+                <div class="service-visual">
+                    <img src="static/images/Pillars_Academy.jpg" alt="Pillars Academy" class="service-image"/>
+                    <div class="service-frequency">Annual</div>
+                </div>
+                <div class="service-info">
+                    <div class="service-header">
+                        <h3>Pillars Academy</h3>
+                        <div class="service-schedule">
+                            <span class="duration">6-month program</span>
+                        </div>
+                    </div>
+                    <p class="service-description">An intensive discipleship program for those seeking deeper biblical knowledge and leadership skills.</p>
+                    <div class="service-details">
+                        <p>This transformative program equips participants for effective ministry and personal spiritual growth.</p>
+                        <div class="highlight-box">
+                            <p class="highlight-title">Program Components:</p>
+                            <ul class="highlight-list">
+                                <li>Weekly intensive Bible study</li>
+                                <li>Practical ministry training</li>
+                                <li>One-on-one mentorship</li>
+                                <li>Service opportunities</li>
+                                <li>Retreats and workshops</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="expand-button">
+                        <span class="expand-text">View Details</span>
+                        <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Vocational Training -->
+            <div class="service-card">
+                <div class="service-visual">
+                    <img src="static/images/Vocational_Training.jpg" alt="Vocational Training" class="service-image"/>
+                    <div class="service-frequency">Annual</div>
+                </div>
+                <div class="service-info">
+                    <div class="service-header">
+                        <h3>Vocational Training</h3>
+                        <div class="service-schedule">
+                            <span class="duration">6-month program</span>
+                        </div>
+                    </div>
+                    <p class="service-description">Practical skills training integrated with biblical principles for workplace excellence.</p>
+                    <div class="service-details">
+                        <p>Our vocational program prepares participants for meaningful employment while emphasizing Christian work ethics.</p>
+                        <div class="highlight-box">
+                            <p class="highlight-title">Training Areas:</p>
+                            <ul class="highlight-list">
+                                <li>Tailoring and fashion design</li>
+                                <li>Basic computer skills</li>
+                                <li>Small business management</li>
+                                <li>Carpentry and woodworking</li>
+                                <li>Job interview preparation</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="expand-button">
+                        <span class="expand-text">View Details</span>
+                        <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+      // Image loading and focal points
+      const images = document.querySelectorAll('.service-image');
+      images.forEach(img => {
+          if (img.complete) {
+              img.classList.add('loaded');
+          } else {
+              img.addEventListener('load', function() {
+                  this.classList.add('loaded');
+              });
+          }
+      });
+
+      // Expand/collapse functionality
+      const serviceCards = document.querySelectorAll('.service-card');
+      const expandButtons = document.querySelectorAll('.expand-button');
+      
+      // Initialize with all cards closed
+      serviceCards.forEach(card => {
+          card.classList.remove('active');
+      });
+      
+      // Handle expand/collapse
+      expandButtons.forEach((button, index) => {
+          button.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              const card = serviceCards[index];
+              const isOpening = !card.classList.contains('active');
+              
+              // Close all other cards if opening this one
+              if (isOpening) {
+                  serviceCards.forEach((otherCard, otherIndex) => {
+                      if (otherIndex !== index) {
+                          otherCard.classList.remove('active');
+                      }
+                  });
+              }
+              
+              // Toggle current card
+              card.classList.toggle('active');
+              
+              // Smooth scroll if opening
+              if (isOpening) {
+                  setTimeout(() => {
+                      card.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'nearest'
+                      });
+                  }, 100);
+              }
+          });
+      });
+      
+      // Close cards when clicking outside
+      document.addEventListener('click', function() {
+          serviceCards.forEach(card => {
+              card.classList.remove('active');
+          });
+      });
+      
+      // Prevent closing when clicking inside card
+      serviceCards.forEach(card => {
+          card.addEventListener('click', function(e) {
+              e.stopPropagation();
+          });
+      });
+      
+      // Handle keyboard navigation
+      document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+              serviceCards.forEach(card => {
+                  card.classList.remove('active');
+              });
+          }
+      });
+  });
+    </script>
 
   <div id="footer-include"></div>
 </body>
