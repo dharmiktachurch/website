@@ -8,39 +8,59 @@ document.addEventListener("DOMContentLoaded", function () {
     container.innerHTML = '<div class="loading-spinner"></div>';
 
     function createEventElement(event) {
-      const { eventName, fullDateTime, eventTimeStr, eventLocation, size, eventDescription } = event;
-
+      const { eventName, fullDateTime, eventLocation, size, eventDescription } = event;
       const isBigEvent = size === 'big';
-      const displayMonth = fullDateTime.toLocaleString('default', { month: 'short' });
-      const displayDay = fullDateTime.getDate();
-      const timeString = fullDateTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+      
+      // Format date and time
+      const options = { 
+        month: 'short', 
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      };
+      const dateTimeString = fullDateTime.toLocaleString('en-US', options);
+      const [datePart, timePart] = dateTimeString.split(', ');
 
-      const eventElement = document.createElement('div');
-      eventElement.classList.add('event', isBigEvent ? 'big-event' : 'small-event');
-
-      eventElement.innerHTML = `
-        <div class="event-date">
-          <span class="day">${displayDay}</span>
-          <span class="month">${displayMonth}</span>
-        </div>
-        <div class="event-content">
-          <h3 class="event-title">${eventName}</h3>
-          <div class="event-details">
-            <div class="event-detail">
-              <i class="far fa-clock"></i>
-              <span>${timeString}</span>
-            </div>
-            <div class="event-detail">
-              <i class="fas fa-map-marker-alt"></i>
-              <span>${eventLocation}</span>
-            </div>
+      return `
+        <div class="event ${isBigEvent ? 'big-event' : 'small-event'}">
+          <div class="event-date">
+            <span class="day">${datePart.split(' ')[1]}</span>
+            <span class="month">${datePart.split(' ')[0]}</span>
           </div>
-          <p class="event-description">${eventDescription}</p>
+          <div class="event-content">
+            <h3 class="event-title">${eventName}</h3>
+            <div class="event-details">
+              <div class="event-detail">
+                <i class="far fa-clock"></i>
+                <span>${timePart}</span>
+              </div>
+              <div class="event-detail">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>${eventLocation}</span>
+              </div>
+            </div>
+            <p class="event-description">${eventDescription}</p>
+          </div>
+          <div class="event-status upcoming">Upcoming</div>
         </div>
-        <div class="event-status upcoming">Upcoming</div>
       `;
+    }
 
-      return eventElement;
+    function parseEventDateTime(dateStr, timeStr) {
+      // Handle both "MM/DD/YYYY" and "Date(MM/DD/YYYY)" formats
+      const cleanDateStr = dateStr.replace(/^Date\(/, '').replace(/\)$/, '');
+      const [month, day, year] = cleanDateStr.split('/').map(Number);
+      
+      // Parse time (supports 12h and 24h formats)
+      let [hours, minutes] = timeStr.split(':').map(Number);
+      const isPM = timeStr.toLowerCase().includes('pm');
+      
+      if (isPM && hours < 12) hours += 12;
+      if (!isPM && hours === 12) hours = 0;
+      
+      const date = new Date(year, month - 1, day, hours, minutes);
+      return isNaN(date.getTime()) ? null : date;
     }
 
     function processSheetData(html) {
@@ -48,40 +68,29 @@ document.addEventListener("DOMContentLoaded", function () {
       const rows = doc.querySelectorAll('table tr');
       const events = [];
       const now = new Date();
-      const maxEvents = 3; // Only show 3 events on index page
+      const maxEvents = 3;
 
-      rows.forEach((row, index) => {
-        if (index < 2) return; // skip header rows
-        if (events.length >= maxEvents) return; // limit to 3 events
+      for (let i = 1; i < rows.length && events.length < maxEvents; i++) {
+        const cells = rows[i].querySelectorAll('td');
+        if (cells.length < 6 || !cells[0].textContent.trim()) continue;
 
-        const cells = row.querySelectorAll('td');
-        if (cells.length < 6 || !cells[0].textContent.trim()) return;
+        const eventData = {
+          eventName: cells[0].textContent.trim(),
+          eventDateStr: cells[1].textContent.trim(),
+          eventTimeStr: cells[2].textContent.trim(),
+          eventLocation: cells[3].textContent.trim(),
+          size: cells[4].textContent.trim().toLowerCase(),
+          eventDescription: cells[5].textContent.trim()
+        };
 
-        const eventName = cells[0].textContent.trim();
-        const eventDateStr = cells[1].textContent.trim();
-        const eventTimeStr = cells[2].textContent.trim();
-        const eventLocation = cells[3].textContent.trim();
-        const size = cells[4].textContent.trim().toLowerCase();
-        const eventDescription = cells[5].textContent.trim();
+        const fullDateTime = parseEventDateTime(eventData.eventDateStr, eventData.eventTimeStr);
+        if (!fullDateTime || fullDateTime <= now) continue;
 
-        const fullDateTime = new Date(`${eventDateStr} ${eventTimeStr}`);
-        if (isNaN(fullDateTime.getTime())) {
-          console.warn('Invalid date:', eventDateStr, eventTimeStr);
-          return;
-        }
-
-        // Only include upcoming events
-        if (fullDateTime > now) {
-          events.push({
-            eventName,
-            fullDateTime,
-            eventTimeStr,
-            eventLocation,
-            size,
-            eventDescription
-          });
-        }
-      });
+        events.push({
+          ...eventData,
+          fullDateTime
+        });
+      }
 
       return events;
     }
@@ -93,33 +102,26 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then(html => {
         const events = processSheetData(html);
-        container.innerHTML = '';
-
-        if (events.length === 0) {
-          const noEventMsg = document.createElement('div');
-          noEventMsg.classList.add('no-events');
-          noEventMsg.textContent = 'No upcoming events at this time. Please check back later!';
-          container.appendChild(noEventMsg);
-        } else {
-          // Sort: big events first, then by date (ascending)
-          events.sort((a, b) => {
-            if (a.size !== b.size) {
-              return a.size === 'big' ? -1 : 1;
-            }
-            return a.fullDateTime - b.fullDateTime;
-          });
-
-          events.forEach(event => {
-            container.appendChild(createEventElement(event));
-          });
-        }
+        container.innerHTML = events.length ? 
+          events.map(createEventElement).join('') :
+          `<div class="no-events">No upcoming events at this time. Please check back later!</div>`;
       })
       .catch(error => {
-        console.error('Error fetching or parsing the sheet:', error);
-        container.innerHTML = '<div class="error-message">Unable to load events at this time. Please try again later.</div>';
+        console.error('Error:', error);
+        container.innerHTML = `
+          <div class="error-message">
+            <p>Unable to load events at this time.</p>
+            <p>Please try again later.</p>
+          </div>
+        `;
       });
   }
 
-  // Initialize
-  loadIndexEvents();
+  // Initialize with error handling
+  try {
+    loadIndexEvents();
+  } catch (error) {
+    console.error('Initialization error:', error);
+    container.innerHTML = '<div class="error-message">Failed to initialize event loader</div>';
+  }
 });

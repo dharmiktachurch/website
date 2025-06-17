@@ -97,26 +97,56 @@ document.addEventListener("DOMContentLoaded", function () {
       const events = [];
       const now = new Date();
 
-      rows.forEach((row, index) => {
-        if (index < 2) return; // skip header rows
-
+      // Start from index 1 to skip header row
+      for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
         const cells = row.querySelectorAll('td');
-        if (cells.length < (isPast ? 7 : 6) || !cells[0].textContent.trim()) return;
-
-        const eventName = cells[0].textContent.trim();
-        const eventDateStr = cells[1].textContent.trim();
-        const eventTimeStr = cells[2].textContent.trim();
-        const eventLocation = cells[3].textContent.trim();
-        const size = cells[4].textContent.trim().toLowerCase();
-        const eventDescription = cells[5].textContent.trim();
-        const imageUrl = isPast ? cells[6]?.textContent.trim() : null;
-
-        const fullDateTime = new Date(`${eventDateStr} ${eventTimeStr}`);
-        if (isNaN(fullDateTime.getTime())) {
-          console.warn('Invalid date:', eventDateStr, eventTimeStr);
-          return;
+        
+        if (cells.length < (isPast ? 7 : 6)) {
+            continue;
         }
 
+        const eventName = cells[0]?.textContent?.trim();
+        const eventDateStr = cells[1]?.textContent?.trim();
+        const eventTimeStr = cells[2]?.textContent?.trim();
+        const eventLocation = cells[3]?.textContent?.trim();
+        const size = cells[4]?.textContent?.trim().toLowerCase();
+        const eventDescription = cells[5]?.textContent?.trim();
+        const imageUrl = isPast ? cells[6]?.textContent?.trim() : null;
+
+        // Skip if essential fields are missing
+        if (!eventName || !eventDateStr || !eventTimeStr) continue;
+
+        // Parse the date - handle both "MM/DD/YYYY" and "Date(MM/DD/YYYY)" formats
+        let cleanDateStr = eventDateStr.replace(/^Date\(/, '').replace(/\)$/, '');
+        let [month, day, year] = cleanDateStr.split('/').map(num => parseInt(num, 10));
+
+        // Parse the time - handle both "HH:MM" and "HH:MM AM/PM" formats
+        let timeParts = eventTimeStr.match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?/i);
+        if (!timeParts) continue;
+
+        let hours = parseInt(timeParts[1], 10);
+        let minutes = parseInt(timeParts[2], 10);
+        
+        // Adjust for PM time
+        if (timeParts[3] && timeParts[3].toUpperCase() === 'PM' && hours < 12) {
+          hours += 12;
+        }
+        // Adjust for 12 AM
+        if (timeParts[3] && timeParts[3].toUpperCase() === 'AM' && hours === 12) {
+          hours = 0;
+        }
+
+        // Create the date object
+        const fullDateTime = new Date(year, month - 1, day, hours, minutes);
+        
+        // Validate the date
+        if (isNaN(fullDateTime.getTime())) {
+          console.warn('Invalid date:', eventDateStr, eventTimeStr);
+          continue;
+        }
+
+        // Determine event status
         let status = '';
         let statusClass = '';
 
@@ -131,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
             status = 'Today';
             statusClass = 'today';
           } else {
-            return;
+            continue; // Skip past events in upcoming view
           }
         }
 
@@ -146,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
           status,
           statusClass
         });
-      });
+      }
 
       return events;
     }
