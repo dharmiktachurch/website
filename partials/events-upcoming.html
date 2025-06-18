@@ -1,17 +1,186 @@
-<section class="hero hero-upcoming-events">
-  <div class="hero-content">
-    <h1>Upcoming Events</h1>
-    <p>Stay updated with our community events and join us for inspiring and meaningful gatherings.</p>
-    <div class="pattern-waves"></div>
+<!-- Update your hero section with this code -->
+<section class="hero-events">
+  <div class="hero-events-container">
+    <div class="hero-content">
+      <h1 class="hero-title">Upcoming Events</h1>
+      <p class="hero-subtitle">Discover and join our inspiring community gatherings that spark creativity and connection</p>
+      <div class="hero-cta">
+        <a href="#events" class="cta-button" id="view-events-btn">View All Events</a>
+      </div>
+    </div>
+    
+    <!-- Add this calendar container in the hero -->
+    <div class="hero-calendar">
+      <div class="calendar-header">
+        <div class="calendar-nav">
+          <button id="hero-prev-month" class="calendar-nav-button">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <h3 id="hero-current-month-year">June 2023</h3>
+          <button id="hero-next-month" class="calendar-nav-button">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+      <div class="calendar-weekdays">
+        <div>S</div>
+        <div>M</div>
+        <div>T</div>
+        <div>W</div>
+        <div>T</div>
+        <div>F</div>
+        <div>S</div>
+      </div>
+      <div id="hero-calendar-days" class="hero-calendar-days"></div>
+    </div>
+  </div>
+  <div class="hero-wave-divider">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="#fff"></path>
+      <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="#fff"></path>
+      <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="#fff"></path>
+    </svg>
   </div>
 </section>
 
-<section class="events">
-    <div class="container">
-        <div id="event-container" class="event-container">
-        <div class="loading-spinner"></div>
-        </div>
+<!-- Events Section -->
+<section class="events" id="events">
+  <div class="container">
+    <div id="event-container" class="event-container">
+      <div class="loading-spinner"></div>
     </div>
+  </div>
 </section>
 
 <link rel="stylesheet" href="../style/events-upcoming.css">
+
+<script>
+  // Update your JavaScript with this calendar functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Calendar functionality for hero section
+  let currentDate = new Date();
+  let currentMonth = currentDate.getMonth();
+  let currentYear = currentDate.getFullYear();
+  
+  const monthNames = ["January", "February", "March", "April", "May", "June", 
+                     "July", "August", "September", "October", "November", "December"];
+  
+  const heroCalendarDays = document.getElementById('hero-calendar-days');
+  const heroCurrentMonthYear = document.getElementById('hero-current-month-year');
+  const heroPrevMonthBtn = document.getElementById('hero-prev-month');
+  const heroNextMonthBtn = document.getElementById('hero-next-month');
+  
+  // Sample events data - in a real app, this would come from your API
+  const events = [
+    {
+      id: 1,
+      title: "Tech Conference",
+      date: new Date(currentYear, currentMonth, 15),
+      description: "Annual technology conference with industry leaders"
+    },
+    {
+      id: 2,
+      title: "Workshop: Web Design",
+      date: new Date(currentYear, currentMonth, 20),
+      description: "Hands-on workshop for modern web design techniques"
+    },
+    {
+      id: 3,
+      title: "Networking Mixer",
+      date: new Date(currentYear, currentMonth, 5),
+      description: "Casual networking event for professionals"
+    }
+  ];
+  
+  // Initialize hero calendar
+  function renderHeroCalendar() {
+    // Update month/year display
+    heroCurrentMonthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+    
+    // Clear previous calendar days
+    heroCalendarDays.innerHTML = '';
+    
+    // Get first day of month and total days in month
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    
+    // Get days from previous month
+    const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+    
+    // Create days from previous month
+    for (let i = firstDay - 1; i >= 0; i--) {
+      const dayElement = document.createElement('div');
+      dayElement.className = 'hero-calendar-day empty';
+      dayElement.textContent = daysInPrevMonth - i;
+      heroCalendarDays.appendChild(dayElement);
+    }
+    
+    // Create days for current month
+    const today = new Date();
+    for (let i = 1; i <= daysInMonth; i++) {
+      const dayElement = document.createElement('div');
+      dayElement.className = 'hero-calendar-day';
+      dayElement.textContent = i;
+      
+      // Highlight today
+      if (i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+        dayElement.classList.add('today');
+      }
+      
+      // Mark days with events
+      const hasEvent = events.some(event => {
+        return event.date.getDate() === i && 
+               event.date.getMonth() === currentMonth && 
+               event.date.getFullYear() === currentYear;
+      });
+      
+      if (hasEvent) {
+        dayElement.classList.add('has-event');
+        
+        // Add click handler to scroll to events section
+        dayElement.addEventListener('click', () => {
+          document.getElementById('events').scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      }
+      
+      heroCalendarDays.appendChild(dayElement);
+    }
+    
+    // Calculate total cells (should be 42 to fill 6 weeks)
+    const totalCells = firstDay + daysInMonth;
+    const remainingCells = 42 - totalCells;
+    
+    // Create days for next month
+    for (let i = 1; i <= remainingCells; i++) {
+      const dayElement = document.createElement('div');
+      dayElement.className = 'hero-calendar-day empty';
+      dayElement.textContent = i;
+      heroCalendarDays.appendChild(dayElement);
+    }
+  }
+  
+  // Navigation handlers for hero calendar
+  heroPrevMonthBtn.addEventListener('click', () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    renderHeroCalendar();
+  });
+  
+  heroNextMonthBtn.addEventListener('click', () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    renderHeroCalendar();
+  });
+  
+  // Initial render
+  renderHeroCalendar();
+});
+</script>

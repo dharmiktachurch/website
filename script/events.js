@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Calendar variables
+  let currentDate = new Date();
+  let currentMonth = currentDate.getMonth();
+  let currentYear = currentDate.getFullYear();
+  const monthNames = ["January", "February", "March", "April", "May", "June", 
+                     "July", "August", "September", "October", "November", "December"];
+
   // Navigation functionality
   const navLinks = document.querySelectorAll(".events-nav nav a");
   const contentDiv = document.getElementById("events-content");
@@ -6,6 +13,121 @@ document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
   const pageParam = urlParams.get("page") || "events-upcoming";
   const sectionParam = urlParams.get("section");
+
+  // Function to initialize hero calendar
+  function initHeroCalendar() {
+    const heroCalendarDays = document.getElementById('hero-calendar-days');
+    const heroCurrentMonthYear = document.getElementById('hero-current-month-year');
+    const heroPrevMonthBtn = document.getElementById('hero-prev-month');
+    const heroNextMonthBtn = document.getElementById('hero-next-month');
+
+    if (!heroCalendarDays || !heroCurrentMonthYear) return;
+
+    // Initialize hero calendar
+    function renderHeroCalendar() {
+      // Update month/year display
+      heroCurrentMonthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+      
+      // Clear previous calendar days
+      heroCalendarDays.innerHTML = '';
+      
+      // Get first day of month and total days in month
+      const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      
+      // Get days from previous month
+      const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+      
+      // Create days from previous month
+      for (let i = firstDay - 1; i >= 0; i--) {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'hero-calendar-day empty';
+        dayElement.textContent = daysInPrevMonth - i;
+        heroCalendarDays.appendChild(dayElement);
+      }
+      
+      // Create days for current month
+      const today = new Date();
+      for (let i = 1; i <= daysInMonth; i++) {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'hero-calendar-day';
+        dayElement.textContent = i;
+        
+        // Highlight today
+        if (i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+          dayElement.classList.add('today');
+        }
+        
+        heroCalendarDays.appendChild(dayElement);
+      }
+      
+      // Calculate total cells (should be 42 to fill 6 weeks)
+      const totalCells = firstDay + daysInMonth;
+      const remainingCells = 42 - totalCells;
+      
+      // Create days for next month
+      for (let i = 1; i <= remainingCells; i++) {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'hero-calendar-day empty';
+        dayElement.textContent = i;
+        heroCalendarDays.appendChild(dayElement);
+      }
+    }
+    
+    // Navigation handlers for hero calendar
+    heroPrevMonthBtn.addEventListener('click', () => {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      renderHeroCalendar();
+      updateCalendarWithEvents();
+    });
+    
+    heroNextMonthBtn.addEventListener('click', () => {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderHeroCalendar();
+      updateCalendarWithEvents();
+    });
+    
+    // Initial render
+    renderHeroCalendar();
+  }
+
+  // Function to update calendar with events
+  function updateCalendarWithEvents(events = []) {
+    const heroCalendarDays = document.getElementById('hero-calendar-days');
+    if (!heroCalendarDays) return;
+
+    const eventDays = new Set();
+    events.forEach(event => {
+      if (event.fullDateTime.getMonth() === currentMonth && 
+          event.fullDateTime.getFullYear() === currentYear) {
+        eventDays.add(event.fullDateTime.getDate());
+      }
+    });
+
+    // Update calendar days
+    const days = document.querySelectorAll('.hero-calendar-day:not(.empty)');
+    days.forEach(day => {
+      const dayNum = parseInt(day.textContent);
+      if (eventDays.has(dayNum)) {
+        day.classList.add('has-event');
+        day.addEventListener('click', () => {
+          document.getElementById('events').scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      } else {
+        day.classList.remove('has-event');
+      }
+    });
+  }
 
   // Function to load events
   function loadEvents(showPast = false) {
@@ -196,6 +318,8 @@ document.addEventListener("DOMContentLoaded", function () {
           container.classList.add('past-events');
         } else {
           container.classList.remove('past-events');
+          // Update calendar with events
+          updateCalendarWithEvents(events);
         }
 
         if (events.length === 0) {
@@ -235,6 +359,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (page === 'events-upcoming' || page === 'events-past') {
           loadEvents(page === 'events-past');
+          
+          // Initialize calendar only for upcoming events
+          if (page === 'events-upcoming') {
+            initHeroCalendar();
+          }
         }
 
         if (callback) callback();
