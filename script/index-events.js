@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
           eventTimeStr: cells[2].textContent.trim(),
           eventLocation: cells[3].textContent.trim(),
           size: cells[4].textContent.trim().toLowerCase(),
-          eventDescription: cells[5].textContent.trim()
+          eventDescription: cells[6].textContent.trim()
         };
 
         const fullDateTime = parseEventDateTime(eventData.eventDateStr, eventData.eventTimeStr);
