@@ -17,23 +17,133 @@
 
 
   <div class="notices-header">
-    <h1>Church Notices</h1>
-    <p>Stay updated with the latest announcements and important information</p>
+    <h1>Church Notices & Schedules</h1>
+    <p>Stay updated with the latest announcements and worship schedules</p>
+    <i class="fas fa-cross decorative cross"></i>
+    <i class="fas fa-dove decorative dove"></i>
   </div>
 
-  <div class="notices-container">
-    <div class="notices-filter">
-      <button class="filter-btn active" data-filter="all">All Notices</button>
-      <button class="filter-btn" data-filter="urgent">Urgent</button>
-      <button class="filter-btn" data-filter="general">General</button>
-      <button class="filter-btn" data-filter="event">Event Related</button>
+  <div class="main-container">
+    <!-- Tab Navigation -->
+    <div class="schedules-nav">
+      <nav>
+        <ul>
+          <li><a href="#" data-page="notices" class="active">
+            <i class="fas fa-bullhorn"></i>
+            <span>Announcements</span>
+          </a></li>
+          <li><a href="#" data-page="leaders-schedule">
+            <i class="fas fa-users"></i>
+            <span>Service Schedules</span>
+          </a></li>
+          <li><a href="#" data-page="house-fellowship">
+            <i class="fas fa-home"></i>
+            <span>House Fellowship</span>
+          </a></li>
+        </ul>
+      </nav>
     </div>
 
-    <div id="notices-content">
-      <!-- Notices will be loaded here -->
-      <div class="loading-spinner">
-        <div class="spinner-circle"></div>
-        <p>Loading notices...</p>
+    <!-- Notices Container (default visible) -->
+    <div id="notices-container" class="tab-content active">
+      <div class="notices-filter">
+        <button class="filter-btn active" data-filter="all">
+          <i class="fas fa-list"></i>
+          <span>All Announcements</span>
+        </button>
+        <button class="filter-btn" data-filter="urgent">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>Urgent</span>
+        </button>
+        <button class="filter-btn" data-filter="general">
+          <i class="fas fa-info-circle"></i>
+          <span>General</span>
+        </button>
+        <button class="filter-btn" data-filter="event">
+          <i class="fas fa-calendar-star"></i>
+          <span>Events</span>
+        </button>
+      </div>
+
+      <div id="notices-content">
+        <div class="loading-spinner">
+          <div class="spinner-circle"></div>
+          <p>Loading announcements...</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="leaders-schedule-container" class="tab-content">
+      <div class="today-highlight">
+        <div class="highlight-card">
+          <div id="this-week-roles">
+            <div class="loading-spinner">
+              <div class="spinner-circle"></div>
+              <p>Loading your roles...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="schedule-table-container">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Date<br><small>(मिति)</small></th>
+              <th>Service Lead<br><small>(सेवा सञ्चालन)</small></th>
+              <th>Worship Lead<br><small>(आराधना)</small></th>
+              <th>Preaching<br><small>(प्रचार)</small></th>
+              <th>The Altar Prayer<br><small>(बेदीको प्रार्थना)</small></th>
+            </tr>
+          </thead>
+          <tbody id="leaders-schedule-content">
+            <tr>
+              <td colspan="5">
+                <div class="loading-spinner">
+                  <div class="spinner-circle"></div>
+                  <p>Loading worship schedule...</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- House Fellowship Container (hidden by default) -->
+    <div id="house-fellowship-container" class="tab-content">
+      <div class="today-highlight">
+        <div class="highlight-card">
+          <div id="today-fellowships">
+            <div class="loading-spinner">
+              <div class="spinner-circle"></div>
+              <p>Loading today's fellowships...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="schedule-table-container">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Fellowship Day<br><small>(घरेलु संगतिको दिन)</small></th>
+              <th>Hosting Family<br><small>(घरेलु संगति आयोजना गर्ने परिवार)</small></th>
+              <th>Fellowship Leaders<br><small>(अगुवाहरू)</small></th>
+              <th>Fellowship Frequency<br><small>(महिनामा हुने पटक)</small></th>
+            </tr>
+          </thead>
+          <tbody id="house-fellowship-content">
+            <tr>
+              <td colspan="4">
+                <div class="loading-spinner">
+                  <div class="spinner-circle"></div>
+                  <p>Loading fellowship groups...</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
