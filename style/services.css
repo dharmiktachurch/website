@@ -20,22 +20,22 @@ body {
   --gray-light: #e0e0e0;
 }
 
+/* Hero Section - Responsive Improvements */
 .hero.services-hero {
   position: relative;
-  height: 100vh;
-  min-height: 700px;
-  max-height: 1200px;
+  height: auto;
+  min-height: 100vh;
+  max-height: none;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   color: var(--white);
   text-align: center;
-  padding: 2rem;
+  padding: 2rem 1rem;
   box-sizing: border-box;
 }
 
-/* Background */
 .hero-background {
   position: absolute;
   top: 0;
@@ -130,9 +130,9 @@ body {
 }
 
 .elegant-heading {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 300;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   margin: 0;
   text-transform: uppercase;
   color: var(--white);
@@ -144,8 +144,8 @@ body {
   bottom: -15px;
   left: 0;
   right: 0;
-  font-size: 0.8rem;
-  letter-spacing: 2px;
+  font-size: clamp(0.6rem, 2vw, 0.8rem);
+  letter-spacing: 1px;
   color: var(--white);
   text-transform: uppercase;
   font-weight: 300;
@@ -165,9 +165,13 @@ body {
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  margin: 0 auto 2rem;
+  width: 100%;
+  max-width: 800px;
 }
 
-/* Countdown Styles */
+/* Countdown Styles - Improved Responsiveness */
 .countdown-wrapper {
   position: relative;
   margin-bottom: 2rem;
@@ -177,15 +181,15 @@ body {
 
 .countdown-container {
   display: inline-block;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem;
   transition: all 0.3s ease;
   width: 100%;
   box-sizing: border-box;
 }
 
 .countdown-label {
-  font-size: 0.9rem;
-  letter-spacing: 2px;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  letter-spacing: 1px;
   margin-bottom: 1rem;
   color: var(--white);
   text-transform: uppercase;
@@ -197,7 +201,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
@@ -205,11 +209,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 70px;
+  min-width: 60px;
+  padding: 0.5rem;
 }
 
 .countdown-unit span:first-child {
-  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-size: clamp(2rem, 6vw, 3.5rem);
   font-weight: 200;
   line-height: 1;
   font-feature-settings: "tnum";
@@ -218,7 +223,7 @@ body {
 }
 
 .unit-label {
-  font-size: 0.7rem;
+  font-size: clamp(0.6rem, 2vw, 0.7rem);
   letter-spacing: 1px;
   text-transform: uppercase;
   margin-top: 0.3rem;
@@ -233,37 +238,30 @@ body {
   margin-top: -0.5rem;
 }
 
-/* Service Details */
-.service-details-card {
-  padding: 1.5rem 2rem; /* Match countdown padding */
-  margin: 0 auto 2rem; /* Center align */
-  width: 100%;
-  max-width: 800px; /* Match countdown max-width */
-  display: block;
-}
-
-/* Ensure the inner content is properly aligned */
+/* Service Details - Responsive Improvements */
 .hero-service-details {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
   flex-wrap: wrap;
   width: 100%;
 }
 
-
 .detail-item {
+  flex: 1 1 150px;
+  min-width: 150px;
   display: flex;
   align-items: center;
-  font-size: 1rem;
+  font-size: clamp(0.75rem, 3vw, 1rem);
   gap: 0.8rem;
   font-weight: 300;
   color: var(--white);
+  justify-content: center;
 }
 
 .icon-container {
-  width: 36px;
-  height: 36px;
+  width: clamp(28px, 5vw, 36px);
+  height: clamp(28px, 5vw, 36px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,7 +279,7 @@ body {
   stroke: var(--white);
 }
 
-/* CTA Section */
+/* CTA Section - Responsive Improvements */
 .cta-section {
   display: flex;
   flex-direction: column;
@@ -294,19 +292,19 @@ body {
 .cta-buttons {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
   width: 100%;
   max-width: 500px;
   flex-wrap: wrap;
 }
 
 .cta-button {
-  padding: 1rem 2rem;
+  padding: 0.8rem 1.5rem;
   font-weight: 400;
   letter-spacing: 1px;
   text-decoration: none;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
@@ -315,7 +313,7 @@ body {
   position: relative;
   overflow: hidden;
   border: none;
-  flex-grow: 1;
+  flex: 1 1 200px;
   justify-content: center;
 }
 
@@ -347,6 +345,8 @@ body {
   transition: transform 0.3s ease;
   position: relative;
   z-index: 2;
+  width: 16px;
+  height: 16px;
 }
 
 .cta-button.primary {
@@ -392,11 +392,298 @@ body {
   100% { transform: translateY(0); }
 }
 
-/* Responsive Adjustments */
+/* Services Section - Responsive Improvements */
+.modern-services {
+  padding: clamp(3rem, 5vw, 6rem) clamp(1rem, 3vw, 2rem);
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+}
+
+.section-intro {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto clamp(3rem, 5vw, 5rem);
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 5vw, 2.75rem);
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  position: relative;
+  display: inline-block;
+  color: #000000;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #888, #333);
+  border-radius: 2px;
+}
+
+.section-subtitle {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+  margin: clamp(1.5rem, 4vw, 2.5rem) auto;
+  max-width: 200px;
+}
+
+/* Services Grid */
+.services-container {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Service Card - Responsive Improvements */
+.service-card {
+  display: flex;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid rgba(0,0,0,0.08);
+  position: relative;
+  flex-direction: column;
+}
+
+@media (min-width: 992px) {
+  .service-card {
+    flex-direction: row;
+  }
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.service-visual {
+  position: relative;
+  overflow: hidden;
+  min-height: 250px;
+  flex: 0 0 auto;
+}
+
+@media (min-width: 992px) {
+  .service-visual {
+    flex: 0 0 42%;
+    min-height: 320px;
+  }
+}
+
+.service-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 1.2s ease;
+  will-change: transform;
+}
+
+.service-card:hover .service-image {
+  transform: scale(1.03);
+}
+
+.service-frequency {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0,0,0,0.95);
+  color: #FFF;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: clamp(0.75rem, 2vw, 0.85rem);
+  font-weight: 600;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+  backdrop-filter: blur(6px);
+  z-index: 2;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.service-info {
+  flex: 1;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+@media (min-width: 576px) {
+  .service-header {
+    flex-direction: row;
+  }
+}
+
+.service-header h3 {
+  font-size: clamp(1.4rem, 3vw, 1.6rem);
+  color: #000;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.service-schedule {
+  display: flex;
+  gap: 10px;
+  background: #f0f0f0;
+  padding: 8px 14px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+@media (min-width: 576px) {
+  .service-schedule {
+    align-self: auto;
+  }
+}
+
+.schedule-day, .schedule-time, .duration {
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  color: #333;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.service-description {
+  color: #555;
+  font-size: clamp(1rem, 2vw, 1.05rem);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.service-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.4s ease;
+  color: #555;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  line-height: 1.7;
+  will-change: max-height;
+}
+
+.service-details p {
+  margin-bottom: 1.25rem;
+}
+
+.highlight-box {
+  background-color: #f0f0f0;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-radius: 10px;
+  margin: clamp(1rem, 2vw, 1.5rem) 0;
+  border-left: 4px solid #888;
+}
+
+.highlight-title {
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 1rem !important;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+}
+
+.highlight-list {
+  padding-left: 22px;
+  margin: 0;
+}
+
+.highlight-list li {
+  margin-bottom: 0.7rem;
+  position: relative;
+  padding-left: 18px;
+  color: #555;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+.highlight-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 7px;
+  height: 7px;
+  background-color: #333;
+  border-radius: 50%;
+}
+
+.expand-button {
+  align-self: flex-start;
+  background: transparent;
+  color: #333;
+  font-weight: 600;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 10px 18px;
+  border-radius: 30px;
+  margin-top: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.expand-button:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.expand-icon {
+  transition: transform 0.4s ease;
+  will-change: transform;
+  stroke: #333;
+  width: 18px;
+  height: 18px;
+}
+
+/* Active State */
+.service-card.active {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  border-color: rgba(0,0,0,0.1);
+}
+
+.service-card.active .service-details {
+  max-height: 800px;
+  margin-top: 1.5rem;
+}
+
+.service-card.active .expand-icon {
+  transform: rotate(180deg);
+}
+
+.service-card.active .expand-button {
+  color: #000;
+}
+
+/* Mobile-Specific Adjustments */
 @media (max-width: 768px) {
   .hero.services-hero {
-    min-height: 600px;
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
   }
   
   .ornate-frame {
@@ -407,44 +694,8 @@ body {
     width: 15px;
   }
   
-  .elegant-heading {
-    letter-spacing: 2px;
-  }
-  
   .heading-subtext {
     bottom: -12px;
-    font-size: 0.7rem;
-  }
-  
-  .countdown-timer {
-    gap: 0.5rem;
-  }
-  
-  .countdown-unit {
-    min-width: 60px;
-  }
-  
-  .service-details {
-    gap: 1rem;
-  }
-  
-  .detail-item {
-    font-size: 0.9rem;
-  }
-  
-  .icon-container {
-    width: 32px;
-    height: 32px;
-    padding: 5px;
-  }
-  
-  .cta-buttons {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .cta-button {
-    width: 100%;
   }
   
   .corner-decoration {
@@ -461,368 +712,7 @@ body {
     padding: 0.8rem 1rem;
   }
   
-  .countdown-unit {
-    min-width: 50px;
+  .service-visual {
+    min-height: 220px;
   }
-  
-  .countdown-unit span:first-child {
-    font-size: 2rem;
-  }
-  
-  .service-details {
-    flex-direction: column;
-  }
-}
-
-/* Services Section - Black & White Version with Consistent Image Sizes */
-.modern-services {
-    padding: 6rem 2rem;
-    position: relative;
-    max-width: 1400px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
-}
-
-.section-intro {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 5rem;
-}
-
-.section-title {
-    font-size: 2.75rem;
-    font-weight: 700;
-    margin-bottom: 1.25rem;
-    position: relative;
-    display: inline-block;
-    color: #000000;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 4px;
-    background: linear-gradient(90deg, #888, #333);
-    border-radius: 2px;
-}
-
-.section-subtitle {
-    font-size: 1.15rem;
-    color: #555;
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-}
-
-.divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
-    margin: 2.5rem auto;
-    max-width: 200px;
-}
-
-/* Services Grid */
-.services-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Service Card */
-.service-card {
-    display: flex;
-    background: #ffffff;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    border: 1px solid rgba(0,0,0,0.08);
-    position: relative;
-}
-
-.service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
-
-.service-visual {
-    flex: 0 0 42%;
-    position: relative;
-    overflow: hidden;
-    min-height: 320px; /* Consistent height for all images */
-}
-
-.service-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transition: transform 1.2s ease;
-    will-change: transform;
-}
-
-.service-card:hover .service-image {
-    transform: scale(1.03);
-}
-
-.service-frequency {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.95);
-    color: #FFF;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
-    backdrop-filter: blur(6px);
-    z-index: 2;
-    border: 1px solid rgba(0,0,0,0.05);
-}
-
-.service-info {
-    flex: 1;
-    padding: 2.5rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.service-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1.25rem;
-    gap: 1rem;
-}
-
-.service-header h3 {
-    font-size: 1.6rem;
-    color: #000;
-    margin: 0;
-    line-height: 1.3;
-}
-
-.service-schedule {
-    display: flex;
-    gap: 10px;
-    background: #f0f0f0;
-    padding: 8px 14px;
-    border-radius: 8px;
-    flex-shrink: 0;
-}
-
-.schedule-day, .schedule-time, .duration {
-    font-size: 0.9rem;
-    color: #333;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-}
-
-.service-description {
-    color: #555;
-    font-size: 1.05rem;
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-    flex-grow: 1;
-}
-
-.service-details {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.4s ease;
-    color: #555;
-    font-size: 1rem;
-    line-height: 1.7;
-    will-change: max-height;
-}
-
-.service-details p {
-    margin-bottom: 1.25rem;
-}
-
-.highlight-box {
-    background-color: #f0f0f0;
-    padding: 1.5rem;
-    border-radius: 10px;
-    margin: 1.5rem 0;
-    border-left: 4px solid #888;
-}
-
-.highlight-title {
-    font-weight: 600;
-    color: #000;
-    margin-bottom: 1rem !important;
-    font-size: 1.1rem;
-}
-
-.highlight-list {
-    padding-left: 22px;
-    margin: 0;
-}
-
-.highlight-list li {
-    margin-bottom: 0.7rem;
-    position: relative;
-    padding-left: 18px;
-    color: #555;
-}
-
-.highlight-list li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.7em;
-    width: 7px;
-    height: 7px;
-    background-color: #333;
-    border-radius: 50%;
-}
-
-.expand-button {
-    align-self: flex-start;
-    background: transparent;
-    color: #333;
-    font-weight: 600;
-    font-size: 1rem;
-    padding: 10px 18px;
-    border-radius: 30px;
-    margin-top: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.expand-button:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-
-.expand-icon {
-    transition: transform 0.4s ease;
-    will-change: transform;
-    stroke: #333;
-}
-
-/* Active State */
-.service-card.active {
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-    border-color: rgba(0,0,0,0.1);
-}
-
-.service-card.active .service-details {
-    max-height: 800px;
-    margin-top: 1.5rem;
-}
-
-.service-card.active .expand-icon {
-    transform: rotate(180deg);
-}
-
-.service-card.active .expand-button {
-    color: #000;
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .modern-services {
-        padding: 5rem 2rem;
-    }
-}
-
-@media (max-width: 992px) {
-    .service-card {
-        flex-direction: column;
-    }
-    
-    .service-visual {
-        flex: 0 0 320px; /* Same height in column layout */
-        width: 100%;
-    }
-    
-    .service-info {
-        padding: 2rem;
-    }
-    
-    .service-image {
-        object-position: center;
-    }
-}
-
-@media (max-width: 768px) {
-    .modern-services {
-        padding: 4rem 1.5rem;
-    }
-    
-    .section-title {
-        font-size: 2.25rem;
-    }
-    
-    .section-subtitle {
-        font-size: 1.05rem;
-    }
-    
-    .service-header {
-        flex-direction: column;
-        gap: 12px;
-    }
-    
-    .service-schedule {
-        align-self: flex-start;
-    }
-    
-    .service-header h3 {
-        font-size: 1.5rem;
-    }
-    
-    .service-visual {
-        min-height: 280px;
-    }
-}
-
-@media (max-width: 576px) {
-    .section-title {
-        font-size: 2rem;
-    }
-    
-    .service-visual {
-        min-height: 250px;
-    }
-    
-    .service-info {
-        padding: 1.75rem;
-    }
-    
-    .service-frequency {
-        top: 15px;
-        right: 15px;
-        padding: 5px 12px;
-        font-size: 0.8rem;
-    }
-    
-    .highlight-box {
-        padding: 1.25rem;
-    }
-}
-
-@media (max-width: 400px) {
-    .section-title {
-        font-size: 1.8rem;
-    }
-    
-    .service-visual {
-        min-height: 220px;
-    }
-    
-    .service-info {
-        padding: 1.5rem;
-    }
 }

@@ -6,12 +6,20 @@ document.addEventListener("DOMContentLoaded", function() {
   const monthNames = ["January", "February", "March", "April", "May", "June", 
                      "July", "August", "September", "October", "November", "December"];
   
-  // Event caching
-  let cachedEvents = [];
-
-  // Navigation functionality
+  // Event caching and pagination
+  let cachedUpcomingEvents = [];
+  let cachedPastEvents = [];
+  let displayedEvents = [];
+  const eventsPerLoad = 6;
+  let currentFilter = 'all';
+  let currentView = 'grid';
+  
+  // DOM elements
   const navLinks = document.querySelectorAll(".events-nav nav a");
   const contentDiv = document.getElementById("events-content");
+  const eventModal = document.getElementById('event-modal');
+  const calendarModal = document.getElementById('calendar-modal');
+  const modalCloseButtons = document.querySelectorAll('.modal-close');
 
   // Time calculation functions
   function getTimeRemaining(endtime) {
@@ -43,7 +51,9 @@ document.addEventListener("DOMContentLoaded", function() {
       const year = new Date().getFullYear();
       
       // Find month index from month name
-      const monthIndex = new Date(`${month} 1, ${year}`).getMonth();
+      const monthIndex = monthNames.findIndex(m => m.toLowerCase() === month.toLowerCase());
+      if (monthIndex === -1) return;
+      
       const eventDate = new Date(year, monthIndex, day);
       
       // Get time from time string
@@ -88,8 +98,9 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // Function to show event tooltip
   function showEventTooltip(e) {
+    e.stopPropagation();
+    
     // Remove any existing tooltips
     document.querySelectorAll('.calendar-tooltip').forEach(tooltip => tooltip.remove());
     
@@ -116,32 +127,74 @@ document.addEventListener("DOMContentLoaded", function() {
       tooltip.appendChild(eventElement);
     });
     
-    // Position tooltip
-    const rect = dayElement.getBoundingClientRect();
-    tooltip.style.position = 'absolute';
-    tooltip.style.left = `${rect.left + window.scrollX}px`;
-    tooltip.style.top = `${rect.bottom + window.scrollY + 5}px`;
-    
     // Add close button
     const closeButton = document.createElement('button');
     closeButton.className = 'close-tooltip';
     closeButton.innerHTML = '&times;';
-    closeButton.addEventListener('click', () => tooltip.remove());
+    closeButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      tooltip.remove();
+    });
     tooltip.appendChild(closeButton);
     
     // Add to document
     document.body.appendChild(tooltip);
     
-    // Close tooltip when clicking outside
-    setTimeout(() => {
-      const clickHandler = (e) => {
-        if (!tooltip.contains(e.target) && e.target !== dayElement) {
-          tooltip.remove();
-          document.removeEventListener('click', clickHandler);
-        }
-      };
-      document.addEventListener('click', clickHandler);
-    }, 0);
+    // Position tooltip
+    const rect = dayElement.getBoundingClientRect();
+    const tooltipWidth = tooltip.offsetWidth;
+    const tooltipHeight = tooltip.offsetHeight;
+    
+    // Default position (below the day)
+    let topPosition = rect.bottom + window.scrollY + 5;
+    let leftPosition = rect.left + window.scrollX;
+    let arrowPosition = 'bottom';
+    
+    // Check if tooltip would go off screen bottom
+    if (rect.bottom + tooltipHeight > window.innerHeight) {
+      // Position above the day instead
+      topPosition = rect.top + window.scrollY - tooltipHeight - 5;
+      arrowPosition = 'top';
+    }
+    
+    // Check if tooltip would go off screen right
+    if (rect.left + tooltipWidth > window.innerWidth) {
+      leftPosition = window.innerWidth - tooltipWidth - 10;
+    }
+    
+    // Set tooltip position
+    tooltip.style.position = 'absolute';
+    tooltip.style.left = `${leftPosition}px`;
+    tooltip.style.top = `${topPosition}px`;
+    
+    // Add arrow class based on position
+    tooltip.classList.add(`arrow-${arrowPosition}`);
+    
+    // For mobile devices
+    if ('ontouchstart' in window) {
+      dayElement.classList.add('active');
+      tooltip.classList.add('mobile-tooltip');
+      tooltip.classList.remove(`arrow-${arrowPosition}`);
+      tooltip.style.position = 'fixed';
+      tooltip.style.left = '50%';
+      tooltip.style.top = 'auto';
+      tooltip.style.bottom = '20px';
+      tooltip.style.transform = 'translateX(-50%)';
+      tooltip.style.width = 'calc(100% - 40px)';
+      tooltip.style.maxWidth = '350px';
+    }
+    
+    // Close tooltip when clicking outside or scrolling
+    const closeTooltipHandler = (e) => {
+      if (!tooltip.contains(e.target)) {
+        tooltip.remove();
+        document.removeEventListener('click', closeTooltipHandler);
+        window.removeEventListener('scroll', closeTooltipHandler);
+      }
+    };
+    
+    document.addEventListener('click', closeTooltipHandler);
+    window.addEventListener('scroll', closeTooltipHandler);
   }
 
   // Update calendar with events
@@ -194,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // Initialize hero calendar
+  // Initialize hero calendar - FIXED VERSION
   function initHeroCalendar() {
     const heroCalendarDays = document.getElementById('hero-calendar-days');
     const heroCurrentMonthYear = document.getElementById('hero-current-month-year');
@@ -207,11 +260,14 @@ document.addEventListener("DOMContentLoaded", function() {
       heroCurrentMonthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
       heroCalendarDays.innerHTML = '';
       
+      // Get first day of month (0-6, Sun-Sat)
       const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+      // Get number of days in month
       const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      // Get number of days in previous month
       const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
       
-      // Previous month days
+      // Previous month days (empty cells)
       for (let i = firstDay - 1; i >= 0; i--) {
         const dayElement = document.createElement('div');
         dayElement.className = 'hero-calendar-day empty';
@@ -226,6 +282,7 @@ document.addEventListener("DOMContentLoaded", function() {
         dayElement.className = 'hero-calendar-day';
         dayElement.textContent = i;
         
+        // Highlight today
         if (i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
           dayElement.classList.add('today');
         }
@@ -233,9 +290,9 @@ document.addEventListener("DOMContentLoaded", function() {
         heroCalendarDays.appendChild(dayElement);
       }
       
-      // Next month days
+      // Next month days (empty cells to complete grid)
       const totalCells = firstDay + daysInMonth;
-      const remainingCells = 42 - totalCells;
+      const remainingCells = 42 - totalCells; // 6 rows x 7 days
       
       for (let i = 1; i <= remainingCells; i++) {
         const dayElement = document.createElement('div');
@@ -243,28 +300,41 @@ document.addEventListener("DOMContentLoaded", function() {
         dayElement.textContent = i;
         heroCalendarDays.appendChild(dayElement);
       }
+      
+      console.log(`Rendered calendar for ${monthNames[currentMonth]} ${currentYear}`);
     }
     
-    heroPrevMonthBtn.addEventListener('click', () => {
-      currentMonth--;
-      if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-      }
+    // Remove any existing event listeners to prevent duplicates
+    const newNextBtn = heroNextMonthBtn.cloneNode(true);
+    const newPrevBtn = heroPrevMonthBtn.cloneNode(true);
+    heroNextMonthBtn.parentNode.replaceChild(newNextBtn, heroNextMonthBtn);
+    heroPrevMonthBtn.parentNode.replaceChild(newPrevBtn, heroPrevMonthBtn);
+    
+    // Get fresh references to the buttons
+    const freshNextBtn = document.getElementById('hero-next-month');
+    const freshPrevBtn = document.getElementById('hero-prev-month');
+    
+    // Next month button - FIXED VERSION
+    freshNextBtn.addEventListener('click', function() {
+      console.log(`Current month before: ${currentMonth} (${monthNames[currentMonth]})`);
+      currentMonth = (currentMonth + 1) % 12;
+      if (currentMonth === 0) currentYear++;
+      console.log(`Current month after: ${currentMonth} (${monthNames[currentMonth]})`);
       renderHeroCalendar();
-      updateCalendarWithEvents(cachedEvents);
+      updateCalendarWithEvents(cachedUpcomingEvents);
     });
     
-    heroNextMonthBtn.addEventListener('click', () => {
-      currentMonth++;
-      if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-      }
+    // Previous month button - FIXED VERSION
+    freshPrevBtn.addEventListener('click', function() {
+      console.log(`Current month before: ${currentMonth} (${monthNames[currentMonth]})`);
+      currentMonth = (currentMonth - 1 + 12) % 12;
+      if (currentMonth === 11) currentYear--;
+      console.log(`Current month after: ${currentMonth} (${monthNames[currentMonth]})`);
       renderHeroCalendar();
-      updateCalendarWithEvents(cachedEvents);
+      updateCalendarWithEvents(cachedUpcomingEvents);
     });
     
+    // Initial render
     renderHeroCalendar();
   }
 
@@ -274,35 +344,352 @@ document.addEventListener("DOMContentLoaded", function() {
     
     filterButtons.forEach(btn => {
       btn.addEventListener('click', function() {
-        // Update active state
         filterButtons.forEach(b => b.classList.remove('active'));
         this.classList.add('active');
-        
-        // Get the filter value
-        const filterValue = this.dataset.filter;
-        
-        // Filter events
-        filterEvents(filterValue);
+        currentFilter = this.dataset.filter;
+        filterEvents(currentFilter);
       });
     });
   }
 
   // Filter events by category
   function filterEvents(filterValue) {
-    const eventCards = document.querySelectorAll('#event-container .event');
+    const eventContainer = document.getElementById('event-container');
+    if (!eventContainer) return;
     
-    eventCards.forEach(card => {
-      if (filterValue === 'all') {
-        card.style.display = ''; // Show all
+    displayedEvents = [];
+    
+    if (filterValue === 'all') {
+      displayedEvents = eventContainer.classList.contains('past-events') 
+        ? [...cachedPastEvents] 
+        : [...cachedUpcomingEvents];
+    } else {
+      const sourceEvents = eventContainer.classList.contains('past-events') 
+        ? cachedPastEvents 
+        : cachedUpcomingEvents;
+      
+      displayedEvents = sourceEvents.filter(event => 
+        event.category && event.category.toLowerCase() === filterValue.toLowerCase()
+      );
+    }
+    
+    eventContainer.innerHTML = '';
+    displayEventsBatch();
+  }
+
+  // Display a batch of events
+  function displayEventsBatch() {
+    const eventContainer = document.getElementById('event-container');
+    if (!eventContainer) return;
+    
+    const startIndex = eventContainer.children.length;
+    const endIndex = Math.min(startIndex + eventsPerLoad, displayedEvents.length);
+    
+    for (let i = startIndex; i < endIndex; i++) {
+      const event = displayedEvents[i];
+      eventContainer.appendChild(createEventElement(event, eventContainer.classList.contains('past-events')));
+    }
+    
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (loadMoreBtn) {
+      loadMoreBtn.style.display = endIndex < displayedEvents.length ? 'flex' : 'none';
+    }
+    
+    if (!eventContainer.classList.contains('past-events')) {
+      updateTimeRemaining();
+    }
+  }
+
+  // Create event element
+  function createEventElement(event, isPast = false) {
+      const { eventName, fullDateTime, eventTimeStr, eventLocation, size, eventDescription, imageUrl, category } = event;
+
+      const eventElement = document.createElement('div');
+      eventElement.classList.add('event', isPast ? 'past-event' : 'upcoming-event');
+      const isBigEvent = size === 'big';
+      eventElement.classList.add(isBigEvent ? 'big-event' : 'small-event');
+      if (category) eventElement.dataset.category = category.toLowerCase();
+
+      const displayMonth = fullDateTime.toLocaleString('default', { month: 'short' });
+      const displayDay = fullDateTime.getDate();
+      const displayYear = fullDateTime.getFullYear();
+      const timeString = fullDateTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+      
+      if (isPast) {
+          eventElement.innerHTML = `
+              <div class="event-date">
+                  <span class="month">${displayMonth}</span>
+                  <span class="day">${displayDay}</span>
+                  <span class="year">${displayYear}</span>
+              </div>
+              <div class="event-content">
+                  <div class="event-image-container">
+                      ${imageUrl ? `<img src="${imageUrl}" alt="${eventName}" class="event-image">` : '<div class="event-image-placeholder">No Image</div>'}
+                  </div>
+                  <h3 class="event-title">${eventName}</h3>
+                  <div class="event-details">
+                      <div class="event-detail">
+                          <i class="far fa-clock"></i>
+                          <span>${timeString}</span>
+                      </div>
+                      <div class="event-detail">
+                          <i class="fas fa-map-marker-alt"></i>
+                          <span>${eventLocation}</span>
+                      </div>
+                  </div>
+                  <p class="event-description">${eventDescription}</p>
+              </div>
+          `;
       } else {
-        const cardCategory = card.dataset.category || '';
-        if (cardCategory.toLowerCase() === filterValue.toLowerCase()) {
-          card.style.display = ''; // Show matching
-        } else {
-          card.style.display = 'none'; // Hide others
-        }
+          const timeRemaining = getTimeRemaining(fullDateTime);
+          let timeLeftString = '';
+          let timeLeftClass = '';
+          
+          if (timeRemaining.total <= 0) {
+              timeLeftString = 'Happening Now';
+              timeLeftClass = 'urgent';
+          } else if (timeRemaining.days > 0) {
+              timeLeftString = `${timeRemaining.days}d ${timeRemaining.hours}h`;
+              timeLeftClass = timeRemaining.days <= 1 ? 'soon' : '';
+          } else if (timeRemaining.hours > 0) {
+              timeLeftString = `${timeRemaining.hours}h ${timeRemaining.minutes}m`;
+              timeLeftClass = 'soon';
+          } else {
+              timeLeftString = `${timeRemaining.minutes}m`;
+              timeLeftClass = 'urgent';
+          }
+
+          // Inside the createEventElement function
+          if (isBigEvent) {
+              // Big event HTML structure
+              eventElement.innerHTML = `
+                  <div class="event-date">
+                      <span class="day">${displayDay}</span>
+                      <span class="month">${displayMonth}</span>
+                  </div>
+                  <div class="event-content">
+                      <h3 class="event-title">${eventName}</h3>
+                      <div class="time-left-badge ${timeLeftClass}">
+                          <i class="fas fa-hourglass-half"></i>
+                          <span>${timeLeftString}</span>
+                      </div>
+                      <div class="event-details">
+                          <div class="event-detail">
+                              <i class="far fa-clock"></i>
+                              <span>${timeString}</span>
+                          </div>
+                          <div class="event-detail">
+                              <i class="fas fa-map-marker-alt"></i>
+                              <span>${eventLocation}</span>
+                          </div>
+                      </div>
+                      ${eventDescription ? `<p class="event-description">${eventDescription}</p>` : ''}
+                      <div class="event-actions">
+                          <button class="event-action-btn" data-action="view-details">
+                              <i class="far fa-eye"></i> Details
+                          </button>
+                          <button class="event-action-btn" data-action="add-to-calendar">
+                              <i class="far fa-calendar-plus"></i> Add to Calendar
+                          </button>
+                      </div>
+                  </div>
+              `;
+          } else {
+              // Small event HTML structure
+              eventElement.innerHTML = `
+                  <div class="event-date">
+                      <span class="day">${displayDay}</span>
+                      <span class="month">${displayMonth}</span>
+                  </div>
+                  <div class="event-content">
+                      <h3 class="event-title">${eventName}</h3>
+                      <div class="time-left-badge ${timeLeftClass}">
+                          <i class="fas fa-hourglass-half"></i>
+                          <span>${timeLeftString}</span>
+                      </div>
+                      <div class="event-details">
+                          <div class="event-detail">
+                              <i class="far fa-clock"></i>
+                              <span>${timeString}</span>
+                          </div>
+                          <div class="event-detail">
+                              <i class="fas fa-map-marker-alt"></i>
+                              <span>${eventLocation}</span>
+                          </div>
+                      </div>
+                      ${eventDescription ? `<p class="event-description">${eventDescription}</p>` : ''}
+                      <div class="event-actions">
+                          <button class="event-action-btn" data-action="view-details">
+                              <i class="far fa-eye"></i> Details
+                          </button>
+                          <button class="event-action-btn" data-action="add-to-calendar">
+                              <i class="far fa-calendar-plus"></i> Add to Calendar
+                          </button>
+                      </div>
+                  </div>
+              `;
+          }
+      }
+      
+      // Add click handler for event details
+      eventElement.addEventListener('click', function(e) {
+          if (!e.target.closest('.time-left-badge') && !e.target.closest('.event-action-btn')) {
+              openEventModal(eventElement);
+          }
+      });
+      
+      return eventElement;
+  }
+
+  // Initialize view toggle
+  function initViewToggle() {
+    const viewButtons = document.querySelectorAll('.view-toggle .view-btn');
+    const eventContainer = document.getElementById('event-container');
+    
+    viewButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        viewButtons.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentView = this.dataset.view;
+        eventContainer.classList.remove('grid-view', 'list-view');
+        eventContainer.classList.add(`${currentView}-view`);
+      });
+    });
+  }
+
+  // Initialize search functionality
+  function initSearch() {
+    const searchInput = document.getElementById('event-search');
+    if (!searchInput) return;
+    
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const eventContainer = document.getElementById('event-container');
+      
+      if (searchTerm.length === 0) {
+        filterEvents(currentFilter);
+        return;
+      }
+      
+      const sourceEvents = eventContainer.classList.contains('past-events') 
+        ? cachedPastEvents 
+        : cachedUpcomingEvents;
+      
+      const filteredEvents = sourceEvents.filter(event => 
+        event.eventName.toLowerCase().includes(searchTerm) ||
+        (event.eventDescription && event.eventDescription.toLowerCase().includes(searchTerm))
+      );
+      
+      eventContainer.innerHTML = '';
+      
+      if (filteredEvents.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'no-results';
+        noResults.textContent = 'No events match your search. Try different keywords.';
+        eventContainer.appendChild(noResults);
+      } else {
+        displayedEvents = filteredEvents;
+        displayEventsBatch();
       }
     });
+  }
+
+  // Initialize modals
+  function initModals() {
+    modalCloseButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.modal').forEach(modal => {
+          modal.classList.remove('active');
+        });
+      });
+    });
+    
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+        }
+      });
+    });
+    
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.event-action-btn[data-action="add-to-calendar"]')) {
+        e.preventDefault();
+        calendarModal.classList.add('active');
+      }
+      
+      if (e.target.closest('.event-action-btn[data-action="view-details"]')) {
+        e.preventDefault();
+        const eventElement = e.target.closest('.event');
+        openEventModal(eventElement);
+      }
+    });
+  }
+
+  // Open event modal with details
+  function openEventModal(eventElement) {
+    if (!eventElement) return;
+    
+    const modalBody = eventModal.querySelector('.modal-body');
+    const eventName = eventElement.querySelector('.event-title').textContent;
+    const eventDate = eventElement.querySelector('.event-date .day').textContent;
+    const eventMonth = eventElement.querySelector('.event-date .month').textContent;
+    const eventTime = eventElement.querySelector('.event-detail:first-child span').textContent;
+    const eventLocation = eventElement.querySelector('.event-detail:nth-child(2) span').textContent;
+    const eventDescription = eventElement.querySelector('.event-description').textContent;
+    
+    modalBody.innerHTML = `
+      <div class="event-spotlight">
+        <div class="event-spotlight-image">
+          <img src="https://source.unsplash.com/random/600x400/?event,${encodeURIComponent(eventName)}" alt="${eventName}">
+        </div>
+        <div class="event-spotlight-content">
+          <h2 class="event-spotlight-title">${eventName}</h2>
+          <div class="event-spotlight-meta">
+            <div class="event-spotlight-meta-item">
+              <i class="far fa-calendar"></i>
+              <span>${eventMonth} ${eventDate}</span>
+            </div>
+            <div class="event-spotlight-meta-item">
+              <i class="far fa-clock"></i>
+              <span>${eventTime}</span>
+            </div>
+            <div class="event-spotlight-meta-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>${eventLocation}</span>
+            </div>
+          </div>
+          <p class="event-spotlight-description">${eventDescription}</p>
+          <div class="event-spotlight-highlights">
+            <h4 class="event-spotlight-highlights-title">Event Highlights</h4>
+            <div class="event-spotlight-highlights-list">
+              <div class="event-spotlight-highlight">
+                <i class="fas fa-users"></i>
+                <span>Networking opportunities</span>
+              </div>
+              <div class="event-spotlight-highlight">
+                <i class="fas fa-lightbulb"></i>
+                <span>Expert speakers</span>
+              </div>
+              <div class="event-spotlight-highlight">
+                <i class="fas fa-utensils"></i>
+                <span>Refreshments provided</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    eventModal.classList.add('active');
+  }
+
+  // Initialize load more button
+  function initLoadMore() {
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', displayEventsBatch);
+    }
   }
 
   // Load events from Google Sheet
@@ -314,94 +701,6 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!container) return;
 
     container.innerHTML = '<div class="loading-spinner"><div class="spinner-circle"></div><p>Loading events...</p></div>';
-
-    function createEventElement(event, isPast = false) {
-      const { eventName, fullDateTime, eventTimeStr, eventLocation, size, eventDescription, imageUrl, category } = event;
-
-      const eventElement = document.createElement('div');
-      eventElement.classList.add('event', isPast ? 'past-event' : 'upcoming-event');
-      const isBigEvent = size === 'big';
-      eventElement.classList.add('event', isPast ? 'past-event' : 'upcoming-event', isBigEvent ? 'big-event' : 'small-event');
-      if (category) eventElement.dataset.category = category.toLowerCase();
-
-      const displayMonth = fullDateTime.toLocaleString('default', { month: 'short' });
-      const displayDay = fullDateTime.getDate();
-      const displayYear = fullDateTime.getFullYear();
-      const timeString = fullDateTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
-      
-      if (isPast) {
-        // Past event template
-        eventElement.innerHTML = `
-          <div class="event-date">
-            <span class="month">${displayMonth}</span>
-            <span class="day">${displayDay}</span>
-            <span class="year">${displayYear}</span>
-          </div>
-          <div class="event-content">
-            <div class="event-image-container">
-              ${imageUrl ? `<img src="${imageUrl}" alt="${eventName}" class="event-image">` : '<div class="event-image-placeholder">No Image</div>'}
-            </div>
-            <h3 class="event-title">${eventName}</h3>
-            <div class="event-details">
-              <div class="event-detail">
-                <i class="far fa-clock"></i>
-                <span>${timeString}</span>
-              </div>
-              <div class="event-detail">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>${eventLocation}</span>
-              </div>
-            </div>
-            <p class="event-description">${eventDescription}</p>
-          </div>
-        `;
-      } else {
-        // Upcoming event template
-        const timeRemaining = getTimeRemaining(fullDateTime);
-        let timeLeftString = '';
-        let timeLeftClass = '';
-        
-        if (timeRemaining.total <= 0) {
-          timeLeftString = 'Happening Now';
-          timeLeftClass = 'urgent';
-        } else if (timeRemaining.days > 0) {
-          timeLeftString = `${timeRemaining.days}d ${timeRemaining.hours}h`;
-          timeLeftClass = timeRemaining.days <= 1 ? 'soon' : '';
-        } else if (timeRemaining.hours > 0) {
-          timeLeftString = `${timeRemaining.hours}h ${timeRemaining.minutes}m`;
-          timeLeftClass = 'soon';
-        } else {
-          timeLeftString = `${timeRemaining.minutes}m`;
-          timeLeftClass = 'urgent';
-        }
-
-        eventElement.innerHTML = `
-        <div class="event-date">
-          <span class="day">${displayDay}</span>
-          <span class="month">${displayMonth}</span>
-        </div>
-        <div class="event-content">
-          <h3 class="event-title">${eventName}</h3>
-          <div class="time-left-badge ${timeLeftClass}">
-            <i class="fas fa-hourglass-half"></i>
-            <span>${timeLeftString}</span>
-          </div>
-          <div class="event-details">
-            <div class="event-detail">
-              <i class="far fa-clock"></i>
-              <span>${timeString}</span>
-            </div>
-            <div class="event-detail">
-              <i class="fas fa-map-marker-alt"></i>
-              <span>${eventLocation}</span>
-            </div>
-          </div>
-          <p class="event-description">${eventDescription}</p>
-        </div>
-      `;
-      }
-      return eventElement;
-    }
 
     function processSheetData(html, isPast = false) {
       const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -450,11 +749,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         if (isPast) {
-          if (fullDateTime >= now) {
-            continue; // Prevent upcoming events from showing in past
-          }
-          status = 'Past Event';
-          statusClass = 'past';
+          if (fullDateTime >= now) continue;
         }
         else {
           if (fullDateTime <= now) continue;
@@ -483,51 +778,65 @@ document.addEventListener("DOMContentLoaded", function() {
       })
       .then(html => {
         const events = processSheetData(html, showPast);
-        container.innerHTML = '';
-
+        
         if (showPast) {
-          container.classList.add('past-events');
+          cachedPastEvents = events;
         } else {
-          container.classList.remove('past-events');
-          cachedEvents = events; // Store events for calendar
+          cachedUpcomingEvents = events;
+        }
+
+        displayEvents(events, showPast);
+        
+        if (!showPast) {
+          initHeroCalendar();
           updateCalendarWithEvents(events);
+          updateTimeRemaining();
+          setInterval(updateTimeRemaining, 60000);
         }
-
-        if (events.length === 0) {
-          const noEventMsg = document.createElement('div');
-          noEventMsg.classList.add('no-events');
-          noEventMsg.textContent = showPast 
-            ? 'No past events available.' 
-            : 'No upcoming events at this time. Please check back later!';
-          container.appendChild(noEventMsg);
-        } else {
-          events.sort((a, b) => {
-            if (!showPast && a.size !== b.size) {
-              return a.size === 'big' ? -1 : 1;
-            }
-            return showPast
-              ? b.fullDateTime - a.fullDateTime
-              : a.fullDateTime - b.fullDateTime;
-          });
-
-          events.forEach(event => {
-            container.appendChild(createEventElement(event, showPast));
-          });
-
-          if (!showPast) {
-            updateTimeRemaining();
-            setInterval(updateTimeRemaining, 60000);
-          }
-        }
-
-        // Initialize filtering after loading
-        initEventFilter();
-        filterEvents('all');
       })
       .catch(error => {
         console.error('Error loading events:', error);
         container.innerHTML = '<div class="error-message">Unable to load events. Please try again later.</div>';
       });
+  }
+
+  // Display events in the container
+  function displayEvents(events, isPastEvents) {
+    const container = document.getElementById('event-container');
+    if (!container) return;
+
+    container.innerHTML = '';
+    container.classList.toggle('past-events', isPastEvents);
+    
+    if (events.length === 0) {
+      const noEventMsg = document.createElement('div');
+      noEventMsg.classList.add('no-events');
+      noEventMsg.textContent = isPastEvents 
+        ? 'No past events available.' 
+        : 'No upcoming events at this time. Please check back later!';
+      container.appendChild(noEventMsg);
+      return;
+    }
+
+    // Sort events
+    events.sort((a, b) => {
+      if (!isPastEvents && a.size !== b.size) {
+        return a.size === 'big' ? -1 : 1;
+      }
+      return isPastEvents
+        ? b.fullDateTime - a.fullDateTime
+        : a.fullDateTime - b.fullDateTime;
+    });
+
+    displayedEvents = [...events];
+    displayEventsBatch();
+    
+    // Initialize components
+    initEventFilter();
+    initViewToggle();
+    initSearch();
+    initModals();
+    initLoadMore();
   }
 
   // Initialize page
