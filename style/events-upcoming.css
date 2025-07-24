@@ -7,18 +7,14 @@ html {
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  line-height: 1.6;
   color: #333;
 }
 
 /* ============================================= */
-/* ENHANCED HERO SECTION WITH CALENDAR */
+/* HERO SECTION WITH CALENDAR */
 /* ============================================= */
 .hero-events {
   background: linear-gradient(135deg, #0f0f18 0%, #1a1a2e 50%, #16213e 100%);
@@ -549,7 +545,7 @@ body {
 }
 
 /* ============================================= */
-/* EVENTS SECTION - ENHANCED STYLES */
+/* EVENTS SECTION */
 /* ============================================= */
 .events {
   padding: 100px 20px;
@@ -725,7 +721,7 @@ body {
 }
 
 /* ============================================= */
-/* ENHANCED EVENT CARDS - GRID VIEW */
+/* EVENT CARDS - GRID VIEW */
 /* ============================================= */
 .event-container {
   display: grid;
@@ -910,7 +906,7 @@ body {
 }
 
 /* ============================================= */
-/* SMALL EVENT SPECIFIC STYLES - IMPROVED */
+/* SMALL EVENT STYLES */
 /* ============================================= */
 .event.small-event {
   display: flex;
@@ -985,7 +981,7 @@ body {
 }
 
 /* ============================================= */
-/* BIG EVENT SPECIFIC STYLES - FIXED & IMPROVED */
+/* BIG EVENT STYLES */
 /* ============================================= */
 .event.big-event {
   display: flex;
@@ -1125,7 +1121,7 @@ body {
 }
 
 /* ============================================= */
-/* ENHANCED LIST VIEW STYLES - IMPROVED */
+/* LIST VIEW STYLES */
 /* ============================================= */
 .event-container.list-view {
   display: flex;

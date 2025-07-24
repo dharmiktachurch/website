@@ -218,19 +218,44 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     else if (type === 'fellowship') {
       const tbody = document.getElementById('house-fellowship-content');
+      
+      // Group by day name
+      const grouped = {};
       data.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${escapeHtml(item.day)}</td>
-          <td>${escapeHtml(item.host)}</td>
-          <td>${escapeHtml(item.leaders)}</td>
-          <td>${escapeHtml(item.frequency)}</td>
-        `;
-        tbody.appendChild(row);
+        const day = getDayName(item.day); // Extract just the day name
+        if (!grouped[day]) grouped[day] = [];
+        grouped[day].push(item);
+      });
+
+      // Create rows for each day group
+      Object.entries(grouped).forEach(([day, fellowships]) => {
+        fellowships.forEach((fellowship, index) => {
+          const row = document.createElement('tr');
+          
+          // Only show day name in first row of group
+          const dayCell = index === 0 
+            ? `<td rowspan="${fellowships.length}" class="day-header">${escapeHtml(day)}</td>`
+            : '';
+          
+          row.innerHTML = `
+            ${dayCell}
+            <td>${escapeHtml(fellowship.host)}</td>
+            <td>${escapeHtml(fellowship.leaders)}</td>
+            <td>${escapeHtml(fellowship.frequency)}</td>
+          `;
+          tbody.appendChild(row);
+        });
       });
 
       displayTodayFellowships(data);
     }
+  }
+
+  // Helper to extract just the day name
+  function getDayName(dayString) {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const found = days.find(day => dayString.toLowerCase().includes(day.toLowerCase()));
+    return found || dayString;
   }
 
   // Updated Weekly Roles Section
@@ -245,7 +270,7 @@ document.addEventListener("DOMContentLoaded", function () {
     currentWeekEnd.setDate(currentWeekStart.getDate() + 6); // Saturday
 
     // Format the week period string
-    const weekPeriodStr = `${formatShortDate(currentWeekStart)} - ${formatShortDate(currentWeekEnd)}`;
+    const weekPeriodStr = `${formatShortDate(currentWeekEnd)}`;
 
     const weekRoles = [];
 
@@ -460,50 +485,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
     container.innerHTML = todaysFellowships.length > 0
       ? `
-        <div class="weekly-roles-section">
-          <div class="weekly-roles-header">
-            <h2 class="weekly-roles-title">
+        <div class="fellowship-highlight">
+          <div class="fellowship-header">
+            <h2>
               <i class="fas fa-home"></i>
               Today's Fellowship Meetings
+              <span class="fellowship-day">${todayStr}</span>
             </h2>
-            <div class="weekly-period">${todayStr}</div>
           </div>
-          <div class="weekly-roles-body">
+          <div class="fellowship-cards">
             ${todaysFellowships.map(fellowship => `
-              <div class="role-day">
-                <div class="role-items">
-                  <div class="role-item">
-                    <div class="role-label">
-                      <i class="fas fa-user-friends"></i>
-                      Leaders
-                    </div>
-                    <div class="role-value">${escapeHtml(fellowship.leaders)}</div>
-                  </div>
-                  <div class="role-item">
-                    <div class="role-label">
+              <div class="fellowship-card">
+                <div class="fellowship-details">
+                  <div class="fellowship-row">
+                    <span class="fellowship-label">
                       <i class="fas fa-home"></i>
-                      Host
-                    </div>
-                    <div class="role-value">${escapeHtml(fellowship.host)}</div>
+                      Host:
+                    </span>
+                    <span class="fellowship-value">${escapeHtml(fellowship.host)}</span>
+                  </div>
+                  <div class="fellowship-row">
+                    <span class="fellowship-label">
+                      <i class="fas fa-user-friends"></i>
+                      Leaders:
+                    </span>
+                    <span class="fellowship-value">${escapeHtml(fellowship.leaders)}</span>
                   </div>
                   ${fellowship.frequency ? `
-                    <div class="role-item">
-                      <div class="role-label">
-                        <i class="fas fa-calendar-alt"></i>
-                        Frequency
-                      </div>
-                      <div class="role-value">${escapeHtml(fellowship.frequency)}</div>
-                    </div>` : ''}
+                  <div class="fellowship-row">
+                    <span class="fellowship-label">
+                      <i class="fas fa-calendar-alt"></i>
+                      Frequency:
+                    </span>
+                    <span class="fellowship-value">${escapeHtml(fellowship.frequency)}</span>
+                  </div>` : ''}
                 </div>
               </div>
             `).join('')}
           </div>
         </div>
       `
-      : `<div class="no-roles">
-           <i class="far fa-calendar-times"></i>
-           <p>No fellowship meetings scheduled for today</p>
-         </div>`;
+      : `<div class="no-fellowships">
+          <i class="far fa-calendar-times"></i>
+          <p>No fellowship meetings scheduled for today</p>
+        </div>`;
   }
 
   // Helper functions
