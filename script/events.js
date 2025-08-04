@@ -694,111 +694,120 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Load events from Google Sheet
   function loadEvents(showPast = false) {
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwzUR_NyZvDSpuMht8Xn4E8e2fNRy5cfyFprzkCy0tNRQYEVGnB-c3mKFHI8-DQACZUtCTVTRdIr7v/pub?output=html';
-    const pastEventsSheetUrl = sheetUrl + '&gid=643141639';
+  // Replace these with your published sheet URLs
+  const upcomingSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwzUR_NyZvDSpuMht8Xn4E8e2fNRy5cfyFprzkCy0tNRQYEVGnB-c3mKFHI8-DQACZUtCTVTRdIr7v/pub?gid=0&single=true&output=csv';
+  const pastSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwzUR_NyZvDSpuMht8Xn4E8e2fNRy5cfyFprzkCy0tNRQYEVGnB-c3mKFHI8-DQACZUtCTVTRdIr7v/pub?gid=643141639&single=true&output=csv';
 
-    const container = document.getElementById('event-container');
-    if (!container) return;
+  const container = document.getElementById('event-container');
+  if (!container) return;
 
-    container.innerHTML = '<div class="loading-spinner"><div class="spinner-circle"></div><p>Loading events...</p></div>';
+  container.innerHTML = '<div class="loading-spinner"><div class="spinner-circle"></div><p>Loading events...</p></div>';
 
-    function processSheetData(html, isPast = false) {
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      const rows = doc.querySelectorAll('table tr');
-      const events = [];
-      const now = new Date();
+  function processCSVData(csv, isPast = false) {
+    const lines = csv.split('\n');
+    const events = [];
+    const now = new Date();
 
-      for (let i = 1; i < rows.length; i++) {
-        const row = rows[i];
-        const cells = row.querySelectorAll('td');
-        
-        if (cells.length < (isPast ? 7 : 6)) continue;
+    // Skip header row
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
 
-        const eventName = cells[0]?.textContent?.trim();
-        const eventDateStr = cells[1]?.textContent?.trim();
-        const eventTimeStr = cells[2]?.textContent?.trim();
-        const eventLocation = cells[3]?.textContent?.trim();
-        const size = cells[4]?.textContent?.trim().toLowerCase();
-        const category = cells[5]?.textContent?.trim().toLowerCase();
-        const eventDescription = cells[6]?.textContent?.trim();
-        const imageUrl = isPast ? cells[7]?.textContent?.trim() : null;
+      // Simple CSV parsing (won't handle quoted fields with commas)
+      const cells = line.split(',');
+      
+      if (cells.length < (isPast ? 7 : 6)) continue;
 
-        if (!eventName || !eventDateStr || !eventTimeStr) continue;
+      const eventName = cells[0]?.trim();
+      const eventDateStr = cells[1]?.trim();
+      const eventTimeStr = cells[2]?.trim();
+      const eventLocation = cells[3]?.trim();
+      const size = cells[4]?.trim().toLowerCase();
+      const category = cells[5]?.trim().toLowerCase();
+      const eventDescription = cells[6]?.trim();
+      const imageUrl = isPast ? cells[7]?.trim() : null;
 
-        let cleanDateStr = eventDateStr.replace(/^Date\(/, '').replace(/\)$/, '');
-        let [month, day, year] = cleanDateStr.split('/').map(num => parseInt(num, 10));
+      if (!eventName || !eventDateStr || !eventTimeStr) continue;
 
-        let timeParts = eventTimeStr.match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?/i);
-        if (!timeParts) continue;
+      // Parse date and time (adjust this based on your actual date format)
+      let dateParts = eventDateStr.split('/');
+      if (dateParts.length !== 3) continue;
+      
+      let month = parseInt(dateParts[0], 10);
+      let day = parseInt(dateParts[1], 10);
+      let year = parseInt(dateParts[2], 10);
+      
+      let timeParts = eventTimeStr.match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?/i);
+      if (!timeParts) continue;
 
-        let hours = parseInt(timeParts[1], 10);
-        let minutes = parseInt(timeParts[2], 10);
-        
-        if (timeParts[3] && timeParts[3].toUpperCase() === 'PM' && hours < 12) {
-          hours += 12;
-        }
-        if (timeParts[3] && timeParts[3].toUpperCase() === 'AM' && hours === 12) {
-          hours = 0;
-        }
-
-        const fullDateTime = new Date(year, month - 1, day, hours, minutes);
-        
-        if (isNaN(fullDateTime.getTime())) {
-          console.warn('Invalid date:', eventDateStr, eventTimeStr);
-          continue;
-        }
-
-        if (isPast) {
-          if (fullDateTime >= now) continue;
-        }
-        else {
-          if (fullDateTime <= now) continue;
-        }
-        events.push({
-          eventName,
-          fullDateTime,
-          eventTimeStr,
-          eventLocation,
-          size,
-          category,
-          eventDescription,
-          imageUrl,
-        });
+      let hours = parseInt(timeParts[1], 10);
+      let minutes = parseInt(timeParts[2], 10);
+      
+      if (timeParts[3] && timeParts[3].toUpperCase() === 'PM' && hours < 12) {
+        hours += 12;
+      }
+      if (timeParts[3] && timeParts[3].toUpperCase() === 'AM' && hours === 12) {
+        hours = 0;
       }
 
-      return events;
+      const fullDateTime = new Date(year, month - 1, day, hours, minutes);
+      
+      if (isNaN(fullDateTime.getTime())) {
+        console.warn('Invalid date:', eventDateStr, eventTimeStr);
+        continue;
+      }
+
+      if (isPast) {
+        if (fullDateTime >= now) continue;
+      } else {
+        if (fullDateTime <= now) continue;
+      }
+
+      events.push({
+        eventName,
+        fullDateTime,
+        eventTimeStr,
+        eventLocation,
+        size,
+        category,
+        eventDescription,
+        imageUrl,
+      });
     }
 
-    const fetchUrl = showPast ? pastEventsSheetUrl : sheetUrl;
-
-    fetch(fetchUrl)
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        return response.text();
-      })
-      .then(html => {
-        const events = processSheetData(html, showPast);
-        
-        if (showPast) {
-          cachedPastEvents = events;
-        } else {
-          cachedUpcomingEvents = events;
-        }
-
-        displayEvents(events, showPast);
-        
-        if (!showPast) {
-          initHeroCalendar();
-          updateCalendarWithEvents(events);
-          updateTimeRemaining();
-          setInterval(updateTimeRemaining, 60000);
-        }
-      })
-      .catch(error => {
-        console.error('Error loading events:', error);
-        container.innerHTML = '<div class="error-message">Unable to load events. Please try again later.</div>';
-      });
+    return events;
   }
+
+  const fetchUrl = showPast ? pastSheetUrl : upcomingSheetUrl;
+
+  fetch(fetchUrl)
+    .then(response => {
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return response.text();
+    })
+    .then(csv => {
+      const events = processCSVData(csv, showPast);
+      
+      if (showPast) {
+        cachedPastEvents = events;
+      } else {
+        cachedUpcomingEvents = events;
+      }
+
+      displayEvents(events, showPast);
+      
+      if (!showPast) {
+        initHeroCalendar();
+        updateCalendarWithEvents(events);
+        updateTimeRemaining();
+        setInterval(updateTimeRemaining, 60000);
+      }
+    })
+    .catch(error => {
+      console.error('Error loading events:', error);
+      container.innerHTML = '<div class="error-message">Unable to load events. Please try again later.</div>';
+    });
+}
 
   // Display events in the container
   function displayEvents(events, isPastEvents) {
