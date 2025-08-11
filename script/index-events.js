@@ -3,15 +3,14 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!container) return;
 
   function loadIndexEvents() {
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwzUR_NyZvDSpuMht8Xn4E8e2fNRy5cfyFprzkCy0tNRQYEVGnB-c3mKFHI8-DQACZUtCTVTRdIr7v/pub?output=html';
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwzUR_NyZvDSpuMht8Xn4E8e2fNRy5cfyFprzkCy0tNRQYEVGnB-c3mKFHI8-DQACZUtCTVTRdIr7v/pub?gid=0&single=true&output=csv';
 
     container.innerHTML = '<div class="loading-spinner"></div>';
 
     function createEventElement(event) {
       const { eventName, fullDateTime, eventLocation, size, eventDescription } = event;
       const isBigEvent = size === 'big';
-      
-      // Format date and time
+
       const options = { 
         month: 'short', 
         day: 'numeric',
@@ -48,48 +47,42 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function parseEventDateTime(dateStr, timeStr) {
-      // Handle both "MM/DD/YYYY" and "Date(MM/DD/YYYY)" formats
       const cleanDateStr = dateStr.replace(/^Date\(/, '').replace(/\)$/, '');
       const [month, day, year] = cleanDateStr.split('/').map(Number);
-      
-      // Parse time (supports 12h and 24h formats)
+
       let [hours, minutes] = timeStr.split(':').map(Number);
       const isPM = timeStr.toLowerCase().includes('pm');
-      
+
       if (isPM && hours < 12) hours += 12;
       if (!isPM && hours === 12) hours = 0;
-      
+
       const date = new Date(year, month - 1, day, hours, minutes);
       return isNaN(date.getTime()) ? null : date;
     }
 
-    function processSheetData(html) {
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      const rows = doc.querySelectorAll('table tr');
+    function processSheetCSV(csv) {
+      const lines = csv.trim().split('\n').map(line => line.split(','));
       const events = [];
       const now = new Date();
       const maxEvents = 3;
 
-      for (let i = 1; i < rows.length && events.length < maxEvents; i++) {
-        const cells = rows[i].querySelectorAll('td');
-        if (cells.length < 6 || !cells[0].textContent.trim()) continue;
+      for (let i = 1; i < lines.length && events.length < maxEvents; i++) {
+        const cells = lines[i].map(cell => cell.trim());
+        if (cells.length < 6 || !cells[0]) continue;
 
         const eventData = {
-          eventName: cells[0].textContent.trim(),
-          eventDateStr: cells[1].textContent.trim(),
-          eventTimeStr: cells[2].textContent.trim(),
-          eventLocation: cells[3].textContent.trim(),
-          size: cells[4].textContent.trim().toLowerCase(),
-          eventDescription: cells[6].textContent.trim()
+          eventName: cells[0],
+          eventDateStr: cells[1],
+          eventTimeStr: cells[2],
+          eventLocation: cells[3],
+          size: cells[4].toLowerCase(),
+          eventDescription: cells[5] || ''
         };
 
         const fullDateTime = parseEventDateTime(eventData.eventDateStr, eventData.eventTimeStr);
         if (!fullDateTime || fullDateTime <= now) continue;
 
-        events.push({
-          ...eventData,
-          fullDateTime
-        });
+        events.push({ ...eventData, fullDateTime });
       }
 
       return events;
@@ -100,11 +93,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return response.text();
       })
-      .then(html => {
-        const events = processSheetData(html);
-        container.innerHTML = events.length ? 
-          events.map(createEventElement).join('') :
-          `<div class="no-events">No upcoming events at this time. Please check back later!</div>`;
+      .then(csv => {
+        const events = processSheetCSV(csv);
+        container.innerHTML = events.length
+          ? events.map(createEventElement).join('')
+          : `<div class="no-events">No upcoming events at this time. Please check back later!</div>`;
       })
       .catch(error => {
         console.error('Error:', error);
@@ -117,7 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  // Initialize with error handling
   try {
     loadIndexEvents();
   } catch (error) {
