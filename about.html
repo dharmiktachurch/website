@@ -6,7 +6,75 @@
   <title>About Us - Dharmikta Mandali</title>
   <link rel="icon" type="image/png" href="static/images/Favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style/about.css" />
+
+  <!-- ✅ Critical Loader CSS Inline -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+    .loader-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 40px 0;
+      background: transparent;   /* keep background transparent */
+      width: 100%;
+      text-align: center;
+      transition: opacity 0.4s ease, height 0.4s ease, padding 0.4s ease;
+    }
+
+    .loader {
+      display: flex;
+      gap: 6px;
+    }
+    .loader div {
+      width: 12px;
+      height: 12px;
+      background-color: #000;
+      border-radius: 50%;
+      animation: bounce 0.6s infinite alternate;
+    }
+    .loader div:nth-child(2) { animation-delay: 0.2s; }
+    .loader div:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0% { transform: translateY(0); opacity: 0.6; }
+      100% { transform: translateY(-12px); opacity: 1; }
+    }
+    .loader-container p {
+      font-size: 14px;
+      color: #333;
+      font-weight: 500;
+      opacity: 0.8;
+      animation: fadeText 1.5s ease-in-out infinite;
+    }
+    @keyframes fadeText {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    /* Hidden state */
+    .loader-container.hidden {
+      opacity: 0;
+      height: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #about-content {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    #about-content.visible {
+      opacity: 1;
+    }
+  </style>
+
+  <!-- ✅ Load main stylesheet faster -->
+  <link rel="preload" href="style/about.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="style/about.css"></noscript>
+
   <script src="script/script.js" defer></script>
   <script src="script/about.js" defer></script>
 </head>
@@ -28,19 +96,32 @@
     </div>
   </section>
 
-  <div id="loading-buffer" class="loader-container">
-    <div class="loader">
-      <div></div>
-      <div></div>
-      <div></div>
+  <!-- Dynamic Content Wrapper -->
+  <div id="about-wrapper">
+    <div id="loading-buffer" class="loader-container">
+      <div class="loader">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <p>Loading content…</p>
     </div>
-    <p>Loading content…</p>
-  </div>
 
-  <div id="about-content"></div>
+    <div id="about-content"></div>
+  </div>
 
   <!-- Footer -->
   <div id="footer-include"></div>
+
+  <!-- Hide loader only when everything is ready -->
+  <script>
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loading-buffer");
+      const content = document.getElementById("about-content");
+      loader.classList.add("hidden");
+      content.classList.add("visible");
+    });
+  </script>
 
 </body>
 </html>
