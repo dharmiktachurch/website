@@ -7,46 +7,40 @@ document.addEventListener("DOMContentLoaded", function () {
   const pageParam = urlParams.get("page") || "about-jesus";
   const sectionParam = urlParams.get("section");
 
-  // Show loader and hide content
   function showLoader() {
-    loadingBuffer.style.display = 'flex';
-    contentDiv.classList.remove('visible'); // hide content while loading
+    loadingBuffer.classList.remove('hidden');
+    contentDiv.classList.remove('visible');
   }
 
-  // Hide loader and show content
   function hideLoader() {
-    loadingBuffer.style.display = 'none';
-    contentDiv.classList.add('visible'); // fade in content
+    loadingBuffer.classList.add('hidden');
+    contentDiv.classList.add('visible');
   }
 
-  // Load content function
   function loadContent(page, callback) {
     showLoader();
 
-    // Minimum loader display time
-    const loaderPromise = new Promise(resolve => setTimeout(resolve, 800));
+    // Fetch content asynchronously
+    const fetchPromise = fetch(`partials/${page}.html`).then(res => res.text());
 
-    Promise.all([
-      fetch(`partials/${page}.html`).then(res => res.text()),
-      loaderPromise
-    ])
-    .then(([data]) => {
-      contentDiv.innerHTML = data;
-      setActiveLink(page);
+    // Minimum loader display time (500ms)
+    const minLoader = new Promise(resolve => setTimeout(resolve, 500));
 
-      // Use requestAnimationFrame to ensure DOM update before fade-in
-      requestAnimationFrame(() => hideLoader());
+    // Wait for both fetch and minimum loader time
+    Promise.all([fetchPromise, minLoader])
+      .then(([data]) => {
+        contentDiv.innerHTML = data;
+        hideLoader();
 
-      if (callback) callback();
-    })
-    .catch(error => {
-      console.error('Error loading content:', error);
-      contentDiv.innerHTML = '<div class="container"><p>Sorry, we couldn\'t load the content at this time.</p></div>';
-      hideLoader();
-    });
+        if (callback) callback();
+      })
+      .catch(err => {
+        console.error('Error loading content:', err);
+        contentDiv.innerHTML = '<p>Sorry, content could not be loaded.</p>';
+        hideLoader();
+      });
   }
 
-  // Set active nav link
   function setActiveLink(page) {
     navLinks.forEach(link => link.classList.remove("active"));
     const activeLink = document.querySelector(`.about-nav a[data-page="${page}"]`);
@@ -55,29 +49,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Load initial page
   loadContent(pageParam, () => {
+    setActiveLink(pageParam);
     if (sectionParam) {
-      // Delay scrolling to ensure section exists
-      setTimeout(() => {
-        const target = document.getElementById(sectionParam);
-        if (target) target.scrollIntoView({ behavior: "smooth" });
-      }, 100);
+      const target = document.getElementById(sectionParam);
+      if (target) target.scrollIntoView({ behavior: "smooth" });
     }
   });
 
-  // Handle navigation clicks
+  // Navigation clicks
   navLinks.forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
       const page = link.getAttribute("data-page");
       history.pushState(null, "", `?page=${page}`);
       loadContent(page);
+      setActiveLink(page);
     });
   });
 
-  // Handle back/forward navigation
+  // Back/forward navigation
   window.addEventListener('popstate', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const page = urlParams.get("page") || "about-jesus";
+    const page = new URLSearchParams(window.location.search).get("page") || "about-jesus";
     loadContent(page);
+    setActiveLink(page);
   });
 });
