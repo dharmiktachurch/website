@@ -70,6 +70,74 @@ body {
   border-bottom: 3px solid #222; /* Keep the underline on the active link */
 }
 
+/* Loader container takes up space to push footer down */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;       /* reserves space so footer stays down */
+  gap: 12px;
+  margin: 20px 0;
+  transition: opacity 0.4s ease, height 0.4s ease;
+}
+
+/* Bouncing dots loader */
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.loader div {
+  width: 12px;
+  height: 12px;
+  background-color: #000;
+  border-radius: 50%;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.loader div:nth-child(2) { animation-delay: 0.2s; }
+.loader div:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0% { transform: translateY(0); opacity: 0.6; }
+  100% { transform: translateY(-12px); opacity: 1; }
+}
+
+/* Loading text */
+.loader-container p {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  opacity: 0.8;
+  animation: fadeText 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeText {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Content fade-in */
+#about-content {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+#about-content.visible {
+  opacity: 1;
+}
+
+/* Hide loader after content loads */
+.loader-container.hidden {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+
 /* Hero Section */
 .hero {
   background: url('../static/images/about-hero.jpg') center/cover no-repeat;
