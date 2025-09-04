@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <div class="notice-actions">
                 <a href="${escapeHtml(notice.link)}" class="notice-link" target="_blank" rel="noopener">
                   <i class="fas fa-external-link-alt"></i>
-                  <span>More Details</span>
+                  <span>Links</span>
                 </a>
               </div>` : ''}
           </div>
