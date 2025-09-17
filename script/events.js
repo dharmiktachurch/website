@@ -423,9 +423,6 @@ document.addEventListener("DOMContentLoaded", function() {
                   <span class="year">${displayYear}</span>
               </div>
               <div class="event-content">
-                  <div class="event-image-container">
-                      ${imageUrl ? `<img src="${imageUrl}" alt="${eventName}" class="event-image">` : '<div class="event-image-placeholder">No Image</div>'}
-                  </div>
                   <h3 class="event-title">${eventName}</h3>
                   <div class="event-details">
                       <div class="event-detail">

@@ -411,7 +411,7 @@
   }
 
   /* Event Image */
-  .event-image-container {
+  /* .event-image-container {
     height: 200px;
     overflow: hidden;
     border-radius: 8px;
@@ -439,11 +439,11 @@
     justify-content: center;
     color: #808080;
     font-size: 1rem;
-  }
+  } */
 
   /* Event Text */
   .event-title {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     margin-bottom: 0.75rem;
     color: #000000;
     font-weight: 700;
