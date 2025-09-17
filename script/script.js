@@ -1,19 +1,3 @@
-// Function to load external HTML into specified divs
-function loadHTML(id, file) {
-  fetch(file)
-    .then(response => {
-      if (!response.ok) throw new Error("Failed to fetch " + file);
-      return response.text();
-    })
-    .then(data => {
-      document.getElementById(id).innerHTML = data;
-
-      // If navbar is loaded, initialize burger menu
-      if (file === "navbar.html") setupBurgerMenu();
-    })
-    .catch(error => console.error(error));
-}
-
 // Burger menu toggle logic
 function setupBurgerMenu() {
   const burger = document.getElementById("burger");
@@ -64,8 +48,5 @@ function typeChurchName(churchNameEl) {
 
 // On DOM load: load navbar & footer and start the typing effect (if applicable)
 document.addEventListener("DOMContentLoaded", function () {
-  loadHTML("navbar-include", "navbar.html");
-  loadHTML("footer-include", "footer.html");
-
   typeWriter(); // Now only runs if the correct elements exist
 });
