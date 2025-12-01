@@ -300,8 +300,6 @@ document.addEventListener("DOMContentLoaded", function() {
         dayElement.textContent = i;
         heroCalendarDays.appendChild(dayElement);
       }
-      
-      console.log(`Rendered calendar for ${monthNames[currentMonth]} ${currentYear}`);
     }
     
     // Remove any existing event listeners to prevent duplicates
@@ -316,20 +314,16 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Next month button - FIXED VERSION
     freshNextBtn.addEventListener('click', function() {
-      console.log(`Current month before: ${currentMonth} (${monthNames[currentMonth]})`);
       currentMonth = (currentMonth + 1) % 12;
       if (currentMonth === 0) currentYear++;
-      console.log(`Current month after: ${currentMonth} (${monthNames[currentMonth]})`);
       renderHeroCalendar();
       updateCalendarWithEvents(cachedUpcomingEvents);
     });
     
     // Previous month button - FIXED VERSION
     freshPrevBtn.addEventListener('click', function() {
-      console.log(`Current month before: ${currentMonth} (${monthNames[currentMonth]})`);
       currentMonth = (currentMonth - 1 + 12) % 12;
       if (currentMonth === 11) currentYear--;
-      console.log(`Current month after: ${currentMonth} (${monthNames[currentMonth]})`);
       renderHeroCalendar();
       updateCalendarWithEvents(cachedUpcomingEvents);
     });

@@ -48,5 +48,6 @@ function typeChurchName(churchNameEl) {
 
 // On DOM load: load navbar & footer and start the typing effect (if applicable)
 document.addEventListener("DOMContentLoaded", function () {
+  setupBurgerMenu(); 
   typeWriter(); // Now only runs if the correct elements exist
 });
