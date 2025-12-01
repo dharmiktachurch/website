@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
           eventTimeStr: cells[2],
           eventLocation: cells[3],
           size: cells[4].toLowerCase(),
-          eventDescription: cells[5] || ''
+          eventDescription: cells[6] || ''
         };
 
         const fullDateTime = parseEventDateTime(eventData.eventDateStr, eventData.eventTimeStr);
