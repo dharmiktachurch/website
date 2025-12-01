@@ -7,26 +7,40 @@ document.addEventListener("DOMContentLoaded", function () {
   const pageParam = urlParams.get("page") || "about-jesus";
   const sectionParam = urlParams.get("section");
 
+  /* ---------------------------
+     LOADER FUNCTIONS
+  ---------------------------- */
   function showLoader() {
-    loadingBuffer.classList.remove('hidden');
-    contentDiv.classList.remove('visible');
+    loadingBuffer.style.display = "block";
+    loadingBuffer.classList.remove("hidden");
+    contentDiv.style.display = "none";
+    contentDiv.classList.remove("visible");
   }
 
   function hideLoader() {
-    loadingBuffer.classList.add('hidden');
-    contentDiv.classList.add('visible');
+    // Fade out skeleton
+    loadingBuffer.classList.add("hidden");
+
+    // Wait for fade transition to finish
+    setTimeout(() => {
+      loadingBuffer.style.display = "none";
+      contentDiv.style.display = "block";
+      contentDiv.classList.add("visible");
+    }, 600); // match CSS transition duration
   }
 
+  /* ---------------------------
+     LOAD PAGE CONTENT
+  ---------------------------- */
   function loadContent(page, callback) {
     showLoader();
 
-    // Fetch content asynchronously
-    const fetchPromise = fetch(`partials/${page}.html`).then(res => res.text());
+    // Fetch content from "partials/" folder
+    const fetchPromise = fetch(`partials/${page}.html`).then((res) => res.text());
 
-    // Minimum loader display time (500ms)
-    const minLoader = new Promise(resolve => setTimeout(resolve, 500));
+    // Minimum skeleton display (500ms)
+    const minLoader = new Promise((resolve) => setTimeout(resolve, 500));
 
-    // Wait for both fetch and minimum loader time
     Promise.all([fetchPromise, minLoader])
       .then(([data]) => {
         contentDiv.innerHTML = data;
@@ -34,42 +48,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (callback) callback();
       })
-      .catch(err => {
-        console.error('Error loading content:', err);
-        contentDiv.innerHTML = '<p>Sorry, content could not be loaded.</p>';
+      .catch((err) => {
+        console.error("Error loading content:", err);
+        contentDiv.innerHTML =
+          "<p>Sorry, content could not be loaded at the moment.</p>";
         hideLoader();
       });
   }
 
+  /* ---------------------------
+     SET ACTIVE LINK
+  ---------------------------- */
   function setActiveLink(page) {
-    navLinks.forEach(link => link.classList.remove("active"));
-    const activeLink = document.querySelector(`.about-nav a[data-page="${page}"]`);
+    navLinks.forEach((link) => link.classList.remove("active"));
+    const activeLink = document.querySelector(
+      `.about-nav a[data-page="${page}"]`
+    );
     if (activeLink) activeLink.classList.add("active");
   }
 
-  // Load initial page
+  /* ---------------------------
+     INITIAL PAGE LOAD
+  ---------------------------- */
   loadContent(pageParam, () => {
     setActiveLink(pageParam);
+
     if (sectionParam) {
       const target = document.getElementById(sectionParam);
       if (target) target.scrollIntoView({ behavior: "smooth" });
     }
   });
 
-  // Navigation clicks
-  navLinks.forEach(link => {
-    link.addEventListener("click", e => {
+  /* ---------------------------
+     NAVIGATION CLICKS
+  ---------------------------- */
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
       e.preventDefault();
       const page = link.getAttribute("data-page");
+
+      // Update URL
       history.pushState(null, "", `?page=${page}`);
+
       loadContent(page);
       setActiveLink(page);
     });
   });
 
-  // Back/forward navigation
-  window.addEventListener('popstate', () => {
-    const page = new URLSearchParams(window.location.search).get("page") || "about-jesus";
+  /* ---------------------------
+     BROWSER BACK / FORWARD
+  ---------------------------- */
+  window.addEventListener("popstate", () => {
+    const page =
+      new URLSearchParams(window.location.search).get("page") || "about-jesus";
     loadContent(page);
     setActiveLink(page);
   });

@@ -46,10 +46,21 @@
       </ul>
     </nav>
   </div>
+  <!-- Dynamic Content Wrapper -->
+  <div id="events-wrapper">
+    <!-- Skeleton Loader -->
+    <div id="loading-buffer" class="skeleton-wrapper">
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line short"></div>
 
-    
-  <div id="events-content">
-      <!-- Content will be loaded here dynamically -->
+      <div class="skeleton event-card-skeleton"></div>
+      <div class="skeleton event-card-skeleton"></div>
+      <div class="skeleton event-card-skeleton"></div>
+    </div>
+
+    <!-- Actual events content will be loaded here -->
+    <div id="events-content" style="display:none;"></div>
   </div>
 
   <footer class="footer">
@@ -96,6 +107,93 @@
       <p>&copy; 2025 Dharmikta Mandali. All Rights Reserved.</p>
     </div>
   </footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+  const navLinks = document.querySelectorAll(".events-nav nav a");
+  const contentDiv = document.getElementById("events-content");
+  const loadingBuffer = document.getElementById("loading-buffer");
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const pageParam = urlParams.get("page") || "events-upcoming";
+
+  /* ---------------------------
+     LOADER FUNCTIONS
+  ---------------------------- */
+  function showLoader() {
+    loadingBuffer.style.display = "block";
+    loadingBuffer.classList.remove("hidden");
+    contentDiv.style.display = "none";
+    contentDiv.classList.remove("visible");
+  }
+
+  function hideLoader() {
+    loadingBuffer.classList.add("hidden");
+    setTimeout(() => {
+      loadingBuffer.style.display = "none";
+      contentDiv.style.display = "block";
+      contentDiv.classList.add("visible");
+    }, 600);
+  }
+
+  /* ---------------------------
+     LOAD CONTENT
+  ---------------------------- */
+  function loadContent(page) {
+    showLoader();
+
+    fetch(`partials/${page}.html`)
+      .then((res) => res.text())
+      .then((html) => {
+        contentDiv.innerHTML = html;
+        hideLoader();
+      })
+      .catch((err) => {
+        console.error("Error loading content:", err);
+        contentDiv.innerHTML = "<p>Sorry, content could not be loaded.</p>";
+        hideLoader();
+      });
+  }
+
+  /* ---------------------------
+     SET ACTIVE LINK
+  ---------------------------- */
+  function setActiveLink(page) {
+    navLinks.forEach((link) => link.classList.remove("active"));
+    const activeLink = document.querySelector(`.events-nav a[data-page="${page}"]`);
+    if (activeLink) activeLink.classList.add("active");
+  }
+
+  /* ---------------------------
+     INITIAL LOAD
+  ---------------------------- */
+  loadContent(pageParam);
+  setActiveLink(pageParam);
+
+  /* ---------------------------
+     NAVIGATION CLICKS
+  ---------------------------- */
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const page = link.getAttribute("data-page");
+      history.pushState(null, "", `?page=${page}`);
+      loadContent(page);
+      setActiveLink(page);
+    });
+  });
+
+  /* ---------------------------
+     BACK / FORWARD BUTTON
+  ---------------------------- */
+  window.addEventListener("popstate", () => {
+    const page = new URLSearchParams(window.location.search).get("page") || "events-upcoming";
+    loadContent(page);
+    setActiveLink(page);
+  });
+});
+
+</script>
 
 </body>
 </html>

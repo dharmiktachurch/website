@@ -445,3 +445,66 @@ footer {
   line-height: 1.7;
   margin-bottom: 1.5rem;
 }
+
+/* ===== SKELETON LOADER ===== */
+.skeleton-wrapper {
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e3e3e3 25%, #f1f1f1 50%, #e3e3e3 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.4s infinite;
+  border-radius: 12px;
+  margin: 1rem auto;
+}
+
+.hero-skeleton {
+  height: 260px;
+  width: 100%;
+}
+
+.container-skeleton {
+  padding: 1.2rem;
+}
+
+.skeleton-title {
+  height: 26px;
+  width: 60%;
+}
+
+.skeleton-line {
+  height: 18px;
+  width: 80%;
+}
+
+.skeleton-line.short {
+  width: 40%;
+}
+
+.card-skeleton {
+  height: 120px;
+  width: 100%;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Hidden / visible classes */
+.hidden {
+  opacity: 0;
+  pointer-events: none; /* optional */
+}
+
+.visible {
+  opacity: 1;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
