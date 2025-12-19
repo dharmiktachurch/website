@@ -1,0 +1,80 @@
+<link rel="stylesheet" href="../style/about-testimony.css">
+
+<!-- partials/about-testimony.html -->
+<section class="testimonies-page">
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">Testimonies of Faith</h1>
+      <p class="page-subtitle">Stories of transformation, healing, and God's faithfulness in our community</p>
+    </div>
+
+    <!-- Testimonies Carousel -->
+    <div class="testimonies-carousel">
+      <button class="carousel-nav prev-btn" aria-label="Previous testimony" disabled>
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      
+      <div class="testimonies-container" id="testimonies-container">
+        <div class="loading-testimonies">
+          <div class="loading-spinner"></div>
+          <p>Loading testimonies...</p>
+        </div>
+      </div>
+      
+      <button class="carousel-nav next-btn" aria-label="Next testimony">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Carousel Indicators -->
+    <div class="carousel-indicators" id="carousel-indicators">
+      <!-- Indicators will be added dynamically -->
+    </div>
+
+    <!-- Testimony Counter -->
+    <div class="testimony-counter" id="testimony-counter">
+      <span class="current-slide">1</span> of <span class="total-slides">0</span>
+    </div>
+  </div>
+</section>
+
+<!-- Testimony Template -->
+<template id="testimony-template">
+  <div class="testimony-slide">
+    <div class="testimony-card" data-testimony-id="">
+      <div class="testimony-content-wrapper">
+        <div class="testimony-author-sidebar">
+          <div class="author-avatar-container">
+            <i class=""></i>
+          </div>
+          <div class="author-info">
+            <h3 class="author-name"></h3>
+            <span class="author-role"></span>
+            <div class="testimony-date">
+              <i class="far fa-calendar"></i>
+              <span class="date-text"></span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimony-main-content">
+          <div class="testimony-excerpt">
+            <p></p>
+          </div>
+          <div class="testimony-full" style="display: none;">
+            <!-- Full text paragraphs will be added here -->
+          </div>
+          
+          <div class="testimony-tags">
+            <!-- Tags will be added here -->
+          </div>
+          
+          <button class="read-more-btn">
+            <span class="btn-text">Read More</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
