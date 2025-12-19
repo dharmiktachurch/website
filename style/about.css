@@ -1,4 +1,8 @@
-/* General Reset and Typography */
+/* ============================================
+   ABOUT PAGE - COMPLETE CSS
+   ============================================ */
+
+/* 1. GENERAL RESET AND TYPOGRAPHY */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -11,8 +15,8 @@ body {
   color: #222;
 }
 
-/* NAVBAR SECTION */
- .navbar {
+/* 2. NAVBAR SECTION */
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -161,110 +165,22 @@ body {
   }
 }
 
-
-/* FOOTER SECTION */
-footer {
-  background-color: #ffffff;
-  color: #333;
-  padding: 4rem 2rem 2rem;
-  font-family: 'Poppins', sans-serif;
-}
-
-.footer-content {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: auto;
-}
-
-.footer-section {
-  flex: 1;
-  min-width: 250px;
-  border-top: 2px solid #ccc;
-  padding-top: 1rem;
-}
-
-.footer-section h3 {
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
-  color: #111;
-}
-
-.footer-section p,
-.footer-section li {
-  font-size: 1rem;
-  color: #000;
-  margin: 0.5rem 0;
-}
-
-.footer-section a {
-  color: #000;
-  text-decoration: none;
-  transition: color 0.3s ease, text-decoration 0.3s ease;
-}
-
-.footer-section a:hover {
-  color: #0056b3;
-  text-decoration: underline;
-}
-
-.footer-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.social-icons {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-  justify-content: flex-start; /* Default: align left on desktop */
-}
-
-.social-icon {
-  font-size: 1.6rem;
-  color: #333;
-  transition: color 0.3s ease;
-}
-
-.social-icon:hover {
-  color: #007bff;
-}
-
-.footer-bottom {
-  margin-top: 2rem;
-  text-align: center;
-  color: #777;
-  font-size: 0.95rem;
-}
-
-.footer-bottom .divider {
-  height: 1px;
-  background-color: #ddd;
-  margin-bottom: 1rem;
-  width: 100%;
-}
-
-@media (max-width: 768px) {
-  .footer-content {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .social-icons {
-    justify-content: center;
-  }
-}
-
-/* About Sub-navigation */
+/* 3. ABOUT SUB-NAVIGATION - FIXED */
 .about-nav {
   background-color: #f5f5f5;
   padding: 1rem 2rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.about-nav .container {
+  max-width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.about-nav .container nav {
+  min-width: 500px;
 }
 
 .about-nav ul {
@@ -272,6 +188,9 @@ footer {
   justify-content: center;
   gap: 2rem;
   list-style: none;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
 }
 
 .about-nav a {
@@ -280,12 +199,14 @@ footer {
   font-weight: 500;
   padding: 0.5rem 1rem;
   transition: color 0.3s ease, border-bottom 0.3s ease;
+  display: inline-block;
+  position: relative;
 }
 
 /* Remove button-like design */
 .about-nav a {
-  border-radius: 0; /* Remove rounded corners */
-  padding: 0.5rem 0; /* Remove padding on left and right, add vertical padding */
+  border-radius: 0;
+  padding: 0.5rem 0;
 }
 
 .about-nav a {
@@ -316,9 +237,155 @@ footer {
 }
 
 .about-nav a.active {
-  border-bottom: 3px solid #222; /* Keep the underline on the active link */
+  border-bottom: 3px solid #222;
 }
 
+/* Mobile responsiveness for about-nav */
+@media (max-width: 768px) {
+  .about-nav {
+    padding: 1rem;
+  }
+  
+  .about-nav .container nav {
+    min-width: 400px;
+  }
+  
+  .about-nav ul {
+    gap: 1.5rem;
+    justify-content: flex-start;
+    padding: 0 0.5rem;
+  }
+  
+  .about-nav a {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-nav .container nav {
+    min-width: 350px;
+  }
+  
+  .about-nav ul {
+    gap: 1rem;
+  }
+  
+  .about-nav a {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+}
+
+/* 4. CONTENT WRAPPER & SKELETON LOADER - CENTERED */
+#about-wrapper {
+  position: relative;
+  min-height: 60vh;
+}
+
+/* Skeleton Loader - CENTERED FIX */
+#loading-buffer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background: white;
+  padding: 2rem;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+}
+
+#loading-buffer.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.skeleton-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.hero-skeleton {
+  height: 200px;
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 2rem;
+}
+
+.container-skeleton {
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.skeleton-title {
+  height: 32px;
+  width: 60%;
+  margin: 0 auto 1.5rem;
+}
+
+.skeleton-line {
+  height: 20px;
+  width: 80%;
+  margin: 0 auto 1rem;
+}
+
+.skeleton-line.short {
+  width: 40%;
+  margin: 0 auto 1rem;
+}
+
+.card-skeleton {
+  height: 120px;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 5. ABOUT CONTENT AREA */
+#about-content {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+#about-content.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* 6. COMMON CONTENT STYLES FOR ALL ABOUT PAGES */
 /* Hero Section */
 .hero {
   background: url('../static/images/about-hero.jpg') center/cover no-repeat;
@@ -377,65 +444,396 @@ footer {
   margin-bottom: 1.5rem;
 }
 
-/* ===== SKELETON LOADER ===== */
-.skeleton-wrapper {
-  opacity: 1;
-  transition: opacity 0.6s ease;
+/* Team Page Specific */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
 }
 
-.skeleton {
-  background: linear-gradient(90deg, #e3e3e3 25%, #f1f1f1 50%, #e3e3e3 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.4s infinite;
+.team-member {
+  background: white;
   border-radius: 12px;
-  margin: 1rem auto;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
 }
 
-.hero-skeleton {
-  height: 260px;
-  width: 100%;
+.team-member:hover {
+  transform: translateY(-5px);
 }
 
-.container-skeleton {
-  padding: 1.2rem;
-}
-
-.skeleton-title {
-  height: 26px;
-  width: 60%;
-}
-
-.skeleton-line {
-  height: 18px;
-  width: 80%;
-}
-
-.skeleton-line.short {
-  width: 40%;
-}
-
-.card-skeleton {
+.member-avatar {
+  width: 120px;
   height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: #666;
+  border: 4px solid white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.member-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 0.5rem;
+}
+
+.member-role {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.member-bio {
+  color: #777;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Jesus Page Specific */
+.bible-verse {
+  background: white;
+  border-left: 4px solid #111;
+  padding: 2rem;
+  margin: 2rem 0;
+  font-style: italic;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.bible-verse p {
+  font-size: 1.2rem;
+  color: #444;
+  line-height: 1.8;
+}
+
+.bible-verse .verse-reference {
+  margin-top: 1rem;
+  text-align: right;
+  font-style: normal;
+  font-weight: 500;
+  color: #666;
+}
+
+/* Church Page Specific */
+.timeline {
+  margin: 3rem 0;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #111;
+}
+
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 12px;
+  width: 2px;
+  height: calc(100% + 1.5rem);
+  background: #ddd;
+}
+
+.timeline-item:last-child::after {
+  display: none;
+}
+
+.timeline-year {
+  font-weight: 600;
+  color: #111;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-content {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 7. FOOTER SECTION - ORIGINAL */
+footer {
+  background-color: #ffffff;
+  color: #333;
+  padding: 4rem 2rem 2rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+  border-top: 2px solid #ccc;
+  padding-top: 1rem;
+}
+
+.footer-section h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.footer-section p,
+.footer-section li {
+  font-size: 1rem;
+  color: #000;
+  margin: 0.5rem 0;
+}
+
+.footer-section a {
+  color: #000;
+  text-decoration: none;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.footer-section a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: flex-start;
+}
+
+.social-icon {
+  font-size: 1.6rem;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #007bff;
+}
+
+.footer-bottom {
+  margin-top: 2rem;
+  text-align: center;
+  color: #777;
+  font-size: 0.95rem;
+}
+
+.footer-bottom .divider {
+  height: 1px;
+  background-color: #ddd;
+  margin-bottom: 1rem;
   width: 100%;
 }
 
-@keyframes skeleton-loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
 }
 
-/* Hidden / visible classes */
+/* 8. RESPONSIVE ADJUSTMENTS */
+@media (max-width: 768px) {
+  .hero {
+    padding: 3rem 1.5rem;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+  
+  .content {
+    padding: 2rem 1.5rem;
+  }
+  
+  .container h2 {
+    font-size: 1.8rem;
+  }
+  
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .bible-verse {
+    padding: 1.5rem;
+  }
+  
+  .bible-verse p {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.8rem 1rem;
+  }
+  
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  
+  .timeline-item {
+    padding-left: 1.5rem;
+  }
+  
+  .timeline-content {
+    padding: 1rem;
+  }
+}
+
+/* 9. HIDDEN / VISIBLE CLASSES */
 .hidden {
   opacity: 0;
-  pointer-events: none; /* optional */
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .visible {
   opacity: 1;
+  visibility: visible;
   animation: fadeIn 0.6s ease;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { 
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 10. UTILITY CLASSES */
+.text-center {
+  text-align: center;
+}
+
+.mt-2 { margin-top: 2rem; }
+.mb-2 { margin-bottom: 2rem; }
+.mt-3 { margin-top: 3rem; }
+.mb-3 { margin-bottom: 3rem; }
+
+.shadow-sm {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-md {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.rounded {
+  border-radius: 8px;
+}
+
+/* 11. LOADING STATES */
+.loading-text {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.loading-text i {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #999;
+  display: block;
+}
+
+/* 12. ERROR STATES */
+.error-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.error-state i {
+  font-size: 3rem;
+  color: #dc3545;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.error-state h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.error-state p {
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.error-state button {
+  background: #111;
+  color: white;
+  border: none;
+  padding: 0.9rem 2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.3s ease;
+}
+
+.error-state button:hover {
+  background: #333;
+  transform: translateY(-2px);
 }
