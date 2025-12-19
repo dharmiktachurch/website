@@ -1,5 +1,5 @@
 /* ============================================
-   ABOUT PAGE - COMPLETE CSS
+   ABOUT PAGE - COMPLETE CSS (WITH FIXED SKELETON LOADER)
    ============================================ */
 
 /* 1. GENERAL RESET AND TYPOGRAPHY */
@@ -8,11 +8,13 @@
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
 }
 
 body {
   background: #ffffff;
   color: #222;
+  overflow-x: hidden;
 }
 
 /* 2. NAVBAR SECTION */
@@ -170,6 +172,8 @@ body {
   background-color: #f5f5f5;
   padding: 1rem 2rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 900;
 }
 
 .about-nav .container {
@@ -277,35 +281,42 @@ body {
   }
 }
 
-/* 4. CONTENT WRAPPER & SKELETON LOADER - CENTERED */
+/* 4. CONTENT WRAPPER & SKELETON LOADER - COMPLETELY FIXED */
 #about-wrapper {
   position: relative;
-  min-height: 60vh;
+  min-height: 100vh;
+  width: 100%;
+  transition: min-height 0.3s ease;
 }
 
-/* Skeleton Loader - CENTERED FIX */
+/* Skeleton Loader - FIXED TO COVER EVERYTHING */
 #loading-buffer {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 10;
+  height: 100%;
+  z-index: 100;
   background: white;
-  padding: 2rem;
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 500px;
+  justify-content: flex-start;
+  padding-top: 2rem;
+  overflow: hidden;
+  pointer-events: all;
 }
 
 #loading-buffer.hidden {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .skeleton-wrapper {
@@ -315,13 +326,15 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 2rem;
+  animation: fadeIn 0.3s ease;
 }
 
 .skeleton {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
-  border-radius: 12px;
+  animation: skeleton-loading 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  border-radius: 8px;
   margin-bottom: 1rem;
 }
 
@@ -330,6 +343,8 @@ body {
   width: 100%;
   max-width: 1000px;
   margin-bottom: 2rem;
+  border-radius: 12px;
+  background-color: #f0f0f0;
 }
 
 .container-skeleton {
@@ -341,48 +356,83 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
 }
 
 .skeleton-title {
   height: 32px;
   width: 60%;
   margin: 0 auto 1.5rem;
+  background-color: #f0f0f0;
 }
 
 .skeleton-line {
   height: 20px;
   width: 80%;
   margin: 0 auto 1rem;
+  background-color: #f0f0f0;
 }
 
 .skeleton-line.short {
   width: 40%;
   margin: 0 auto 1rem;
+  background-color: #f0f0f0;
 }
 
 .card-skeleton {
   height: 120px;
   width: 100%;
   margin-bottom: 1rem;
+  border-radius: 8px;
+  background-color: #f0f0f0;
 }
 
 @keyframes skeleton-loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% { 
+    background-position: 200% 0; 
+  }
+  100% { 
+    background-position: -200% 0; 
+  }
 }
 
-/* 5. ABOUT CONTENT AREA */
+/* 5. ABOUT CONTENT AREA - UPDATED FOR SMOOTH TRANSITIONS */
 #about-content {
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s, 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s, 
+              visibility 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+  min-height: 500px;
+  position: relative;
+  z-index: 90;
 }
 
 #about-content.visible {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+#about-content.hidden {
+  display: none;
+}
+
+/* Prevent flash of unstyled content */
+body:has(#loading-buffer:not(.hidden)) #about-content {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+#about-content:not(.visible) {
+  display: none !important;
+}
+
+#about-content.visible {
+  display: block !important;
 }
 
 /* 6. COMMON CONTENT STYLES FOR ALL ABOUT PAGES */
@@ -393,6 +443,7 @@ body {
   padding: 5rem 2rem;
   text-align: center;
   position: relative;
+  animation: fadeIn 0.6s ease;
 }
 
 .hero::before {
@@ -408,6 +459,7 @@ body {
   z-index: 1;
   max-width: 800px;
   margin: auto;
+  animation: slideUp 0.6s ease 0.2s both;
 }
 
 .hero-content h1 {
@@ -425,23 +477,27 @@ body {
 .content {
   padding: 4rem 2rem;
   background: #f9f9f9;
+  animation: fadeIn 0.6s ease;
 }
 
 .container {
   max-width: 1000px;
   margin: auto;
+  animation: slideUp 0.6s ease 0.1s both;
 }
 
 .container h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
   position: relative;
+  animation: fadeIn 0.6s ease 0.2s both;
 }
 
 .container p {
   font-size: 1.1rem;
   line-height: 1.7;
   margin-bottom: 1.5rem;
+  animation: fadeIn 0.6s ease 0.3s both;
 }
 
 /* Team Page Specific */
@@ -450,6 +506,7 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
   margin: 3rem 0;
+  animation: fadeIn 0.6s ease 0.3s both;
 }
 
 .team-member {
@@ -458,11 +515,13 @@ body {
   padding: 2rem;
   text-align: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 0.5s ease both;
 }
 
 .team-member:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .member-avatar {
@@ -478,6 +537,7 @@ body {
   color: #666;
   border: 4px solid white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  animation: scaleIn 0.5s ease;
 }
 
 .member-name {
@@ -509,6 +569,7 @@ body {
   font-style: italic;
   border-radius: 0 8px 8px 0;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  animation: fadeInLeft 0.6s ease;
 }
 
 .bible-verse p {
@@ -528,12 +589,14 @@ body {
 /* Church Page Specific */
 .timeline {
   margin: 3rem 0;
+  animation: fadeIn 0.6s ease 0.2s both;
 }
 
 .timeline-item {
   position: relative;
   padding-left: 2rem;
   margin-bottom: 2.5rem;
+  animation: fadeInRight 0.6s ease both;
 }
 
 .timeline-item::before {
@@ -581,6 +644,8 @@ footer {
   color: #333;
   padding: 4rem 2rem 2rem;
   font-family: 'Poppins', sans-serif;
+  position: relative;
+  z-index: 80;
 }
 
 .footer-content {
@@ -640,11 +705,12 @@ footer {
 .social-icon {
   font-size: 1.6rem;
   color: #333;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .social-icon:hover {
   color: #007bff;
+  transform: translateY(-3px);
 }
 
 .footer-bottom {
@@ -707,6 +773,19 @@ footer {
   .bible-verse p {
     font-size: 1.1rem;
   }
+  
+  /* Skeleton adjustments for mobile */
+  .skeleton-wrapper {
+    padding: 0 1rem;
+  }
+  
+  .hero-skeleton {
+    height: 150px;
+  }
+  
+  .container-skeleton {
+    padding: 1.5rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -725,9 +804,98 @@ footer {
   .timeline-content {
     padding: 1rem;
   }
+  
+  /* Skeleton adjustments for very small screens */
+  .skeleton-title {
+    width: 80%;
+  }
+  
+  .skeleton-line {
+    width: 95%;
+  }
+  
+  .skeleton-line.short {
+    width: 60%;
+  }
 }
 
-/* 9. HIDDEN / VISIBLE CLASSES */
+/* 9. ANIMATION KEYFRAMES */
+@keyframes fadeIn {
+  from { 
+    opacity: 0;
+  }
+  to { 
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from { 
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from { 
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from { 
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from { 
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 10. HIDDEN / VISIBLE CLASSES */
 .hidden {
   opacity: 0;
   visibility: hidden;
@@ -741,18 +909,7 @@ footer {
   animation: fadeIn 0.6s ease;
 }
 
-@keyframes fadeIn {
-  from { 
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to { 
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 10. UTILITY CLASSES */
+/* 11. UTILITY CLASSES */
 .text-center {
   text-align: center;
 }
@@ -774,11 +931,12 @@ footer {
   border-radius: 8px;
 }
 
-/* 11. LOADING STATES */
+/* 12. LOADING STATES */
 .loading-text {
   text-align: center;
   padding: 3rem;
   color: #666;
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 .loading-text i {
@@ -788,7 +946,12 @@ footer {
   display: block;
 }
 
-/* 12. ERROR STATES */
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* 13. ERROR STATES */
 .error-state {
   text-align: center;
   padding: 4rem 2rem;
@@ -797,6 +960,7 @@ footer {
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
   margin: 2rem auto;
   max-width: 600px;
+  animation: fadeIn 0.6s ease;
 }
 
 .error-state i {
@@ -804,6 +968,12 @@ footer {
   color: #dc3545;
   margin-bottom: 1.5rem;
   display: block;
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .error-state h3 {
@@ -836,4 +1006,37 @@ footer {
 .error-state button:hover {
   background: #333;
   transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 14. SMOOTH SCROLL BEHAVIOR */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 15. PERFORMANCE OPTIMIZATIONS */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 16. PRINT STYLES */
+@media print {
+  #loading-buffer,
+  .about-nav,
+  .burger,
+  .footer {
+    display: none !important;
+  }
+  
+  #about-content {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+  }
 }
