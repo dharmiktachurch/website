@@ -86,7 +86,7 @@ function completeCarouselSetup() {
 
 function loadTestimonies() {
   return new Promise((resolve, reject) => {
-    fetch('/data/about-testimony.json')
+    fetch('/data/testimony.json')
       .then(response => {
         if (response.ok) {
           return response.json();
