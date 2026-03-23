@@ -1,62 +1,65 @@
-<link rel="stylesheet" href="../style/events-past.css"> 
-<section class="hero-past-events">
-  <!-- Animated background elements -->
-  <div class="hero-background">
+<!-- partials/events-past.html -->
+<!-- CSS loaded in events.html <head> — no <link> tags here -->
+
+<!-- ── Hero ── -->
+<section class="events-past-hero">
+
+  <!-- SVG artwork: cool-charcoal version of the site's geometric hero style -->
+  <svg class="hero-bg" viewBox="0 0 1400 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- Rings — slightly cooler tint than warm-amber to feel archival -->
+    <circle cx="700" cy="780" r="480" fill="none" stroke="rgba(160,190,220,0.08)" stroke-width="1.5"/>
+    <circle cx="700" cy="780" r="620" fill="none" stroke="rgba(160,190,220,0.05)" stroke-width="1"/>
+    <circle cx="90"  cy="90"  r="200" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+    <line x1="280"  y1="0" x2="280"  y2="560" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    <line x1="560"  y1="0" x2="560"  y2="560" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
+    <line x1="840"  y1="0" x2="840"  y2="560" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
+    <line x1="1120" y1="0" x2="1120" y2="560" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    <!-- Cross — cooler silver tone -->
+    <rect x="1292" y="52" width="4" height="64" rx="2" fill="rgba(180,200,220,0.32)"/>
+    <rect x="1264" y="80" width="60" height="4"  rx="2" fill="rgba(180,200,220,0.32)"/>
+    <!-- Dot grid -->
+    <g fill="rgba(255,255,255,0.08)">
+      <circle cx="60"  cy="450" r="2"/><circle cx="90"  cy="450" r="2"/>
+      <circle cx="120" cy="450" r="2"/><circle cx="150" cy="450" r="2"/>
+      <circle cx="60"  cy="480" r="2"/><circle cx="90"  cy="480" r="2"/>
+      <circle cx="120" cy="480" r="2"/><circle cx="150" cy="480" r="2"/>
+    </g>
+  </svg>
+
+  <div class="about-hero-content">
+    <span class="eyebrow">Dharmikta Mandali</span>
+    <h1>Past Events</h1>
+    <p class="hero-sub">A record of the moments, milestones, and memories that have shaped our community.</p>
   </div>
-  
-  <!-- Main content -->
-  <div class="hero-content-container">
-    <div class="hero-content">
-      <!-- Text content with decorative elements -->
-      <div class="hero-text">
-        <div class="title-wrapper">
-          <div class="pre-title">Our Legacy</div>
-          <h1 class="hero-title">
-            <span class="title-line">Journey Through</span>
-            <span class="title-line accent">Time</span>
-          </h1>
-        </div>
-        <p class="hero-subtitle">Relive the unforgettable moments that defined our collective story</p>
-      </div>
-      
-      <!-- Enhanced CTA with micro-interactions -->
-      <div class="hero-cta">
-        <a href="#events" class="scroll-down-btn">
-          <span class="btn-text">Explore Our History</span>
-          <span class="btn-icon">
-            <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
-            </svg>
-          </span>
-          <span class="btn-hover-effect"></span>
-        </a>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Decorative bottom curve -->
-  <div class="hero-bottom-curve"></div>
+
 </section>
 
-<section class="events" id="events">
-  <div class="container">
-    <div class="section-header">
-      <div id="events">
-        <h2 class="section-title">Timeline of Memories</h2>
-      </div>
-      <p class="section-subtitle">Every event tells a part of our story</p>
-      <div class="timeline-filter">
-        <button class="filter-btn active" data-filter="all">All Events</button>
-        <button class="filter-btn" data-filter="conference">Conferences</button>
-        <button class="filter-btn" data-filter="workshop">Workshops</button>
-        <button class="filter-btn" data-filter="celebration">Celebrations</button>
-        <button class="filter-btn" data-filter="others">Others</button>
-      </div>
-    </div>
-    <div id="event-container" class="event-container">
-      <div class="loading-spinner">
-        <div class="spinner-circle"></div>
-      </div>
+<!-- ── Past events body ── -->
+<div class="events-body">
+
+  <div class="events-section-header">
+    <h2 class="events-section-title">Event History</h2>
+  </div>
+
+  <div class="events-filters" id="events-filters">
+    <button class="filter-pill active" data-filter="all">All</button>
+    <button class="filter-pill" data-filter="conference">Conference</button>
+    <button class="filter-pill" data-filter="workshop">Workshop</button>
+    <button class="filter-pill" data-filter="celebration">Celebration</button>
+    <button class="filter-pill" data-filter="others">Others</button>
+  </div>
+
+  <div class="timeline" id="event-container">
+    <div class="events-spinner">
+      <div class="spinner-ring"></div>
+      Loading history…
     </div>
   </div>
-</section>
+
+  <div class="load-more-wrap">
+    <button class="load-more-btn" id="load-more-btn" hidden>
+      Load More
+    </button>
+  </div>
+
+</div>

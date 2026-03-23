@@ -3,21 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Events - Dharmikta Church</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style/events.css">
+  <title>Events — Dharmikta Church</title>
   <link rel="icon" type="image/png" href="static/images/Favicon.png" />
+  <!-- Poppins — same weights as about + services pages -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <!-- ALL CSS loaded upfront — prevents FOUC when partials inject -->
+  <link rel="stylesheet" href="style/events.css" />
+  <link rel="stylesheet" href="style/events-upcoming.css" />
+  <link rel="stylesheet" href="style/events-past.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <!-- script.js handles the burger menu toggle -->
   <script src="script/script.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/tabletop@1.6.1"></script>
+  <!-- events.js handles content loading + CSV + calendar -->
   <script src="script/events.js" defer></script>
 </head>
 <body>
-  <!-- Navbar HTML -->
+
+  <!-- ── Navbar ── -->
   <nav class="navbar">
     <a href="index.html" class="logo-link">
       <div class="logo-container">
-        <img src="static/images/logo.png" alt="Church Logo" class="church-logo" />
+        <img src="static/images/logo.png" alt="Dharmikta Mandali" class="church-logo" />
         <div class="logo-text">Dharmikta Church</div>
       </div>
     </a>
@@ -38,34 +44,39 @@
     </div>
   </nav>
 
+  <!-- ── Events sub-nav ── -->
+  <!--
+    Flat ul — no container/nav wrapper (same fix as about.html).
+    events.js selects ".events-nav a" directly.
+  -->
   <div class="events-nav">
-    <nav>
-      <ul>
-        <li><a href="#" data-page="events-upcoming" class="active">UPCOMING</a></li>
-        <li><a href="#" data-page="events-past">PAST</a></li>
-      </ul>
-    </nav>
+    <ul>
+      <li><a href="#" data-page="events-upcoming" class="active">Upcoming</a></li>
+      <li><a href="#" data-page="events-past">Past</a></li>
+    </ul>
   </div>
-  <!-- Dynamic Content Wrapper -->
+
+  <!-- ── Dynamic content ── -->
   <div id="events-wrapper">
-    <!-- Skeleton Loader -->
-    <div id="loading-buffer" class="skeleton-wrapper">
+
+    <!-- Skeleton: mimics a hero bar + card grid so the transition feels natural -->
+    <div id="loading-buffer">
+      <div class="skeleton skeleton-hero"></div>
       <div class="skeleton skeleton-title"></div>
       <div class="skeleton skeleton-line"></div>
-      <div class="skeleton skeleton-line short"></div>
-
       <div class="skeleton event-card-skeleton"></div>
       <div class="skeleton event-card-skeleton"></div>
       <div class="skeleton event-card-skeleton"></div>
     </div>
 
-    <!-- Actual events content will be loaded here -->
-    <div id="events-content" style="display:none;"></div>
+    <!-- Partial content injected here -->
+    <div id="events-content"></div>
+
   </div>
 
+  <!-- ── Footer ── -->
   <footer class="footer">
     <div class="footer-content">
-      <!-- Contact Section -->
       <div class="footer-section">
         <h3>Contact Us</h3>
         <p><i class="fas fa-map-marker-alt"></i>
@@ -73,15 +84,9 @@
             Gokul Awas Rd, Bhaisepati-25, Lalitpur, Nepal
           </a>
         </p>
-        <p><i class="fas fa-phone"></i>
-          <a href="tel:+9779841258639">9841258639</a>
-        </p>
-        <p><i class="fas fa-envelope"></i>
-          <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a>
-        </p>
+        <p><i class="fas fa-phone"></i> <a href="tel:+9779841258639">9841258639</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#c2a1aab7b0a1aaa6aaa3b0afaba9b6a382a5afa3abaeeca1adaf"><span class="__cf_email__" data-cfemail="e4878c9196878c808c8596898d8f9085a48389858d88ca878b89">[email&#160;protected]</span></a></p>
       </div>
-
-      <!-- Quick Links Section -->
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
@@ -90,8 +95,6 @@
           <li><a href="events.html">Events</a></li>
         </ul>
       </div>
-
-      <!-- Social Media Section -->
       <div class="footer-section">
         <h3>Follow Us</h3>
         <div class="social-icons">
@@ -101,99 +104,4 @@
         </div>
       </div>
     </div>
-
-    <div class="footer-bottom">
-      <div class="divider"></div>
-      <p>&copy; 2025 Dharmikta Mandali. All Rights Reserved.</p>
-    </div>
-  </footer>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-  const navLinks = document.querySelectorAll(".events-nav nav a");
-  const contentDiv = document.getElementById("events-content");
-  const loadingBuffer = document.getElementById("loading-buffer");
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const pageParam = urlParams.get("page") || "events-upcoming";
-
-  /* ---------------------------
-     LOADER FUNCTIONS
-  ---------------------------- */
-  function showLoader() {
-    loadingBuffer.style.display = "block";
-    loadingBuffer.classList.remove("hidden");
-    contentDiv.style.display = "none";
-    contentDiv.classList.remove("visible");
-  }
-
-  function hideLoader() {
-    loadingBuffer.classList.add("hidden");
-    setTimeout(() => {
-      loadingBuffer.style.display = "none";
-      contentDiv.style.display = "block";
-      contentDiv.classList.add("visible");
-    }, 600);
-  }
-
-  /* ---------------------------
-     LOAD CONTENT
-  ---------------------------- */
-  function loadContent(page) {
-    showLoader();
-
-    fetch(`partials/${page}.html`)
-      .then((res) => res.text())
-      .then((html) => {
-        contentDiv.innerHTML = html;
-        hideLoader();
-      })
-      .catch((err) => {
-        console.error("Error loading content:", err);
-        contentDiv.innerHTML = "<p>Sorry, content could not be loaded.</p>";
-        hideLoader();
-      });
-  }
-
-  /* ---------------------------
-     SET ACTIVE LINK
-  ---------------------------- */
-  function setActiveLink(page) {
-    navLinks.forEach((link) => link.classList.remove("active"));
-    const activeLink = document.querySelector(`.events-nav a[data-page="${page}"]`);
-    if (activeLink) activeLink.classList.add("active");
-  }
-
-  /* ---------------------------
-     INITIAL LOAD
-  ---------------------------- */
-  loadContent(pageParam);
-  setActiveLink(pageParam);
-
-  /* ---------------------------
-     NAVIGATION CLICKS
-  ---------------------------- */
-  navLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const page = link.getAttribute("data-page");
-      history.pushState(null, "", `?page=${page}`);
-      loadContent(page);
-      setActiveLink(page);
-    });
-  });
-
-  /* ---------------------------
-     BACK / FORWARD BUTTON
-  ---------------------------- */
-  window.addEventListener("popstate", () => {
-    const page = new URLSearchParams(window.location.search).get("page") || "events-upcoming";
-    loadContent(page);
-    setActiveLink(page);
-  });
-});
-
-</script>
-
-</body>
-</html>
+    <div class="footer-b

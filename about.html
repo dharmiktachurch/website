@@ -7,13 +7,14 @@
   <link rel="icon" type="image/png" href="static/images/Favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <!-- ALL CSS in one file — about.css includes testimony/carousel styles -->
   <link rel="stylesheet" href="style/about.css">
   <script src="script/script.js" defer></script>
   <script src="script/about.js" defer></script>
   <script src="script/about-testimony.js" defer></script>
 </head>
 <body>
-  <!-- Navbar HTML -->
+  <!-- Navbar -->
   <nav class="navbar">
     <a href="index.html" class="logo-link">
       <div class="logo-container">
@@ -40,42 +41,49 @@
 
   <!-- About Sub-Navigation -->
   <section class="about-nav">
-    <div class="container">
-      <nav>
-        <ul>
-          <li><a href="#" data-page="about-jesus">Jesus</a></li>
-          <li><a href="#" data-page="about-church">Our Church</a></li>
-          <li><a href="#" data-page="about-team">Our Team</a></li>
-          <li><a href="#" data-page="about-testimony">Testimonies</a></li>
-        </ul>
-      </nav>
-    </div>
+    <ul>
+      <li><a href="#" data-page="about-jesus">Jesus</a></li>
+      <li><a href="#" data-page="about-church">Our Church</a></li>
+      <li><a href="#" data-page="about-team">Our Team</a></li>
+      <li><a href="#" data-page="about-testimony">Testimony</a></li>
+    </ul>
   </section>
 
   <!-- Dynamic Content Wrapper -->
   <div id="about-wrapper">
-    <div id="loading-buffer" class="skeleton-wrapper">
-      <div class="skeleton hero-skeleton"></div>
 
-      <div class="skeleton container-skeleton">
-        <div class="skeleton skeleton-title"></div>
-        <div class="skeleton skeleton-line"></div>
-        <div class="skeleton skeleton-line short"></div>
+    <!--
+      SKELETON LOADER
+      ─────────────────────────────────────────────────────────────
+      • Uses inline styles for instant rendering — no class toggling lag.
+      • Positioned absolute over #about-content so it doesn't affect layout height.
+      • about.js drives visibility via style.opacity / style.display.
+    -->
+    <div id="loading-buffer" aria-hidden="true">
+      <div class="skeleton-wrapper">
+        <!-- Hero bar -->
+        <div class="skeleton hero-skeleton"></div>
 
-        <div class="skeleton card-skeleton"></div>
-        <div class="skeleton card-skeleton"></div>
-        <div class="skeleton card-skeleton"></div>
-
-        <div class="skeleton skeleton-title"></div>
-        <div class="skeleton skeleton-line"></div>
+        <!-- Card block -->
+        <div class="container-skeleton">
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line short"></div>
+          <div class="skeleton card-skeleton"></div>
+          <div class="skeleton card-skeleton"></div>
+          <div class="skeleton card-skeleton"></div>
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-line"></div>
+        </div>
       </div>
     </div>
-    <div id="about-content" style="display:none;"></div>
+
+    <!-- Actual page content injected here by about.js -->
+    <div id="about-content"></div>
   </div>
 
   <footer class="footer">
     <div class="footer-content">
-      <!-- Contact Section -->
       <div class="footer-section">
         <h3>Contact Us</h3>
         <p><i class="fas fa-map-marker-alt"></i>
@@ -87,11 +95,10 @@
           <a href="tel:+9779841258639">9841258639</a>
         </p>
         <p><i class="fas fa-envelope"></i>
-          <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a>
+          <a href="/cdn-cgi/l/email-protection#2c4f44595e4f4448444d5e414547584d6c4b414d4540024f4341"><span class="__cf_email__" data-cfemail="05666d7077666d616d6477686c6e7164456268646c692b666a68">[email&#160;protected]</span></a>
         </p>
       </div>
 
-      <!-- Quick Links Section -->
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
@@ -101,7 +108,6 @@
         </ul>
       </div>
 
-      <!-- Social Media Section -->
       <div class="footer-section">
         <h3>Follow Us</h3>
         <div class="social-icons">
@@ -112,10 +118,4 @@
       </div>
     </div>
 
-    <div class="footer-bottom">
-      <div class="divider"></div>
-      <p>&copy; 2025 Dharmikta Mandali. All Rights Reserved.</p>
-    </div>
-  </footer>
-</body>
-</html>
+    <div class="footer-

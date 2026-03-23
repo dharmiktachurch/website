@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notices & Schedules - Dharmikta Church</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style/notices.css">
+  <title>Notices & Schedules — Dharmikta Church</title>
   <link rel="icon" type="image/png" href="static/images/Favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style/notices.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <script src="script/script.js" defer></script>
   <script src="script/notices.js" defer></script>
 </head>
 <body>
-  <!-- Navbar HTML -->
+
+  <!-- ── Navbar ── -->
   <nav class="navbar">
     <a href="index.html" class="logo-link">
       <div class="logo-container">
-        <img src="static/images/logo.png" alt="Church Logo" class="church-logo" />
+        <img src="static/images/logo.png" alt="Dharmikta Mandali" class="church-logo" />
         <div class="logo-text">Dharmikta Church</div>
       </div>
     </a>
-
     <ul class="nav-links" id="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
@@ -29,48 +29,84 @@
       <li><a href="notices.html">Notices</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-
     <div class="burger" id="burger">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
+      <div class="line"></div><div class="line"></div><div class="line"></div>
     </div>
   </nav>
 
-  <div class="notices-header">
-    <h1>Church Notices & Schedules</h1>
-    <p>Stay updated with the latest announcements and worship schedules</p>
-    <i class="fas fa-cross decorative cross"></i>
-    <i class="fas fa-dove decorative dove"></i>
-  </div>
+  <!-- ── Hero ── -->
+  <header class="notices-header">
 
+    <!-- Same SVG artwork language as services/events heroes -->
+    <svg viewBox="0 0 1400 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Arc rings -->
+      <circle cx="700" cy="780" r="480" fill="none" stroke="rgba(210,175,110,0.10)" stroke-width="1.5"/>
+      <circle cx="700" cy="780" r="620" fill="none" stroke="rgba(210,175,110,0.07)" stroke-width="1"/>
+      <circle cx="700" cy="780" r="770" fill="none" stroke="rgba(210,175,110,0.04)" stroke-width="1"/>
+      <circle cx="90"  cy="90"  r="190" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <!-- Vertical grid lines -->
+      <line x1="280"  y1="0" x2="280"  y2="560" stroke="rgba(255,255,255,0.03)"  stroke-width="1"/>
+      <line x1="560"  y1="0" x2="560"  y2="560" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+      <line x1="840"  y1="0" x2="840"  y2="560" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+      <line x1="1120" y1="0" x2="1120" y2="560" stroke="rgba(255,255,255,0.03)"  stroke-width="1"/>
+      <!-- Amber cross accent -->
+      <rect x="1292" y="52" width="4"  height="64" rx="2" fill="rgba(210,175,110,0.38)"/>
+      <rect x="1264" y="80" width="60" height="4"  rx="2" fill="rgba(210,175,110,0.38)"/>
+      <!-- Dot grid -->
+      <g fill="rgba(255,255,255,0.09)">
+        <circle cx="60"  cy="450" r="2"/><circle cx="90"  cy="450" r="2"/>
+        <circle cx="120" cy="450" r="2"/><circle cx="150" cy="450" r="2"/>
+        <circle cx="60"  cy="480" r="2"/><circle cx="90"  cy="480" r="2"/>
+        <circle cx="120" cy="480" r="2"/><circle cx="150" cy="480" r="2"/>
+      </g>
+      <!-- Diagonal wash -->
+      <polygon points="1100,0 1400,0 1400,240" fill="rgba(210,175,110,0.04)"/>
+    </svg>
+
+    <div class="notices-hero-content">
+      <span class="eyebrow">Dharmikta Mandali</span>
+      <h1>Notices & Schedules</h1>
+      <p>Stay updated with the latest announcements, service rosters, and fellowship schedules.</p>
+    </div>
+
+  </header>
+
+  <!-- ── Main content ── -->
   <div class="main-container">
-    <!-- Modern Tab Navigation -->
+
+    <!-- Sub-nav tabs -->
     <div class="schedules-nav">
       <nav>
         <ul>
-          <li><a href="#" data-page="notices" class="active">
-            <i class="fas fa-bullhorn"></i>
-            <span>Announcements</span>
-          </a></li>
-          <li><a href="#" data-page="leaders-schedule">
-            <i class="fas fa-users"></i>
-            <span>Service Schedules</span>
-          </a></li>
-          <li><a href="#" data-page="house-fellowship">
-            <i class="fas fa-home"></i>
-            <span>House Fellowship</span>
-          </a></li>
+          <li>
+            <a href="#" data-page="notices" class="active">
+              <i class="fas fa-bullhorn"></i>
+              <span>Announcements</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-page="leaders-schedule">
+              <i class="fas fa-users"></i>
+              <span>Service Schedule</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-page="house-fellowship">
+              <i class="fas fa-home"></i>
+              <span>House Fellowship</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
 
-    <!-- Notices Container (default visible) -->
+    <!-- ── Tab: Announcements ── -->
     <div id="notices-container" class="tab-content active">
+
       <div class="notices-filter">
         <button class="filter-btn active" data-filter="all">
           <i class="fas fa-list"></i>
-          <span>All Announcements</span>
+          <span>All</span>
         </button>
         <button class="filter-btn" data-filter="urgent">
           <i class="fas fa-exclamation-circle"></i>
@@ -89,33 +125,37 @@
       <div id="notices-content">
         <div class="loading-spinner">
           <div class="spinner-circle"></div>
-          <p>Loading announcements...</p>
+          <p>Loading announcements…</p>
         </div>
       </div>
+
     </div>
 
-    <!-- Leaders Schedule Container -->
+    <!-- ── Tab: Service Schedule ── -->
     <div id="leaders-schedule-container" class="tab-content">
+
+      <!-- This week's roles — injected by JS -->
       <div class="today-highlight">
         <div class="highlight-card">
           <div id="this-week-roles">
             <div class="loading-spinner">
               <div class="spinner-circle"></div>
-              <p>Loading your roles...</p>
+              <p>Loading this week's roles…</p>
             </div>
           </div>
         </div>
       </div>
-      
+
+      <!-- Full schedule table -->
       <div class="schedule-table-container">
         <table class="schedule-table">
           <thead>
             <tr>
-              <th>Date<br><small>(मिति)</small></th>
-              <th>Service Lead<br><small>(सेवा सञ्चालन)</small></th>
-              <th>Worship Lead<br><small>(आराधना)</small></th>
-              <th>Preaching<br><small>(प्रचार)</small></th>
-              <th>The Altar Prayer<br><small>(बेदीको प्रार्थना)</small></th>
+              <th>Date<br><small>मिति</small></th>
+              <th>Service Lead<br><small>सेवा सञ्चालन</small></th>
+              <th>Worship Lead<br><small>आराधना</small></th>
+              <th>Preaching<br><small>प्रचार</small></th>
+              <th>Altar Prayer<br><small>बेदीको प्रार्थना</small></th>
             </tr>
           </thead>
           <tbody id="leaders-schedule-content">
@@ -123,36 +163,40 @@
               <td colspan="5">
                 <div class="loading-spinner">
                   <div class="spinner-circle"></div>
-                  <p>Loading worship schedule...</p>
+                  <p>Loading worship schedule…</p>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+
     </div>
 
-    <!-- House Fellowship Container -->
+    <!-- ── Tab: House Fellowship ── -->
     <div id="house-fellowship-container" class="tab-content">
+
+      <!-- Today's fellowships — injected by JS -->
       <div class="today-highlight">
         <div class="highlight-card">
           <div id="today-fellowships">
             <div class="loading-spinner">
               <div class="spinner-circle"></div>
-              <p>Loading today's fellowships...</p>
+              <p>Loading today's fellowships…</p>
             </div>
           </div>
         </div>
       </div>
-      
+
+      <!-- Full fellowship table -->
       <div class="schedule-table-container">
         <table class="schedule-table">
           <thead>
             <tr>
-              <th>Fellowship Day<br><small>(घरेलु संगतिको दिन)</small></th>
-              <th>Hosting Family<br><small>(घरेलु संगति आयोजना गर्ने परिवार)</small></th>
-              <th>Fellowship Leaders<br><small>(अगुवाहरू)</small></th>
-              <th>Fellowship Frequency<br><small>(महिनामा हुने पटक)</small></th>
+              <th>Day<br><small>घरेलु संगतिको दिन</small></th>
+              <th>Hosting Family<br><small>आयोजना गर्ने परिवार</small></th>
+              <th>Leaders<br><small>अगुवाहरू</small></th>
+              <th>Frequency<br><small>महिनामा हुने पटक</small></th>
             </tr>
           </thead>
           <tbody id="house-fellowship-content">
@@ -160,19 +204,21 @@
               <td colspan="4">
                 <div class="loading-spinner">
                   <div class="spinner-circle"></div>
-                  <p>Loading fellowship groups...</p>
+                  <p>Loading fellowship groups…</p>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
 
+    </div>
+
+  </div><!-- /.main-container -->
+
+  <!-- ── Footer ── -->
   <footer class="footer">
     <div class="footer-content">
-      <!-- Contact Section -->
       <div class="footer-section">
         <h3>Contact Us</h3>
         <p><i class="fas fa-map-marker-alt"></i>
@@ -180,15 +226,9 @@
             Gokul Awas Rd, Bhaisepati-25, Lalitpur, Nepal
           </a>
         </p>
-        <p><i class="fas fa-phone"></i>
-          <a href="tel:+9779841258639">9841258639</a>
-        </p>
-        <p><i class="fas fa-envelope"></i>
-          <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a>
-        </p>
+        <p><i class="fas fa-phone"></i> <a href="tel:+9779841258639">9841258639</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a></p>
       </div>
-
-      <!-- Quick Links Section -->
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
@@ -197,8 +237,6 @@
           <li><a href="events.html">Events</a></li>
         </ul>
       </div>
-
-      <!-- Social Media Section -->
       <div class="footer-section">
         <h3>Follow Us</h3>
         <div class="social-icons">
@@ -208,11 +246,11 @@
         </div>
       </div>
     </div>
-
     <div class="footer-bottom">
       <div class="divider"></div>
       <p>&copy; 2025 Dharmikta Mandali. All Rights Reserved.</p>
     </div>
   </footer>
+
 </body>
 </html>

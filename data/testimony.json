@@ -10,9 +10,7 @@
         "After years of anxiety, I found peace at Dharmikta Mandali. The prayer meetings and community support transformed my life completely.",
         "One evening during worship, I felt God's presence so strongly that all my worries melted away. The teachings from God's Word gave me a new perspective on life.",
         "Now I serve in the prayer ministry, helping others find the same peace I discovered. God truly gives peace that surpasses all understanding."
-      ],
-      "tags": ["Healing", "Peace", "Anxiety"],
-      "icon": ""
+      ]
     },
     {
       "id": 2,
@@ -24,9 +22,7 @@
         "God provided miraculously when I lost my job. Our church family stood with me, and doors opened that I never expected.",
         "Through the unemployment period, I learned to trust God's provision completely. Members helped with groceries, prayer, and job leads.",
         "Today, I have a better job than before, and I'm able to help others going through similar situations. God makes all things work together for good."
-      ],
-      "tags": ["Provision", "Job", "Faith"],
-      "icon": "fas fa-briefcase"
+      ]
     },
     {
       "id": 3,
@@ -38,9 +34,7 @@
         "Our family was restored through the marriage seminar. God healed our relationships in ways we never thought possible.",
         "The biblical principles we learned helped us communicate better and forgive each other. The counseling sessions with our pastors were invaluable.",
         "Today, our family is stronger than ever. We're now serving together in ministry and helping other families find healing."
-      ],
-      "tags": ["Family", "Healing", "Restoration"],
-      "icon": "fas fa-home"
+      ]
     },
     {
       "id": 4,
@@ -52,9 +46,7 @@
         "Doctors called it a miracle when I recovered from my illness. I call it God's healing power through the prayers of our church.",
         "Every Sunday, members would lay hands on me and pray. The prayer chain never stopped. I felt carried by the faith of our community.",
         "At my last checkup, the doctors were amazed. They called it 'remarkable recovery.' I call it a miracle from God."
-      ],
-      "tags": ["Healing", "Miracle", "Prayer"],
-      "icon": "fas fa-hands-praying"
+      ]
     },
     {
       "id": 5,
@@ -66,9 +58,7 @@
         "I was delivered from addiction through the support of our men's ministry. God broke chains that held me for 15 years.",
         "The accountability and prayer from brothers in Christ gave me strength. Scripture memorization became my weapon against temptation.",
         "Today, I lead a support group helping others find freedom in Christ. What God has done for me, He can do for anyone."
-      ],
-      "tags": ["Deliverance", "Freedom", "Recovery"],
-      "icon": "fas fa-cross"
+      ]
     },
     {
       "id": 6,
@@ -80,9 +70,7 @@
         "God called me to missions through a sermon at Dharmikta. Now I serve in rural areas sharing the Gospel.",
         "The training and support from the church prepared me for this work. I saw God's faithfulness in providing for all my needs.",
         "Every soul saved in the villages is a testimony to God's grace. I'm grateful for the church that equipped and sent me."
-      ],
-      "tags": ["Calling", "Missions", "Service"],
-      "icon": "fas fa-globe-asia"
+      ]
     }
   ]
 }

@@ -1,468 +1,303 @@
-// TESTIMONIES CAROUSEL - CLEANED VERSION
+// ============================================================
+// ABOUT-TESTIMONY.JS — TESTIMONIES CAROUSEL
+// ============================================================
+// Key fixes vs previous version:
+//   1. querySelector target changed from '.testimonies-page' (old HTML)
+//      to '.about-testimony-page' (unified HTML structure)
+//   2. Template lookup now searches the full document, not just the
+//      container — templates are siblings, not children of the carousel
+//   3. initializeTestimoniesPage is safe to call multiple times
+//   4. Keyboard listener is scoped + cleaned up to avoid stacking
+// ============================================================
 
-// Global variables
-let currentSlide = 0;
-let totalSlides = 0;
-let testimoniesData = [];
-let track = null;
-let carouselInitialized = false;
+let currentSlide     = 0;
+let totalSlides      = 0;
+let testimoniesData  = [];
+let track            = null;
 let autoSlideInterval = null;
+let keydownHandler   = null;   // kept so we can remove it on re-init
 
-// Cache DOM elements
-let testimoniesPage = null;
-let container = null;
+// ── Entry point called by about.js ─────────────────────────────────────────
+window.initializeTestimoniesPage = function () {
+  // Clean up any previous instance
+  _cleanup();
 
-// Main initialization function - called from about.js
-window.initializeTestimoniesPage = function() {
-  testimoniesPage = document.querySelector('.testimonies-page');
-  container = document.getElementById('testimonies-container');
-  
-  if (!testimoniesPage) {
-    return;
-  }
-  
-  // Reset page state
-  testimoniesPage.classList.remove('loaded');
-  
-  // Initialize carousel
-  initializeTestimoniesCarousel();
-};
+  const container = document.getElementById('testimonies-container');
+  if (!container) return;
 
-function initializeTestimoniesCarousel() {
-  // Clear any existing interval
-  if (autoSlideInterval) {
-    clearInterval(autoSlideInterval);
-    autoSlideInterval = null;
-  }
-  
-  if (!container) {
-    return;
-  }
-  
-  // Show loading state
+  // Show spinner while fetching
   container.innerHTML = `
     <div class="loading-testimonies">
       <div class="loading-spinner"></div>
-      <p>Loading testimonies...</p>
-    </div>
-  `;
-  
-  // Load data immediately
+      <p>Loading testimonies…</p>
+    </div>`;
+
   loadTestimonies()
     .then(data => {
-      testimoniesData = data;
-      completeCarouselSetup();
+      testimoniesData = Array.isArray(data) ? data : [];
+      _setup(container);
     })
-    .catch(error => {
-      console.error('Error loading testimonies:', error);
-      useFallbackData();
-      completeCarouselSetup();
+    .catch(() => {
+      testimoniesData = _fallbackData();
+      _setup(container);
     });
+};
+
+// ── Cleanup previous listeners / timers ────────────────────────────────────
+function _cleanup() {
+  if (autoSlideInterval) { clearInterval(autoSlideInterval); autoSlideInterval = null; }
+  if (keydownHandler)    { document.removeEventListener('keydown', keydownHandler); keydownHandler = null; }
+  currentSlide = 0;
+  totalSlides  = 0;
+  track        = null;
 }
 
-function completeCarouselSetup() {
-  carouselInitialized = true;
-  totalSlides = testimoniesData.length;
-  
-  // Render testimonies
-  renderTestimonies();
-  
-  // Setup carousel controls if we have data
-  if (testimoniesData.length > 0) {
-    setupCarousel();
-    
-    if (totalSlides > 1) {
-      startAutoSlide();
-    }
-  } else {
-    showNoTestimoniesMessage();
-  }
-  
-  // Show page content
-  if (testimoniesPage) {
-    testimoniesPage.classList.add('loaded');
-  }
-}
-
+// ── Fetch testimony data ────────────────────────────────────────────────────
 function loadTestimonies() {
-  return new Promise((resolve, reject) => {
-    fetch('/data/testimony.json')
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error(`HTTP ${response.status}`);
-      })
-      .then(data => {
-        resolve(data.testimonies || data || []);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+  return fetch('/data/testimony.json')
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(data => data.testimonies || data || []);
 }
 
-function useFallbackData() {
-  testimoniesData = [
+// ── Fallback data if fetch fails ────────────────────────────────────────────
+function _fallbackData() {
+  return [
     {
       id: 1,
       author: "John Smith",
       role: "Church Member",
       date: "January 2024",
       excerpt: "God's grace transformed my life in ways I never imagined possible.",
-      fullText: ["God's grace transformed my life in ways I never imagined possible. Through prayer and faith, I found peace and purpose."],
-      tags: ["Transformation", "Faith"],
-      icon: "fas fa-user"
+      fullText: ["God's grace transformed my life in ways I never imagined possible. Through prayer and faith, I found peace and purpose that I had been searching for my entire life."]
     },
     {
       id: 2,
       author: "Sarah Johnson",
       role: "Youth Leader",
       date: "December 2023",
-      excerpt: "Finding community in this church has been a blessing to my family.",
-      fullText: ["Finding community in this church has been a blessing to my family. The support and love we've received have helped us through difficult times."],
-      tags: ["Community", "Family"],
-      icon: "fas fa-heart"
+      excerpt: "Finding community in this church has been a blessing to my whole family.",
+      fullText: ["Finding community in this church has been a blessing to my whole family. The support and love we've received have helped us through the most difficult seasons of our lives."]
     }
   ];
 }
 
-function showNoTestimoniesMessage() {
-  if (container) {
+// ── Main setup after data is ready ─────────────────────────────────────────
+function _setup(container) {
+  totalSlides = testimoniesData.length;
+
+  if (totalSlides === 0) {
     container.innerHTML = `
-      <div class="error-state">
-        <i class="fas fa-exclamation-circle"></i>
-        <h3>No Testimonies Available</h3>
-        <p>There are no testimonies to display at the moment.</p>
-        <button class="retry-btn" onclick="window.testimoniesCarousel.refresh()">
-          <i class="fas fa-redo"></i>
-          Try Again
-        </button>
-      </div>
-    `;
+      <div class="error-state" style="position:static;">
+        <h3>No Testimonies Yet</h3>
+        <p>Be the first to share what God has done in your life.</p>
+      </div>`;
+    return;
   }
+
+  _renderSlides(container);
+  _setupNavigation();
+  _goToSlide(0, false);           // go to first without animation
+
+  if (totalSlides > 1) _startAutoSlide();
 }
 
-function renderTestimonies() {
-  if (!container) return;
-  
-  // Clear container
+// ── Render all testimony slides ─────────────────────────────────────────────
+function _renderSlides(container) {
   container.innerHTML = '';
-  
-  // Create track
+
   track = document.createElement('div');
   track.className = 'testimonies-track';
   track.id = 'testimonies-track';
-  
+
+  // Template lives in the same partial — it's a sibling of the carousel section
+  // document.getElementById works regardless of where in #about-content it sits
   const template = document.getElementById('testimony-template');
   if (!template) {
-    container.innerHTML = '<p class="error-state">Error: Template not found</p>';
+    container.innerHTML = '<p style="padding:2rem;color:#666;">Error: testimony template not found.</p>';
     return;
   }
-  
-  // Render each testimony
+
   testimoniesData.forEach((testimony, index) => {
     const clone = template.content.cloneNode(true);
-    const slide = clone.querySelector('.testimony-slide');
-    const card = clone.querySelector('.testimony-card');
-    const icon = clone.querySelector('.author-avatar-container i');
-    const authorName = clone.querySelector('.author-name');
-    const authorRole = clone.querySelector('.author-role');
-    const dateText = clone.querySelector('.date-text');
-    const excerpt = clone.querySelector('.testimony-excerpt p');
+
+    const slide             = clone.querySelector('.testimony-slide');
+    const card              = clone.querySelector('.testimony-card');
+    const avatarContainer   = clone.querySelector('.author-avatar-container');
+    const authorNameEl      = clone.querySelector('.author-name');
+    const authorRoleEl      = clone.querySelector('.author-role');
+    const dateEl            = clone.querySelector('.testimony-date');
+    const excerptEl         = clone.querySelector('.testimony-excerpt p');
     const fullTextContainer = clone.querySelector('.testimony-full');
-    const tagsContainer = clone.querySelector('.testimony-tags');
-    const readMoreBtn = clone.querySelector('.read-more-btn');
-    
-    // Set data attributes
-    slide.id = `testimony-slide-${index}`;
-    slide.dataset.index = index;
-    card.dataset.testimonyId = testimony.id || index + 1;
-    
-    // Populate content
-    icon.className = testimony.icon || 'fas fa-user';
-    authorName.textContent = testimony.author || 'Anonymous';
-    authorRole.textContent = testimony.role || 'Member';
-    dateText.textContent = testimony.date || 'Recently';
-    excerpt.textContent = testimony.excerpt || 'No excerpt available';
-    
-    // Full text
+    const readMoreBtn       = clone.querySelector('.read-more-btn');
+
+    // IDs / data
+    slide.id                 = `testimony-slide-${index}`;
+    slide.dataset.index      = index;
+    card.dataset.testimonyId = testimony.id ?? index + 1;
+
+    // Initials avatar — derive up to 2 letters from author name, no icon
+    const name    = testimony.author || 'Anonymous';
+    const parts   = name.trim().split(/\s+/);
+    const initials = (parts.length >= 2)
+      ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+      : name.slice(0, 2).toUpperCase();
+    const initialsSpan = document.createElement('span');
+    initialsSpan.className   = 'author-initials';
+    initialsSpan.textContent = initials;
+    avatarContainer.appendChild(initialsSpan);
+
+    // Text content
+    authorNameEl.textContent = name;
+    authorRoleEl.textContent = testimony.role  || 'Member';
+    if (dateEl) dateEl.textContent = testimony.date || '';
+
+    excerptEl.textContent = testimony.excerpt || '';
+
+    // Full text paragraphs
     if (testimony.fullText) {
       fullTextContainer.innerHTML = '';
-      if (Array.isArray(testimony.fullText)) {
-        testimony.fullText.forEach(paragraph => {
-          const p = document.createElement('p');
-          p.textContent = paragraph;
-          fullTextContainer.appendChild(p);
-        });
-      } else {
+      const paragraphs = Array.isArray(testimony.fullText) ? testimony.fullText : [testimony.fullText];
+      paragraphs.forEach(text => {
         const p = document.createElement('p');
-        p.textContent = testimony.fullText;
+        p.textContent = text;
         fullTextContainer.appendChild(p);
-      }
-    }
-    
-    // Tags
-    if (testimony.tags && Array.isArray(testimony.tags)) {
-      testimony.tags.forEach(tagText => {
-        const tag = document.createElement('span');
-        tag.className = 'tag';
-        tag.textContent = tagText;
-        tagsContainer.appendChild(tag);
       });
-    } else {
-      tagsContainer.style.display = 'none';
     }
-    
-    // Read more button
-    readMoreBtn.addEventListener('click', toggleTestimony);
-    
+
+    // No tags — template has none, data tags are ignored
+
+    // Read more toggle
+    readMoreBtn.addEventListener('click', _toggleExpand);
+
     track.appendChild(clone);
   });
-  
+
   container.appendChild(track);
 }
 
-function setupCarousel() {
-  if (!track) return;
-  
-  const slides = track.querySelectorAll('.testimony-slide');
-  if (slides.length === 0) return;
-  
-  // Set first slide as active
-  slides.forEach(slide => slide.classList.remove('active'));
-  slides[0].classList.add('active');
-  
-  setupNavigation();
-  goToSlide(0);
-}
-
-function setupNavigation() {
-  const prevBtn = document.querySelector('.prev-btn');
-  const nextBtn = document.querySelector('.next-btn');
+// ── Wire up nav buttons, indicators, keyboard, touch ───────────────────────
+function _setupNavigation() {
+  const prevBtn            = document.querySelector('.prev-btn');
+  const nextBtn            = document.querySelector('.next-btn');
   const indicatorsContainer = document.getElementById('carousel-indicators');
-  
+
   if (!prevBtn || !nextBtn) return;
-  
-  // Setup indicators
+
+  // Indicators
   if (indicatorsContainer) {
     indicatorsContainer.innerHTML = '';
     for (let i = 0; i < totalSlides; i++) {
-      const indicator = document.createElement('button');
-      indicator.className = 'indicator';
-      if (i === 0) indicator.classList.add('active');
-      indicator.dataset.index = i;
-      indicator.setAttribute('aria-label', `Go to testimony ${i + 1}`);
-      indicator.addEventListener('click', () => goToSlide(i));
-      indicatorsContainer.appendChild(indicator);
+      const btn = document.createElement('button');
+      btn.className = 'indicator' + (i === 0 ? ' active' : '');
+      btn.dataset.index = i;
+      btn.setAttribute('aria-label', `Go to testimony ${i + 1}`);
+      btn.addEventListener('click', () => _goToSlide(i));
+      indicatorsContainer.appendChild(btn);
     }
   }
-  
-  function nextSlide() {
-    if (currentSlide < totalSlides - 1) {
-      goToSlide(currentSlide + 1);
-    } else {
-      goToSlide(0);
-    }
-  }
-  
-  function prevSlide() {
-    if (currentSlide > 0) {
-      goToSlide(currentSlide - 1);
-    } else {
-      goToSlide(totalSlides - 1);
-    }
-  }
-  
-  // Event listeners
-  prevBtn.addEventListener('click', prevSlide);
-  nextBtn.addEventListener('click', nextSlide);
-  
-  // Keyboard navigation
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') prevSlide();
-    if (e.key === 'ArrowRight') nextSlide();
-  });
-  
-  // Touch/swipe support
+
+  prevBtn.addEventListener('click', _prevSlide);
+  nextBtn.addEventListener('click', _nextSlide);
+
+  // Keyboard — stored so we can remove it later
+  keydownHandler = (e) => {
+    if (e.key === 'ArrowLeft')  _prevSlide();
+    if (e.key === 'ArrowRight') _nextSlide();
+  };
+  document.addEventListener('keydown', keydownHandler);
+
+  // Touch / swipe
   if (track) {
     let startX = 0;
-    let endX = 0;
-    
-    track.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-    }, { passive: true });
-    
-    track.addEventListener('touchend', (e) => {
-      endX = e.changedTouches[0].clientX;
-      const diff = startX - endX;
-      
-      if (Math.abs(diff) > 50) {
-        if (diff > 0) {
-          nextSlide();
-        } else {
-          prevSlide();
-        }
-      }
+    track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend',   e => {
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 48) diff > 0 ? _nextSlide() : _prevSlide();
     }, { passive: true });
   }
-  
-  // Auto-slide controls on hover
-  const carouselContainer = document.querySelector('.testimonies-carousel');
-  if (carouselContainer) {
-    carouselContainer.addEventListener('mouseenter', pauseAutoSlide);
-    carouselContainer.addEventListener('mouseleave', startAutoSlide);
+
+  // Pause auto-slide on hover
+  const carousel = document.querySelector('.testimonies-carousel');
+  if (carousel) {
+    carousel.addEventListener('mouseenter', _pauseAutoSlide);
+    carousel.addEventListener('mouseleave', _startAutoSlide);
   }
-  
-  updateNavButtons();
 }
 
-function goToSlide(slideIndex) {
-  if (slideIndex < 0 || slideIndex >= totalSlides || !track) {
-    return;
-  }
-  
-  currentSlide = slideIndex;
-  
-  const slides = track.querySelectorAll('.testimony-slide');
-  
-  // Update slides
-  slides.forEach(slide => slide.classList.remove('active'));
-  if (slides[currentSlide]) {
-    slides[currentSlide].classList.add('active');
-  }
-  
-  // Update track position
-  const translateX = -currentSlide * 100;
-  track.style.transform = `translateX(${translateX}%)`;
-  
-  // Update UI
-  updateIndicators();
-  updateCounter();
-  updateNavButtons();
-  
-  // Reset auto-slide timer
-  resetAutoSlide();
-}
+// ── Navigation helpers ──────────────────────────────────────────────────────
+function _nextSlide() { _goToSlide((currentSlide + 1) % totalSlides); }
+function _prevSlide() { _goToSlide((currentSlide - 1 + totalSlides) % totalSlides); }
 
-function updateIndicators() {
-  const indicators = document.querySelectorAll('.indicator');
-  indicators.forEach((indicator, index) => {
-    indicator.classList.toggle('active', index === currentSlide);
-  });
-}
+function _goToSlide(index, animate = true) {
+  if (index < 0 || index >= totalSlides || !track) return;
+  currentSlide = index;
 
-function updateNavButtons() {
+  if (!animate) track.style.transition = 'none';
+  track.style.transform = `translateX(${-currentSlide * 100}%)`;
+  if (!animate) requestAnimationFrame(() => { track.style.transition = ''; });
+
+  // Update indicators
+  document.querySelectorAll('.indicator').forEach((el, i) =>
+    el.classList.toggle('active', i === currentSlide)
+  );
+
+  // Update counter
+  const counter = document.getElementById('testimony-counter');
+  if (counter) {
+    const cs = counter.querySelector('.current-slide');
+    const ts = counter.querySelector('.total-slides');
+    if (cs) cs.textContent = currentSlide + 1;
+    if (ts) ts.textContent = totalSlides;
+  }
+
+  // Disable buttons only when there's exactly 1 slide
   const prevBtn = document.querySelector('.prev-btn');
   const nextBtn = document.querySelector('.next-btn');
-  
-  if (prevBtn && nextBtn) {
-    prevBtn.disabled = totalSlides <= 1;
-    nextBtn.disabled = totalSlides <= 1;
-  }
+  if (prevBtn) prevBtn.disabled = totalSlides <= 1;
+  if (nextBtn) nextBtn.disabled = totalSlides <= 1;
+
+  _resetAutoSlide();
 }
 
-function updateCounter() {
-  const counter = document.getElementById('testimony-counter');
-  if (!counter) return;
-  
-  const currentSpan = counter.querySelector('.current-slide');
-  const totalSpan = counter.querySelector('.total-slides');
-  
-  if (currentSpan) {
-    currentSpan.textContent = currentSlide + 1;
-  }
-  
-  if (totalSpan) {
-    totalSpan.textContent = totalSlides;
-  }
+// ── Read more / less toggle ─────────────────────────────────────────────────
+function _toggleExpand(event) {
+  const btn     = event.currentTarget;
+  const card    = btn.closest('.testimony-card');
+  const excerpt = card.querySelector('.testimony-excerpt');
+  const full    = card.querySelector('.testimony-full');
+  const arrow   = btn.querySelector('.read-more-arrow');
+  const label   = btn.querySelector('.btn-text');
+
+  const expanding = full.style.display !== 'block';
+  excerpt.style.display = expanding ? 'none'  : 'block';
+  full.style.display    = expanding ? 'block' : 'none';
+  label.textContent     = expanding ? 'Read Less' : 'Read More';
+  if (arrow) arrow.style.transform = expanding ? 'rotate(180deg)' : 'rotate(0deg)';
+  btn.classList.toggle('expanded', expanding);
 }
 
-function toggleTestimony(event) {
-  const button = event.currentTarget;
-  const testimonyCard = button.closest('.testimony-card');
-  const excerpt = testimonyCard.querySelector('.testimony-excerpt');
-  const full = testimonyCard.querySelector('.testimony-full');
-  const icon = button.querySelector('i');
-  const textSpan = button.querySelector('.btn-text');
-  
-  const isExpanded = full.style.display === 'block';
-  
-  if (!isExpanded) {
-    excerpt.style.display = 'none';
-    full.style.display = 'block';
-    textSpan.textContent = 'Read Less';
-    icon.style.transform = 'rotate(180deg)';
-    button.classList.add('expanded');
-    testimonyCard.classList.add('expanded');
-  } else {
-    full.style.display = 'none';
-    excerpt.style.display = 'block';
-    textSpan.textContent = 'Read More';
-    icon.style.transform = 'rotate(0deg)';
-    button.classList.remove('expanded');
-    testimonyCard.classList.remove('expanded');
-  }
+// ── Auto-slide ──────────────────────────────────────────────────────────────
+function _startAutoSlide() {
+  if (autoSlideInterval || totalSlides <= 1) return;
+  autoSlideInterval = setInterval(_nextSlide, 5000);
 }
 
-function startAutoSlide() {
-  if (autoSlideInterval) {
-    clearInterval(autoSlideInterval);
-  }
-  
-  if (totalSlides > 1) {
-    autoSlideInterval = setInterval(() => {
-      const nextSlide = (currentSlide + 1) % totalSlides;
-      goToSlide(nextSlide);
-    }, 5000);
-  }
+function _pauseAutoSlide() {
+  if (autoSlideInterval) { clearInterval(autoSlideInterval); autoSlideInterval = null; }
 }
 
-function pauseAutoSlide() {
-  if (autoSlideInterval) {
-    clearInterval(autoSlideInterval);
-    autoSlideInterval = null;
-  }
+function _resetAutoSlide() {
+  _pauseAutoSlide();
+  _startAutoSlide();
 }
 
-function resetAutoSlide() {
-  pauseAutoSlide();
-  if (totalSlides > 1) {
-    startAutoSlide();
-  }
-}
-
-// Global API for external control
+// ── Public API ──────────────────────────────────────────────────────────────
 window.testimoniesCarousel = {
-  nextSlide: function() {
-    const next = (currentSlide + 1) % totalSlides;
-    goToSlide(next);
-  },
-  prevSlide: function() {
-    const prev = (currentSlide - 1 + totalSlides) % totalSlides;
-    goToSlide(prev);
-  },
-  goToSlide: function(index) {
-    goToSlide(index);
-  },
-  refresh: function() {
-    // Reset state
-    carouselInitialized = false;
-    currentSlide = 0;
-    
-    if (autoSlideInterval) {
-      clearInterval(autoSlideInterval);
-      autoSlideInterval = null;
-    }
-    
-    // Reinitialize
-    initializeTestimoniesCarousel();
-  }
+  next:      _nextSlide,
+  prev:      _prevSlide,
+  goTo:      _goToSlide,
+  refresh:   window.initializeTestimoniesPage,
 };
-
-// Initialize if this page is loaded directly (not through about.js)
-if (document.querySelector('.testimonies-page') && !document.querySelector('.about-nav')) {
-  document.addEventListener('DOMContentLoaded', function() {
-    window.initializeTestimoniesPage();
-  });
-}

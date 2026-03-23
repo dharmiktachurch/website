@@ -1,143 +1,114 @@
-<!-- Update your hero section with this code -->
-<section class="hero-events">
-  <div class="hero-events-container">
-    <div class="hero-content">
-      <div class="hero-text">
-        <h1 class="hero-title">Upcoming Events</h1>
-        <p class="hero-subtitle">Discover and join our inspiring community gatherings that spark creativity and connection</p>
-      </div>
-      
-      <div class="hero-cta">
-        <a href="#events" class="cta-button pulse" id="view-events-btn">
-          <i class="fas fa-calendar-alt"></i> View All Events
-        </a>
-      </div>
-      
-      <div class="hero-features">
-        <div class="feature-item">
-          <i class="fas fa-users"></i>
-          <span>Community Building</span>
-        </div>
-        <div class="feature-item">
-          <i class="fas fa-lightbulb"></i>
-          <span>Creative Inspiration</span>
-        </div>
-        <div class="feature-item">
-          <i class="fas fa-network-wired"></i>
-          <span>Networking</span>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Enhanced calendar container -->
-    <div class="hero-calendar-wrapper">
-      <div class="hero-calendar">
-        <div class="calendar-header">
-          <div class="calendar-nav">
-            <button id="hero-prev-month" class="calendar-nav-button" aria-label="Previous month">
-              <i class="fas fa-chevron-left"></i>
-            </button>
-            <h3 id="hero-current-month-year">June 2023</h3>
-            <button id="hero-next-month" class="calendar-nav-button" aria-label="Next month">
-              <i class="fas fa-chevron-right"></i>
-            </button>
-          </div>
-        </div>
-        
-        <div class="calendar-weekdays">
-          <div>S</div>
-          <div>M</div>
-          <div>T</div>
-          <div>W</div>
-          <div>T</div>
-          <div>F</div>
-          <div>S</div>
-        </div>
-        
-        <div id="hero-calendar-days" class="hero-calendar-days"></div>
-        
-        <div class="calendar-footer">
-          <div class="calendar-legend">
-            <div class="legend-item">
-              <span class="legend-color today"></span>
-              <span>Today</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-color event"></span>
-              <span>Events</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="hero-wave-divider">
-    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-      <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="#fff"></path>
-      <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="#fff"></path>
-      <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="#fff"></path>
-    </svg>
-  </div>
-</section>
+<!-- partials/events-upcoming.html -->
+<!-- CSS loaded in events.html <head> — no <link> tags here -->
 
-<!-- Upcoming Events Section -->
-<section class="events" id="events-upcoming">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-header-content">
-        <h2 class="section-title" id="events">Upcoming Events</h2>
-        <p class="section-subtitle">See what's coming next in our community</p>
+<!-- ── Hero ── -->
+<section class="events-upcoming-hero">
+  <svg class="hero-bg" viewBox="0 0 1400 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="700" cy="780" r="480" fill="none" stroke="rgba(210,175,110,0.10)" stroke-width="1.5"/>
+    <circle cx="700" cy="780" r="610" fill="none" stroke="rgba(210,175,110,0.07)" stroke-width="1"/>
+    <circle cx="700" cy="780" r="750" fill="none" stroke="rgba(210,175,110,0.05)" stroke-width="1"/>
+    <circle cx="90"  cy="90"  r="190" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+    <line x1="280"  y1="0" x2="280"  y2="560" stroke="rgba(255,255,255,0.03)"   stroke-width="1"/>
+    <line x1="560"  y1="0" x2="560"  y2="560" stroke="rgba(255,255,255,0.025)"  stroke-width="1"/>
+    <line x1="840"  y1="0" x2="840"  y2="560" stroke="rgba(255,255,255,0.025)"  stroke-width="1"/>
+    <line x1="1120" y1="0" x2="1120" y2="560" stroke="rgba(255,255,255,0.03)"   stroke-width="1"/>
+    <rect x="1292" y="52" width="4"  height="64" rx="2" fill="rgba(210,175,110,0.38)"/>
+    <rect x="1264" y="80" width="60" height="4"  rx="2" fill="rgba(210,175,110,0.38)"/>
+    <g fill="rgba(255,255,255,0.09)">
+      <circle cx="60"  cy="450" r="2"/><circle cx="90"  cy="450" r="2"/>
+      <circle cx="120" cy="450" r="2"/><circle cx="150" cy="450" r="2"/>
+      <circle cx="60"  cy="480" r="2"/><circle cx="90"  cy="480" r="2"/>
+      <circle cx="120" cy="480" r="2"/><circle cx="150" cy="480" r="2"/>
+    </g>
+    <polygon points="1100,0 1400,0 1400,240" fill="rgba(210,175,110,0.04)"/>
+  </svg>
+
+  <!-- Hero text -->
+  <div class="about-hero-content">
+    <span class="eyebrow">Dharmikta Mandali</span>
+    <h1>Upcoming Events</h1>
+    <p class="hero-sub">Join our community gatherings, fellowship programs, and special occasions.</p>
+  </div>
+
+  <!-- Desktop calendar widget (hidden ≤900px, replaced by mobile section below) -->
+  <div class="hero-calendar-wrap">
+    <div class="hero-calendar" id="desktop-calendar">
+      <div class="cal-header">
+        <button class="cal-nav-btn" id="cal-prev" aria-label="Previous month">&#8249;</button>
+        <span class="cal-month-label" id="cal-month-label">Month Year</span>
+        <button class="cal-nav-btn" id="cal-next" aria-label="Next month">&#8250;</button>
       </div>
-      
-      <div class="section-controls">
-        <div class="search-box">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Search events..." id="event-search">
-        </div>
-        
-        <div class="view-toggle">
-          <button class="view-btn active" data-view="grid" aria-label="Grid view">
-            <i class="fas fa-th"></i>
-          </button>
-          <button class="view-btn" data-view="list" aria-label="List view">
-            <i class="fas fa-list"></i>
-          </button>
-        </div>
+      <div class="cal-weekdays">
+        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
       </div>
-    </div>
-    
-    <div class="timeline-filter">
-      <button class="filter-btn active" data-filter="all">
-        <i class="fas fa-layer-group"></i> All Events
-      </button>
-      <button class="filter-btn" data-filter="conference">
-        <i class="fas fa-comments"></i> Conferences
-      </button>
-      <button class="filter-btn" data-filter="workshop">
-        <i class="fas fa-laptop-code"></i> Workshops
-      </button>
-      <button class="filter-btn" data-filter="celebration">
-        <i class="fas fa-glass-cheers"></i> Celebrations
-      </button>
-      <button class="filter-btn" data-filter="others">
-        <i class="fas fa-ellipsis-h"></i> Others
-      </button>
-    </div>
-    
-    <div id="event-container" class="event-container grid-view">
-      <div class="loading-spinner">
-        <div class="spinner-circle"></div>
-        <p>Loading exciting events...</p>
+      <div class="cal-days" id="cal-days"></div>
+      <div class="cal-legend">
+        <div class="cal-legend-item"><span class="cal-legend-dot today-dot"></span> Today</div>
+        <div class="cal-legend-item"><span class="cal-legend-dot event-dot"></span> Event</div>
       </div>
-    </div>
-    
-    <div class="load-more-container">
-      <button id="load-more-btn" class="load-more-btn">
-        <i class="fas fa-plus"></i> Load More Events
-      </button>
     </div>
   </div>
 </section>
 
-<link rel="stylesheet" href="../style/events-upcoming.css">
+<!-- Mobile calendar section (shown ≤900px) -->
+<div class="mobile-calendar-section">
+  <div class="mobile-calendar-inner">
+    <div class="hero-calendar" id="mobile-calendar">
+      <div class="cal-header">
+        <button class="cal-nav-btn" id="cal-prev-m" aria-label="Previous month">&#8249;</button>
+        <span class="cal-month-label" id="cal-month-label-m">Month Year</span>
+        <button class="cal-nav-btn" id="cal-next-m" aria-label="Next month">&#8250;</button>
+      </div>
+      <div class="cal-weekdays">
+        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+      </div>
+      <div class="cal-days" id="cal-days-m"></div>
+      <div class="cal-legend">
+        <div class="cal-legend-item"><span class="cal-legend-dot today-dot"></span> Today</div>
+        <div class="cal-legend-item"><span class="cal-legend-dot event-dot"></span> Event</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Events body ── -->
+<div class="events-body">
+
+  <div class="events-section-header">
+    <h2 class="events-section-title">Events</h2>
+    <div class="events-search">
+      <input type="text" id="event-search" placeholder="Search events…" autocomplete="off"/>
+    </div>
+  </div>
+
+  <div class="events-filters" id="events-filters">
+    <button class="filter-pill active" data-filter="all">All</button>
+    <button class="filter-pill" data-filter="conference">Conference</button>
+    <button class="filter-pill" data-filter="workshop">Workshop</button>
+    <button class="filter-pill" data-filter="celebration">Celebration</button>
+    <button class="filter-pill" data-filter="others">Others</button>
+  </div>
+
+  <!-- Big events group -->
+  <div class="events-section-group" id="group-big" style="display:none">
+    <div class="events-group-label">Featured Events</div>
+    <div class="event-grid-big" id="container-big"></div>
+  </div>
+
+  <!-- Small events group -->
+  <div class="events-section-group" id="group-small" style="display:none">
+    <div class="events-group-label">All Events</div>
+    <div class="event-grid-small" id="event-container"></div>
+  </div>
+
+  <!-- Fallback spinner shown before any events load -->
+  <div id="events-initial-spinner" class="events-spinner">
+    <div class="spinner-ring"></div>
+    Loading events…
+  </div>
+
+  <div class="load-more-wrap">
+    <button class="load-more-btn" id="load-more-btn" hidden>Load More</button>
+  </div>
+
+</div>
