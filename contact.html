@@ -3,30 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact - Dharmikta Mandali</title>
+  <title>Contact — Dharmikta Mandali</title>
   <link rel="icon" type="image/png" href="static/images/Favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link rel="stylesheet" href="style/contact.css" />
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script type="text/javascript">
-    (function() {
-      emailjs.init({ publicKey: "MoTUpsISKXLTAnyxm" });
-    })();
+    (function() { emailjs.init({ publicKey: "MoTUpsISKXLTAnyxm" }); })();
   </script>
   <script src="script/script.js" defer></script>
   <script src="script/Email.js" defer></script>
 </head>
 <body>
-  <!-- Navbar HTML -->
+
+  <!-- ── Navbar ── -->
   <nav class="navbar">
     <a href="index.html" class="logo-link">
       <div class="logo-container">
-        <img src="static/images/logo.png" alt="Church Logo" class="church-logo" />
+        <img src="static/images/logo.png" alt="Dharmikta Mandali" class="church-logo" />
         <div class="logo-text">Dharmikta Church</div>
       </div>
     </a>
-
     <ul class="nav-links" id="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
@@ -35,68 +33,137 @@
       <li><a href="notices.html">Notices</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-
     <div class="burger" id="burger">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
+      <div class="line"></div><div class="line"></div><div class="line"></div>
     </div>
   </nav>
 
-  <!-- Blurred Hero Section -->
-  <section class="hero contact-hero">
+  <!-- ── Hero ── -->
+  <!--
+    Contact hero intentionally keeps the real church photo + blur treatment —
+    it gives the page a warm, personal feel unlike the geometric gradient heroes.
+    Typography follows the same eyebrow / h1 / subtitle pattern as every other page.
+  -->
+  <section class="contact-hero">
     <div class="blurred-bg"></div>
     <div class="overlay"></div>
     <div class="hero-content">
+      <span class="eyebrow">Dharmikta Mandali</span>
       <h1>Get in Touch</h1>
-      <p>We would love to hear from you! Send us a message or contact us through the details below.</p>
+      <p>We would love to hear from you. Send us a message or reach us through the details below.</p>
     </div>
-  </section>  
+  </section>
 
-  <!-- Contact Section -->
+  <!-- ── Contact Section ── -->
   <section class="contact-section">
-    <div class="container contact-container">
+    <div class="contact-container">
+
+      <!-- Form card -->
       <div class="contact-form">
         <h2>Send a Message</h2>
         <form id="contact-form">
-          <input type="text" id="user_name" placeholder="Your Name" required />
-          <input type="email" id="user_email" placeholder="Your Email" required />
-          <input type="text" id="user_subject" placeholder="Your Subject" required />
-          <textarea id="user_message" placeholder="Your Message" required></textarea>
-          <button type="submit" class="cta-button">Send</button>
+          <input  type="text"  id="user_name"    placeholder="Your Name"    required />
+          <input  type="email" id="user_email"   placeholder="Your Email"   required />
+          <input  type="text"  id="user_subject" placeholder="Subject"      required />
+          <textarea            id="user_message" placeholder="Your Message" required></textarea>
+          <div id="form-status"></div>
+          <button type="submit" class="cta-button">Send Message</button>
         </form>
       </div>
 
+      <!-- Info card -->
       <div class="contact-info">
         <h2>Contact Info</h2>
-        <p>
-          <i class="fas fa-map-marker-alt"></i>
-          <a href="https://www.google.com/maps/place/27%C2%B038'30.4%22N+85%C2%B018'39.0%22E" target="_blank" rel="noopener noreferrer">
-            Gokul Awas Rd, Bhaisepati-25, Lalitpur, Nepal
-          </a>
-        </p>
-        <p>
-          <i class="fas fa-phone"></i>
-          <a href="tel:+9779841258639">+977 9841258639</a>
-        </p>
-        <p>
-          <i class="fas fa-envelope"></i>
-          <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a>
-        </p>
 
-        <h3>Follow Us</h3>
-        <div class="social-icons">
-          <a href="https://www.facebook.com/profile.php?id=100068116715888" target="_blank"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.youtube.com/@DharmiktaChurch" target="_blank"><i class="fab fa-youtube"></i></a>
+        <div class="contact-info-items">
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="contact-info-text">
+              <span class="contact-info-label">Address</span>
+              <span class="contact-info-value">
+                <a href="https://www.google.com/maps/place/27%C2%B038'30.4%22N+85%C2%B018'39.0%22E"
+                   target="_blank" rel="noopener noreferrer">
+                  Gokul Awas Rd, Bhaisepati-25,<br>Lalitpur, Nepal
+                </a>
+              </span>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="contact-info-text">
+              <span class="contact-info-label">Phone</span>
+              <span class="contact-info-value">
+                <a href="tel:+9779841258639">+977 9841258639</a>
+              </span>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="contact-info-text">
+              <span class="contact-info-label">Email</span>
+              <span class="contact-info-value">
+                <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a>
+              </span>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <i class="far fa-clock"></i>
+            </div>
+            <div class="contact-info-text">
+              <span class="contact-info-label">Service Hours</span>
+              <span class="contact-info-value">Every Saturday · 10:00 AM</span>
+            </div>
+          </div>
+
         </div>
+
+        <!-- Social links -->
+        <h3>Follow Us</h3>
+        <div class="contact-social-icons">
+          <a href="https://www.facebook.com/profile.php?id=100068116715888"
+             class="contact-social-icon" target="_blank" rel="noopener"
+             aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="contact-social-icon" target="_blank"
+             aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.youtube.com/@DharmiktaChurch"
+             class="contact-social-icon" target="_blank" rel="noopener"
+             aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+        </div>
+
+        <!-- Embedded map -->
+        <div class="map-embed">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d883.4!2d85.3108!3d27.6418!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjfCsDM4JzMwLjQiTiA4NcKwMTgnMzkuMCJF!5e0!3m2!1sen!2snp!4v1"
+            allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Dharmikta Mandali location">
+          </iframe>
+        </div>
+
       </div>
     </div>
   </section>
 
+  <!-- ── Footer ── -->
   <footer class="footer">
     <div class="footer-content">
-      <!-- Contact Section -->
       <div class="footer-section">
         <h3>Contact Us</h3>
         <p><i class="fas fa-map-marker-alt"></i>
@@ -104,15 +171,9 @@
             Gokul Awas Rd, Bhaisepati-25, Lalitpur, Nepal
           </a>
         </p>
-        <p><i class="fas fa-phone"></i>
-          <a href="tel:+9779841258639">9841258639</a>
-        </p>
-        <p><i class="fas fa-envelope"></i>
-          <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a>
-        </p>
+        <p><i class="fas fa-phone"></i> <a href="tel:+9779841258639">9841258639</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a></p>
       </div>
-
-      <!-- Quick Links Section -->
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
@@ -121,8 +182,6 @@
           <li><a href="events.html">Events</a></li>
         </ul>
       </div>
-
-      <!-- Social Media Section -->
       <div class="footer-section">
         <h3>Follow Us</h3>
         <div class="social-icons">
@@ -132,11 +191,11 @@
         </div>
       </div>
     </div>
-
     <div class="footer-bottom">
       <div class="divider"></div>
       <p>&copy; 2025 Dharmikta Mandali. All Rights Reserved.</p>
     </div>
   </footer>
+
 </body>
 </html>

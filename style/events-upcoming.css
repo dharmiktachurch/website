@@ -6,9 +6,7 @@
 .events-upcoming-hero {
   position: relative;
   height: 58vh; min-height: 400px;
-  display: flex; align-items: center;
-  /* Left-justify content so the calendar has its own right-side space */
-  justify-content: flex-start;
+  display: flex; align-items: center; justify-content: center;
   color: #fff; overflow: hidden;
   background: linear-gradient(155deg, #141414 0%, #1e1c18 55%, #141414 100%);
 }
@@ -19,11 +17,23 @@
   pointer-events: none; z-index: 0;
 }
 
-.events-upcoming-hero .about-hero-content {
+/*
+  Inner row: constrains content to 1100px max so text and calendar
+  stay close. Text takes the left ~55%, calendar takes the right ~40%.
+*/
+.hero-inner {
   position: relative; z-index: 2;
-  max-width: 580px;
-  /* Left padding + auto right margin keeps text in the left half */
-  padding: 2rem 2rem 2rem clamp(2rem, 6vw, 6rem);
+  width: 100%; max-width: 1100px;
+  padding: 2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.events-upcoming-hero .about-hero-content {
+  flex: 1;
+  max-width: 520px;
   text-align: left;
   animation: heroIn 0.85s var(--ease-out) both;
   font-family: 'Poppins', sans-serif;
@@ -39,32 +49,29 @@
   font-size: 0.72rem; font-weight: 700;
   letter-spacing: 0.2em; text-transform: uppercase;
   color: rgba(255,255,255,0.6); margin-bottom: 0.9rem;
-  text-align: left;
 }
 
 .events-upcoming-hero h1 {
-  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 800; line-height: 1.15; letter-spacing: -0.01em;
   margin-bottom: 0.9rem; color: #fff;
   font-family: 'Poppins', sans-serif;
-  text-align: left;
 }
 
 .events-upcoming-hero .hero-sub {
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
   font-weight: 300; color: rgba(255,255,255,0.78); line-height: 1.7;
   font-family: 'Poppins', sans-serif;
-  text-align: left;
 }
 
-/* Desktop: calendar floats to the right inside the hero */
+/* Desktop: calendar sits in the flex row — no absolute positioning */
 .hero-calendar-wrap {
-  position: absolute;
-  right: clamp(2rem, 5vw, 5rem);
-  top: 50%; transform: translateY(-50%);
-  z-index: 3; width: 260px;
-  /* MUST be visible so tooltip can overflow */
+  flex-shrink: 0;
+  width: 270px;
+  /* Remove absolute positioning — it's in the flow now */
+  position: relative;
   overflow: visible;
+  z-index: 3;
 }
 
 /* ── CALENDAR (shared styles for both desktop widget + mobile strip) ── */
@@ -475,15 +482,21 @@
 
 /* ── RESPONSIVE ──────────────────────────────────────────────── */
 
-/* ≤900px tablet — hide desktop calendar, show mobile strip */
+/* ≤900px: stack hero vertically, show mobile calendar below */
 @media (max-width: 900px) {
-  .hero-calendar-wrap      { display: none; }
-  .mobile-calendar-section { display: block; }
+  .hero-calendar-wrap        { display: none; }
+  .mobile-calendar-section   { display: block; }
 
-  /* Centre hero text when calendar is gone */
-  .events-upcoming-hero    { justify-content: center; }
+  /* Stack text centred when calendar is gone */
+  .hero-inner {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+  }
   .events-upcoming-hero .about-hero-content {
-    padding: 2rem; text-align: center; max-width: 600px;
+    text-align: center; max-width: 600px;
   }
   .events-upcoming-hero .eyebrow,
   .events-upcoming-hero h1,
@@ -496,22 +509,11 @@
   .event-card.big .event-card-day { font-size: 2rem; }
 }
 
-/* ≤600px phone */
+/* ≤600px */
 @media (max-width: 600px) {
-  /* Shorter hero on small screens */
-  .events-upcoming-hero {
-    height: auto; min-height: 0; padding: 3rem 0 2rem;
-  }
+  .events-upcoming-hero     { height: auto; min-height: 0; }
   .events-upcoming-hero svg.hero-bg { display: none; }
-  .events-upcoming-hero .about-hero-content { padding: 1.5rem 1.25rem; }
-
-  /* Mobile calendar: slightly tighter padding */
-  .mobile-calendar-inner { padding: 1.25rem 1rem; }
-
-  /* Reserve extra space so tooltip doesn't overlap the events body */
-  .mobile-calendar-section { padding-bottom: 0; }
-
-  /* Events body */
+  .hero-inner               { padding: 3rem 1.25rem 2.5rem; }
   .events-body              { padding: 2.5rem 1rem 4rem; }
   .events-section-header    { flex-direction: column; align-items: flex-start; }
   .events-search            { width: 100%; }
@@ -519,9 +521,9 @@
   .event-grid-small         { grid-template-columns: 1fr; }
 }
 
-/* ≤400px small phone */
+/* ≤400px */
 @media (max-width: 400px) {
-  .events-upcoming-hero .about-hero-content { padding: 1.25rem 1rem; }
-  .events-body { padding: 2rem 0.75rem 3rem; }
+  .hero-inner   { padding: 2.5rem 1rem 2rem; }
+  .events-body  { padding: 2rem 0.75rem 3rem; }
   .mobile-calendar-inner { padding: 1rem 0.75rem; }
 }

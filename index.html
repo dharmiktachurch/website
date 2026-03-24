@@ -5,27 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dharmikta Mandali</title>
   <link rel="icon" type="image/png" href="static/images/Favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style/index.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="style/index.css" />
   <script src="script/script.js" defer></script>
   <script src="script/index-events.js" defer></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
-  </style>
 </head>
 <body>
-  <!-- Navbar HTML -->
+
+  <!-- ── Navbar ── -->
   <nav class="navbar">
     <a href="index.html" class="logo-link">
       <div class="logo-container">
-        <img src="static/images/logo.png" alt="Church Logo" class="church-logo" />
+        <img src="static/images/logo.png" alt="Dharmikta Mandali" class="church-logo" />
         <div class="logo-text">Dharmikta Church</div>
       </div>
     </a>
-
     <ul class="nav-links" id="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
@@ -34,14 +29,12 @@
       <li><a href="notices.html">Notices</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-
     <div class="burger" id="burger">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
+      <div class="line"></div><div class="line"></div><div class="line"></div>
     </div>
   </nav>
 
+  <!-- ── Hero ── -->
   <section class="hero">
     <div class="hero-image"></div>
     <div class="hero-overlay"></div>
@@ -52,67 +45,63 @@
       </h1>
       <div class="divider"></div>
       <p class="subtitle">Experience faith, community, and spiritual growth together.</p>
-      <p class="verse">"Righteousness exalts a nation" - Proverbs 14:34</p>
+      <p class="verse">"Righteousness exalts a nation" — Proverbs 14:34</p>
       <a href="contact.html" class="cta-button">Join Us This Saturday</a>
-      <!-- Scroll Indicator -->
-      <div class="scroll-indicator">
-        <span></span>
-      </div>
+      <div class="scroll-indicator"><span></span></div>
     </div>
   </section>
-  
 
+  <!-- ── Join Us ── -->
   <section class="support">
-    <h2>Join Us</h2>
+    <div class="section-header">
+      <h2>Join Us</h2>
+    </div>
     <div class="support-grid">
-      <div class="support-card" style="--delay: 0s">
+      <div class="support-card" style="--delay:0s">
         <i class="fas fa-church"></i>
         <h3>Saturday Services</h3>
         <p>Join us for uplifting worship services every Saturday at 10 AM.</p>
       </div>
-      <div class="support-card" style="--delay: 0.15s">
+      <div class="support-card" style="--delay:0.15s">
         <i class="fas fa-hands-praying"></i>
         <h3>Fellowships</h3>
-        <p>Join us for weekly fellowship and grow spiritually with the community.</p>
+        <p>Join weekly fellowship groups and grow spiritually with the community.</p>
       </div>
-      <div class="support-card" style="--delay: 0.3s">
+      <div class="support-card" style="--delay:0.3s">
         <i class="fas fa-bible"></i>
         <h3>Trainings</h3>
-        <p>Participate in leadership and biblical training workshops to enhance your spiritual journey.</p>
+        <p>Participate in leadership and biblical training workshops to deepen your spiritual journey.</p>
       </div>
     </div>
   </section>
 
-  <!-- Simplified Pastors Section HTML -->
+  <!-- ── Pastors ── -->
   <section class="pastors">
     <div class="section-header">
       <h2>Our Pastors</h2>
     </div>
-    
     <div class="pastors-grid">
       <div class="pastor-card">
         <div class="pastor-image-container">
-          <img src="static/pics/pastor1.jpg" alt="Pastor Padam Nath Parajuli" class="pastor-photo">
+          <img src="static/pics/pastor1.jpg" alt="Pastor Padam Nath Parajuli" class="pastor-photo" />
         </div>
         <div class="pastor-info">
           <h3>Ps. Padam Nath Parajuli</h3>
           <p class="post">Senior Pastor</p>
         </div>
       </div>
-      
       <div class="pastor-card">
         <div class="pastor-image-container">
-          <img src="static/pics/pastor2.jpeg" alt="Pastor Naya Kaji Shrestha" class="pastor-photo">
+          <img src="static/pics/pastor2.jpeg" alt="Pastor Naya Kaji Shrestha" class="pastor-photo" />
         </div>
         <div class="pastor-info">
           <h3>Ps. Naya Kaji Shrestha</h3>
           <p class="post">Associate Pastor</p>
         </div>
       </div>
-      
       <div class="pastor-card">
         <div class="pastor-image-container">
-          <img src="static/pics/pastor3.jpg" alt="Pastor Rudra B.K." class="pastor-photo">
+          <img src="static/pics/pastor3.jpg" alt="Pastor Rudra B.K." class="pastor-photo" />
         </div>
         <div class="pastor-info">
           <h3>Ps. Rudra B.K.</h3>
@@ -122,65 +111,50 @@
     </div>
   </section>
 
-<section class="senior-message-modern">
-  <div class="section-header">
-    <h2>Message from Our Senior Pastor</h2>
-    <h3 class="english-heading">Followers of Christ: Health Workers in Health Service</h3>
-  </div>
-  <div class="message-content">
-    <div class="message-photo">
-      <img src="static/pics/pastor1.jpg" alt="Senior Pastor Padam Nath Parajuli">
+  <!-- ── Senior Pastor Message ── -->
+  <section class="senior-message-modern">
+    <div class="section-header">
+      <h2>Message from Our Senior Pastor</h2>
+      <p class="english-heading">Followers of Christ: Health Workers in Health Service</p>
     </div>
-    <div class="message-text">
-      <p class="excerpt">
-        "Those who follow the Lord must be filled with all the qualities found in Christ—His nature, character, speech, conduct, and deeds—like beloved children. Be imitators of God and walk in love, just as Christ loved us..."
-      </p>
-      <div class="full-message" style="display: none;">
-        <p>In the current situation, the relationship between pastors, leaders, and the believer families must be like super glue—strong and inseparable. Otherwise, the devil will find ways to create problems.</p>
-        <ol>
-          <li>Therefore, you must be filled with all the qualities found in Christ—His nature, character, speech, conduct, and deeds—like beloved children. Be obedient and pleasing to the Father.</li>
-          <li>Be imitators of God. Learn by observing His works. Every leader and believing family should reflect the character of Christ.</li>
-          <li>Walk in love, just as Christ loved us. A leader's life must also be filled with Christ's love and a strong relationship with Him.</li>
-          <li>Live as a fragrant offering and sacrifice to God, being a testimony and example—whether in your family or in the church.</li>
-          <li>Just as He offered Himself for us.</li>
-          <li>Be dissolved like salt and sugar—completely united and blended in service.</li>
-        </ol>
-        <p><em>Ephesians 5:1–2</em></p>
-        <p>Do we have these qualities in us today? If not, let us seek them and make a firm decision to live as true sons and daughters of God.</p>
-        <blockquote>
-          'Therefore, as God's chosen people, holy and dearly loved, clothe yourselves with compassion, kindness, humility, gentleness and patience. Bear with each other and forgive one another if any of you has a grievance against someone. Forgive as the Lord forgave you. And over all these virtues put on love, which binds them all together in perfect unity. Let the peace of Christ rule in your hearts, since as members of one body you were called to peace. And be thankful. Let the message of Christ dwell among you richly as you teach and admonish one another with all wisdom through psalms, hymns, and songs from the Spirit, singing to God with gratitude in your hearts. And whatever you do, whether in word or deed, do it all in the name of the Lord Jesus, giving thanks to God the Father through him.'
-          <footer>Colossians 3:12-17</footer>
-        </blockquote>
-        <p>May God bless us all.</p>
-      </div>
-      <button class="read-more-btn">Read More</button><br>
-      <p class="signature">— Pastor Padam Nath Parajuli</p>
-    </div>
-  </div>
-</section>
 
-<script>
-  // Scoped JavaScript for this component
-  (function() {
-    const readMoreBtn = document.querySelector('.senior-message-modern .read-more-btn');
-    const fullMessage = document.querySelector('.senior-message-modern .full-message');
-    
-    if (readMoreBtn && fullMessage) {
-      readMoreBtn.addEventListener('click', function() {
-        if (fullMessage.style.display === 'none' || !fullMessage.style.display) {
-          fullMessage.style.display = 'block';
-          readMoreBtn.textContent = 'Read Less';
-        } else {
-          fullMessage.style.display = 'none';
-          readMoreBtn.textContent = 'Read More';
-        }
-      });
-    }
-  })();
-</script>
-  
+    <div class="message-content">
+      <div class="message-photo">
+        <img src="static/pics/pastor1.jpg" alt="Senior Pastor Padam Nath Parajuli" />
+      </div>
+      <div class="message-text">
+        <p class="excerpt">
+          "Those who follow the Lord must be filled with all the qualities found in Christ — His nature, character, speech, conduct, and deeds — like beloved children. Be imitators of God and walk in love, just as Christ loved us…"
+        </p>
+        <div class="full-message">
+          <p>In the current situation, the relationship between pastors, leaders, and the believer families must be like super glue — strong and inseparable. Otherwise, the devil will find ways to create problems.</p>
+          <ol>
+            <li>Therefore, you must be filled with all the qualities found in Christ — His nature, character, speech, conduct, and deeds — like beloved children. Be obedient and pleasing to the Father.</li>
+            <li>Be imitators of God. Learn by observing His works. Every leader and believing family should reflect the character of Christ.</li>
+            <li>Walk in love, just as Christ loved us. A leader's life must also be filled with Christ's love and a strong relationship with Him.</li>
+            <li>Live as a fragrant offering and sacrifice to God, being a testimony and example — whether in your family or in the church.</li>
+            <li>Just as He offered Himself for us.</li>
+            <li>Be dissolved like salt and sugar — completely united and blended in service.</li>
+          </ol>
+          <p><em>Ephesians 5:1–2</em></p>
+          <p>Do we have these qualities in us today? If not, let us seek them and make a firm decision to live as true sons and daughters of God.</p>
+          <blockquote>
+            'Therefore, as God's chosen people, holy and dearly loved, clothe yourselves with compassion, kindness, humility, gentleness and patience. Bear with each other and forgive one another if any of you has a grievance against someone. Forgive as the Lord forgave you. And over all these virtues put on love, which binds them all together in perfect unity. Let the peace of Christ rule in your hearts, since as members of one body you were called to peace. And be thankful. Let the message of Christ dwell among you richly as you teach and admonish one another with all wisdom through psalms, hymns, and songs from the Spirit, singing to God with gratitude in your hearts. And whatever you do, whether in word or deed, do it all in the name of the Lord Jesus, giving thanks to God the Father through him.'
+            <footer>Colossians 3:12–17</footer>
+          </blockquote>
+          <p>May God bless us all.</p>
+        </div>
+        <button class="read-more-btn">Read More</button>
+        <p class="signature">— Pastor Padam Nath Parajuli</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Mission & Vision ── -->
   <section class="mission-vision">
-    <h2>Our Mission & Vision</h2>
+    <div class="section-header">
+      <h2>Our Mission & Vision</h2>
+    </div>
     <div class="mission-vision-content">
       <a href="about.html?page=about-church&section=mission-values" class="mission-card">
         <i class="fas fa-bullhorn"></i>
@@ -195,24 +169,21 @@
     </div>
   </section>
 
-
-  
+  <!-- ── Upcoming Events preview ── -->
   <section class="events-section">
     <div class="section-header">
       <h2>Upcoming Events</h2>
       <p class="section-subtitle">Stay informed and engaged with our latest gatherings.</p>
     </div>
-    <div id="event-container" class="event-container">
-      <!-- Events will be dynamically loaded here -->
-    </div>
+    <div id="event-container" class="event-container"></div>
     <a href="events.html" class="more-events" aria-label="See all events">
       See All Events &rarr;
     </a>
   </section>
 
+  <!-- ── Footer ── -->
   <footer class="footer">
     <div class="footer-content">
-      <!-- Contact Section -->
       <div class="footer-section">
         <h3>Contact Us</h3>
         <p><i class="fas fa-map-marker-alt"></i>
@@ -220,15 +191,9 @@
             Gokul Awas Rd, Bhaisepati-25, Lalitpur, Nepal
           </a>
         </p>
-        <p><i class="fas fa-phone"></i>
-          <a href="tel:+9779841258639">9841258639</a>
-        </p>
-        <p><i class="fas fa-envelope"></i>
-          <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a>
-        </p>
+        <p><i class="fas fa-phone"></i> <a href="tel:+9779841258639">9841258639</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a></p>
       </div>
-
-      <!-- Quick Links Section -->
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
@@ -237,8 +202,6 @@
           <li><a href="events.html">Events</a></li>
         </ul>
       </div>
-
-      <!-- Social Media Section -->
       <div class="footer-section">
         <h3>Follow Us</h3>
         <div class="social-icons">
@@ -248,12 +211,26 @@
         </div>
       </div>
     </div>
-
     <div class="footer-bottom">
       <div class="divider"></div>
       <p>&copy; 2025 Dharmikta Mandali. All Rights Reserved.</p>
     </div>
   </footer>
+
+  <!-- Read more toggle (scoped, no external dependency) -->
+  <script>
+    (function () {
+      const btn = document.querySelector('.senior-message-modern .read-more-btn');
+      const msg = document.querySelector('.senior-message-modern .full-message');
+      if (btn && msg) {
+        btn.addEventListener('click', function () {
+          const open = msg.style.display === 'block';
+          msg.style.display = open ? 'none' : 'block';
+          btn.textContent = open ? 'Read More' : 'Read Less';
+        });
+      }
+    })();
+  </script>
 
 </body>
 </html>

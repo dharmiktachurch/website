@@ -23,31 +23,37 @@
     <polygon points="1100,0 1400,0 1400,240" fill="rgba(210,175,110,0.04)"/>
   </svg>
 
-  <!-- Hero text -->
-  <div class="about-hero-content">
-    <span class="eyebrow">Dharmikta Mandali</span>
-    <h1>Upcoming Events</h1>
-    <p class="hero-sub">Join our community gatherings, fellowship programs, and special occasions.</p>
-  </div>
+  <!-- Hero inner: max-width container keeps text + calendar close together -->
+  <div class="hero-inner">
 
-  <!-- Desktop calendar widget (hidden ≤900px, replaced by mobile section below) -->
-  <div class="hero-calendar-wrap">
-    <div class="hero-calendar" id="desktop-calendar">
-      <div class="cal-header">
-        <button class="cal-nav-btn" id="cal-prev" aria-label="Previous month">&#8249;</button>
-        <span class="cal-month-label" id="cal-month-label">Month Year</span>
-        <button class="cal-nav-btn" id="cal-next" aria-label="Next month">&#8250;</button>
-      </div>
-      <div class="cal-weekdays">
-        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-      </div>
-      <div class="cal-days" id="cal-days"></div>
-      <div class="cal-legend">
-        <div class="cal-legend-item"><span class="cal-legend-dot today-dot"></span> Today</div>
-        <div class="cal-legend-item"><span class="cal-legend-dot event-dot"></span> Event</div>
+    <!-- Hero text -->
+    <div class="about-hero-content">
+      <span class="eyebrow">Dharmikta Mandali</span>
+      <h1>Upcoming Events</h1>
+      <p class="hero-sub">Join our community gatherings, fellowship programs, and special occasions.</p>
+    </div>
+
+    <!-- Desktop calendar widget (hidden ≤900px, replaced by mobile section below) -->
+    <div class="hero-calendar-wrap">
+      <div class="hero-calendar" id="desktop-calendar">
+        <div class="cal-header">
+          <button class="cal-nav-btn" id="cal-prev" aria-label="Previous month">&#8249;</button>
+          <span class="cal-month-label" id="cal-month-label">Month Year</span>
+          <button class="cal-nav-btn" id="cal-next" aria-label="Next month">&#8250;</button>
+        </div>
+        <div class="cal-weekdays">
+          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+        </div>
+        <div class="cal-days" id="cal-days"></div>
+        <div class="cal-legend">
+          <div class="cal-legend-item"><span class="cal-legend-dot today-dot"></span> Today</div>
+          <div class="cal-legend-item"><span class="cal-legend-dot event-dot"></span> Event</div>
+        </div>
       </div>
     </div>
-  </div>
+
+  </div><!-- /.hero-inner -->
+
 </section>
 
 <!-- Mobile calendar section (shown ≤900px) -->

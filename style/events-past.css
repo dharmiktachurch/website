@@ -112,6 +112,7 @@
 .timeline {
   position: relative;
   padding: 1rem 0;
+  overflow: hidden; /* prevents cards overflowing the container */
 }
 
 /* The central vertical rule */
@@ -289,27 +290,39 @@
 
 /* ── RESPONSIVE ──────────────────────────────────────────────── */
 
-/* Tablet: collapse to single-column timeline */
+/* ≤700px: collapse to single-column timeline on the left */
 @media (max-width: 700px) {
+  /* Move the vertical rule to the left edge */
   .timeline::before { left: 16px; transform: none; }
 
+  /* All items: full width minus the left gutter, no right overflow */
   .timeline-item,
   .timeline-item:nth-child(odd),
   .timeline-item:nth-child(even) {
-    width: 100%;
+    width: calc(100% - 2.75rem);  /* leaves room for the dot + rule on the left */
     margin-left: 2.75rem;
+    margin-right: 0;
     text-align: left;
+    box-sizing: border-box;
   }
 
+  /* Dot: always on the left */
   .timeline-item::before,
   .timeline-item:nth-child(odd)::before,
   .timeline-item:nth-child(even)::before {
-    left: -2.2rem; right: auto;
+    left: -2.25rem; right: auto;
   }
 
-  .timeline-item:nth-child(odd) .timeline-card-date { justify-content: flex-start; }
-  .timeline-item:nth-child(odd) .timeline-meta-item { justify-content: flex-start; }
+  /* Reset odd-item overrides that were set for desktop right-alignment */
+  .timeline-item:nth-child(odd) .timeline-card-date  { justify-content: flex-start; }
+  .timeline-item:nth-child(odd) .timeline-meta-item  { justify-content: flex-start; }
   .timeline-item:nth-child(odd) .timeline-meta-item i { order: 0; }
+  .timeline-item:nth-child(odd) .timeline-date-year  { margin-left: auto; }
+
+  /* Prevent long words / descriptions from overflowing card */
+  .timeline-card-title,
+  .timeline-card-desc,
+  .timeline-meta-item { overflow-wrap: break-word; word-break: break-word; }
 }
 
 @media (max-width: 600px) {
@@ -318,9 +331,41 @@
   .events-past-hero .about-hero-content { padding: 1.5rem 1.25rem; }
   .events-body { padding: 2.5rem 1rem 4rem; }
   .timeline { padding: 0.5rem 0; }
+
+  /* Slightly tighter left gutter on small phones */
+  .timeline::before { left: 12px; }
+  .timeline-item,
+  .timeline-item:nth-child(odd),
+  .timeline-item:nth-child(even) {
+    width: calc(100% - 2.25rem);
+    margin-left: 2.25rem;
+  }
+  .timeline-item::before,
+  .timeline-item:nth-child(odd)::before,
+  .timeline-item:nth-child(even)::before {
+    left: -1.85rem;
+  }
 }
 
 @media (max-width: 400px) {
   .events-past-hero .about-hero-content { padding: 1.25rem 1rem; }
   .events-body { padding: 2rem 0.75rem 3rem; }
+
+  .timeline::before { left: 10px; }
+  .timeline-item,
+  .timeline-item:nth-child(odd),
+  .timeline-item:nth-child(even) {
+    width: calc(100% - 2rem);
+    margin-left: 2rem;
+  }
+  .timeline-item::before,
+  .timeline-item:nth-child(odd)::before,
+  .timeline-item:nth-child(even)::before {
+    left: -1.6rem;
+    width: 10px; height: 10px;
+  }
+
+  .timeline-card-body { padding: 1rem 1.1rem; }
+  .timeline-card-date { padding: 0.7rem 1.1rem; }
+  .timeline-date-day  { font-size: 1.5rem; }
 }
