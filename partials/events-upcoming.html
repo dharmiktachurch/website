@@ -23,17 +23,23 @@
     <polygon points="1100,0 1400,0 1400,240" fill="rgba(210,175,110,0.04)"/>
   </svg>
 
-  <!-- Hero inner: max-width container keeps text + calendar close together -->
   <div class="hero-inner">
 
     <!-- Hero text -->
     <div class="about-hero-content">
-      <span class="eyebrow">Dharmikta Mandali</span>
-      <h1>Upcoming Events</h1>
-      <p class="hero-sub">Join our community gatherings, fellowship programs, and special occasions.</p>
+      <span class="eyebrow"
+            data-en="Dharmikta Mandali"
+            data-ne="धार्मिकता मण्डली">Dharmikta Mandali</span>
+      <h1 data-en="Upcoming Events"
+          data-ne="आगामी कार्यक्रमहरू">Upcoming Events</h1>
+      <p class="hero-sub"
+         data-en="Join our community gatherings, fellowship programs, and special occasions."
+         data-ne="हाम्रा सामुदायिक भेलाहरू, सङ्गति कार्यक्रमहरू र विशेष अवसरहरूमा सामेल हुनुहोस्।">
+        Join our community gatherings, fellowship programs, and special occasions.
+      </p>
     </div>
 
-    <!-- Desktop calendar widget (hidden ≤900px, replaced by mobile section below) -->
+    <!-- Desktop calendar widget -->
     <div class="hero-calendar-wrap">
       <div class="hero-calendar" id="desktop-calendar">
         <div class="cal-header">
@@ -42,21 +48,32 @@
           <button class="cal-nav-btn" id="cal-next" aria-label="Next month">&#8250;</button>
         </div>
         <div class="cal-weekdays">
-          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+          <span data-en="S" data-ne="आ">S</span>
+          <span data-en="M" data-ne="सो">M</span>
+          <span data-en="T" data-ne="म">T</span>
+          <span data-en="W" data-ne="बु">W</span>
+          <span data-en="T" data-ne="बि">T</span>
+          <span data-en="F" data-ne="शु">F</span>
+          <span data-en="S" data-ne="श">S</span>
         </div>
         <div class="cal-days" id="cal-days"></div>
         <div class="cal-legend">
-          <div class="cal-legend-item"><span class="cal-legend-dot today-dot"></span> Today</div>
-          <div class="cal-legend-item"><span class="cal-legend-dot event-dot"></span> Event</div>
+          <div class="cal-legend-item">
+            <span class="cal-legend-dot today-dot"></span>
+            <span data-en="Today" data-ne="आज">Today</span>
+          </div>
+          <div class="cal-legend-item">
+            <span class="cal-legend-dot event-dot"></span>
+            <span data-en="Event" data-ne="कार्यक्रम">Event</span>
+          </div>
         </div>
       </div>
     </div>
 
   </div><!-- /.hero-inner -->
-
 </section>
 
-<!-- Mobile calendar section (shown ≤900px) -->
+<!-- Mobile calendar section -->
 <div class="mobile-calendar-section">
   <div class="mobile-calendar-inner">
     <div class="hero-calendar" id="mobile-calendar">
@@ -66,12 +83,24 @@
         <button class="cal-nav-btn" id="cal-next-m" aria-label="Next month">&#8250;</button>
       </div>
       <div class="cal-weekdays">
-        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+        <span data-en="S" data-ne="आ">S</span>
+        <span data-en="M" data-ne="सो">M</span>
+        <span data-en="T" data-ne="म">T</span>
+        <span data-en="W" data-ne="बु">W</span>
+        <span data-en="T" data-ne="बि">T</span>
+        <span data-en="F" data-ne="शु">F</span>
+        <span data-en="S" data-ne="श">S</span>
       </div>
       <div class="cal-days" id="cal-days-m"></div>
       <div class="cal-legend">
-        <div class="cal-legend-item"><span class="cal-legend-dot today-dot"></span> Today</div>
-        <div class="cal-legend-item"><span class="cal-legend-dot event-dot"></span> Event</div>
+        <div class="cal-legend-item">
+          <span class="cal-legend-dot today-dot"></span>
+          <span data-en="Today" data-ne="आज">Today</span>
+        </div>
+        <div class="cal-legend-item">
+          <span class="cal-legend-dot event-dot"></span>
+          <span data-en="Event" data-ne="कार्यक्रम">Event</span>
+        </div>
       </div>
     </div>
   </div>
@@ -81,40 +110,73 @@
 <div class="events-body">
 
   <div class="events-section-header">
-    <h2 class="events-section-title">Events</h2>
+    <h2 class="events-section-title"
+        data-en="Events"
+        data-ne="कार्यक्रमहरू">Events</h2>
     <div class="events-search">
-      <input type="text" id="event-search" placeholder="Search events…" autocomplete="off"/>
+      <input type="text" id="event-search"
+             placeholder="Search events…"
+             data-placeholder-en="Search events…"
+             data-placeholder-ne="कार्यक्रम खोज्नुहोस्…"
+             autocomplete="off"/>
     </div>
   </div>
 
   <div class="events-filters" id="events-filters">
-    <button class="filter-pill active" data-filter="all">All</button>
-    <button class="filter-pill" data-filter="conference">Conference</button>
-    <button class="filter-pill" data-filter="workshop">Workshop</button>
-    <button class="filter-pill" data-filter="celebration">Celebration</button>
-    <button class="filter-pill" data-filter="others">Others</button>
+    <button class="filter-pill active" data-filter="all"
+            data-en="All" data-ne="सबै">All</button>
+    <button class="filter-pill" data-filter="conference"
+            data-en="Conference" data-ne="सम्मेलन">Conference</button>
+    <button class="filter-pill" data-filter="workshop"
+            data-en="Workshop" data-ne="कार्यशाला">Workshop</button>
+    <button class="filter-pill" data-filter="celebration"
+            data-en="Celebration" data-ne="उत्सव">Celebration</button>
+    <button class="filter-pill" data-filter="others"
+            data-en="Others" data-ne="अन्य">Others</button>
   </div>
 
   <!-- Big events group -->
   <div class="events-section-group" id="group-big" style="display:none">
-    <div class="events-group-label">Featured Events</div>
+    <div class="events-group-label"
+         data-en="Featured Events"
+         data-ne="विशेष कार्यक्रमहरू">Featured Events</div>
     <div class="event-grid-big" id="container-big"></div>
   </div>
 
   <!-- Small events group -->
   <div class="events-section-group" id="group-small" style="display:none">
-    <div class="events-group-label">All Events</div>
+    <div class="events-group-label"
+         data-en="All Events"
+         data-ne="सबै कार्यक्रमहरू">All Events</div>
     <div class="event-grid-small" id="event-container"></div>
   </div>
 
-  <!-- Fallback spinner shown before any events load -->
+  <!-- Fallback spinner -->
   <div id="events-initial-spinner" class="events-spinner">
     <div class="spinner-ring"></div>
-    Loading events…
+    <span data-en="Loading events…" data-ne="कार्यक्रमहरू लोड हुँदैछ…">Loading events…</span>
   </div>
 
   <div class="load-more-wrap">
-    <button class="load-more-btn" id="load-more-btn" hidden>Load More</button>
+    <button class="load-more-btn" id="load-more-btn" hidden
+            data-en="Load More" data-ne="थप लोड गर्नुहोस्">Load More</button>
   </div>
 
 </div>
+
+<!-- Re-apply language after partial injection -->
+<script>
+  (function () {
+    if (typeof window.applyLang === 'function') {
+      window.applyLang(window.dmLang || (function () {
+        try { return localStorage.getItem('dm-lang') || 'en'; } catch (e) { return 'en'; }
+      })());
+    }
+    /* Also wire up the search placeholder after partial loads */
+    var searchInput = document.getElementById('event-search');
+    if (searchInput) {
+      var lang = window.dmLang || 'en';
+      searchInput.placeholder = lang === 'ne' ? 'कार्यक्रम खोज्नुहोस्…' : 'Search events…';
+    }
+  })();
+</script>

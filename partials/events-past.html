@@ -4,9 +4,7 @@
 <!-- ── Hero ── -->
 <section class="events-past-hero">
 
-  <!-- SVG artwork: cool-charcoal version of the site's geometric hero style -->
   <svg class="hero-bg" viewBox="0 0 1400 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <!-- Rings — slightly cooler tint than warm-amber to feel archival -->
     <circle cx="700" cy="780" r="480" fill="none" stroke="rgba(160,190,220,0.08)" stroke-width="1.5"/>
     <circle cx="700" cy="780" r="620" fill="none" stroke="rgba(160,190,220,0.05)" stroke-width="1"/>
     <circle cx="90"  cy="90"  r="200" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
@@ -14,10 +12,8 @@
     <line x1="560"  y1="0" x2="560"  y2="560" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
     <line x1="840"  y1="0" x2="840"  y2="560" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
     <line x1="1120" y1="0" x2="1120" y2="560" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
-    <!-- Cross — cooler silver tone -->
     <rect x="1292" y="52" width="4" height="64" rx="2" fill="rgba(180,200,220,0.32)"/>
     <rect x="1264" y="80" width="60" height="4"  rx="2" fill="rgba(180,200,220,0.32)"/>
-    <!-- Dot grid -->
     <g fill="rgba(255,255,255,0.08)">
       <circle cx="60"  cy="450" r="2"/><circle cx="90"  cy="450" r="2"/>
       <circle cx="120" cy="450" r="2"/><circle cx="150" cy="450" r="2"/>
@@ -27,9 +23,16 @@
   </svg>
 
   <div class="about-hero-content">
-    <span class="eyebrow">Dharmikta Mandali</span>
-    <h1>Past Events</h1>
-    <p class="hero-sub">A record of the moments, milestones, and memories that have shaped our community.</p>
+    <span class="eyebrow"
+          data-en="Dharmikta Mandali"
+          data-ne="धार्मिकता मण्डली">Dharmikta Mandali</span>
+    <h1 data-en="Past Events"
+        data-ne="विगतका कार्यक्रमहरू">Past Events</h1>
+    <p class="hero-sub"
+       data-en="A record of the moments, milestones, and memories that have shaped our community."
+       data-ne="ती पलहरू, उपलब्धिहरू र सम्झनाहरूको अभिलेख जसले हाम्रो समुदायलाई आकार दिएको छ।">
+      A record of the moments, milestones, and memories that have shaped our community.
+    </p>
   </div>
 
 </section>
@@ -38,28 +41,45 @@
 <div class="events-body">
 
   <div class="events-section-header">
-    <h2 class="events-section-title">Event History</h2>
+    <h2 class="events-section-title"
+        data-en="Event History"
+        data-ne="कार्यक्रम इतिहास">Event History</h2>
   </div>
 
   <div class="events-filters" id="events-filters">
-    <button class="filter-pill active" data-filter="all">All</button>
-    <button class="filter-pill" data-filter="conference">Conference</button>
-    <button class="filter-pill" data-filter="workshop">Workshop</button>
-    <button class="filter-pill" data-filter="celebration">Celebration</button>
-    <button class="filter-pill" data-filter="others">Others</button>
+    <button class="filter-pill active" data-filter="all"
+            data-en="All" data-ne="सबै">All</button>
+    <button class="filter-pill" data-filter="conference"
+            data-en="Conference" data-ne="सम्मेलन">Conference</button>
+    <button class="filter-pill" data-filter="workshop"
+            data-en="Workshop" data-ne="कार्यशाला">Workshop</button>
+    <button class="filter-pill" data-filter="celebration"
+            data-en="Celebration" data-ne="उत्सव">Celebration</button>
+    <button class="filter-pill" data-filter="others"
+            data-en="Others" data-ne="अन्य">Others</button>
   </div>
 
   <div class="timeline" id="event-container">
     <div class="events-spinner">
       <div class="spinner-ring"></div>
-      Loading history…
+      <span data-en="Loading history…" data-ne="इतिहास लोड हुँदैछ…">Loading history…</span>
     </div>
   </div>
 
   <div class="load-more-wrap">
-    <button class="load-more-btn" id="load-more-btn" hidden>
-      Load More
-    </button>
+    <button class="load-more-btn" id="load-more-btn" hidden
+            data-en="Load More" data-ne="थप लोड गर्नुहोस्">Load More</button>
   </div>
 
 </div>
+
+<!-- Re-apply language after partial injection -->
+<script>
+  (function () {
+    if (typeof window.applyLang === 'function') {
+      window.applyLang(window.dmLang || (function () {
+        try { return localStorage.getItem('dm-lang') || 'en'; } catch (e) { return 'en'; }
+      })());
+    }
+  })();
+</script>

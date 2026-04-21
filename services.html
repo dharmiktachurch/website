@@ -9,64 +9,102 @@
   <link rel="stylesheet" href="style/services.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <script src="script/script.js" defer></script>
+  <style>
+    .lang-toggle {
+      display: flex;
+      background: var(--surface-off);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 3px;
+      gap: 2px;
+      margin-left: 1rem;
+      flex-shrink: 0;
+    }
+    .lang-btn {
+      padding: 5px 14px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: transparent;
+      color: var(--ink-muted, #777);
+      transition: all 0.2s ease;
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+    .lang-btn.active             { background: var(--ink, #111); color: #fff; }
+    .lang-btn:hover:not(.active) { background: var(--surface-mid, #ececec); color: var(--ink, #111); }
+
+    @media (max-width: 768px) {
+      .lang-toggle { display: none; }
+      .nav-lang-row {
+        display: flex !important;
+        justify-content: center;
+        padding: 0.75rem 1.5rem 0.5rem;
+        border-top: 1px solid var(--border, rgba(0,0,0,0.08));
+        margin-top: 0.25rem;
+        list-style: none;
+      }
+      .nav-lang-row .lang-toggle {
+        display: flex !important;
+        margin-left: 0;
+      }
+    }
+    @media (min-width: 769px) {
+      .nav-lang-row { display: none !important; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- ── Navbar ─────────────────────────────────────────────── -->
+  <!-- ── Navbar ── -->
   <nav class="navbar">
     <a href="index.html" class="logo-link">
       <div class="logo-container">
         <img src="static/images/logo.png" alt="Dharmikta Mandali" class="church-logo" />
-        <div class="logo-text">Dharmikta Church</div>
+        <div class="logo-text" data-en="Dharmikta Church" data-ne="धार्मिकता मण्डली">Dharmikta Church</div>
       </div>
     </a>
     <ul class="nav-links" id="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="notices.html">Notices</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="index.html"    data-en="Home"     data-ne="गृहपृष्ठ">Home</a></li>
+      <li><a href="about.html"    data-en="About"    data-ne="हाम्रोबारे">About</a></li>
+      <li><a href="services.html" data-en="Services" data-ne="सेवाहरू">Services</a></li>
+      <li><a href="events.html"   data-en="Events"   data-ne="कार्यक्रमहरू">Events</a></li>
+      <li><a href="notices.html"  data-en="Notices"  data-ne="सूचनाहरू">Notices</a></li>
+      <li><a href="contact.html"  data-en="Contact"  data-ne="सम्पर्क">Contact</a></li>
+      <li class="nav-lang-row">
+        <div class="lang-toggle">
+          <button class="lang-btn" id="btn-en-mob" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" id="btn-ne-mob" onclick="setLang('ne')">नेपा</button>
+        </div>
+      </li>
     </ul>
+
+    <div class="lang-toggle" id="lang-toggle" aria-label="Switch language">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn"        id="btn-ne" onclick="setLang('ne')">नेपा</button>
+    </div>
+
     <div class="burger" id="burger">
       <div class="line"></div><div class="line"></div><div class="line"></div>
     </div>
   </nav>
 
-  <!-- ── Hero — same .about-page-hero structure as about partials -->
-  <!--
-    The hero uses the literal class .about-page-hero so it inherits
-    the same height (58vh), centering, animation, and type rules
-    as the Jesus / Church / Team / Testimony heroes.
-    
-    The only addition inside .about-hero-content is the meta row
-    and the countdown — both kept visually lightweight so the hero
-    doesn't feel cluttered like the old version.
-  -->
+  <!-- ── Hero ── -->
   <section class="about-page-hero hero--services">
-
-    <!-- Same SVG artwork language as about-team / about-testimony -->
     <svg viewBox="0 0 1400 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-
-      <!-- Arc rings radiating from below — same as team hero -->
       <circle cx="700" cy="780" r="480" fill="none" stroke="rgba(210,175,110,0.10)" stroke-width="1.5"/>
       <circle cx="700" cy="780" r="610" fill="none" stroke="rgba(210,175,110,0.07)" stroke-width="1"/>
       <circle cx="700" cy="780" r="750" fill="none" stroke="rgba(210,175,110,0.05)" stroke-width="1"/>
-
-      <!-- Off-centre ring upper left -->
       <circle cx="90" cy="90" r="190" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-
-      <!-- Vertical rule lines -->
       <line x1="280"  y1="0" x2="280"  y2="560" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
       <line x1="560"  y1="0" x2="560"  y2="560" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
       <line x1="840"  y1="0" x2="840"  y2="560" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
       <line x1="1120" y1="0" x2="1120" y2="560" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
-
-      <!-- Cross — upper right, amber -->
       <rect x="1292" y="52"  width="4" height="64" rx="2" fill="rgba(210,175,110,0.38)"/>
       <rect x="1264" y="80"  width="60" height="4"  rx="2" fill="rgba(210,175,110,0.38)"/>
-
-      <!-- Dot grid — lower left -->
       <g fill="rgba(255,255,255,0.09)">
         <circle cx="60"  cy="450" r="2"/><circle cx="90"  cy="450" r="2"/>
         <circle cx="120" cy="450" r="2"/><circle cx="150" cy="450" r="2"/>
@@ -75,73 +113,72 @@
         <circle cx="60"  cy="510" r="2"/><circle cx="90"  cy="510" r="2"/>
         <circle cx="120" cy="510" r="2"/><circle cx="150" cy="510" r="2"/>
       </g>
-
-      <!-- Warm diagonal wash -->
       <polygon points="1100,0 1400,0 1400,240" fill="rgba(210,175,110,0.04)"/>
     </svg>
 
-    <!-- Same .about-hero-content as every about partial -->
     <div class="about-hero-content">
-      <span class="eyebrow">Dharmikta Mandali</span>
-      <h1>Saturday Service</h1>
-      <p class="hero-sub">Join us every Saturday as we gather to worship, learn, pray, and grow together in faith.</p>
+      <span class="eyebrow" data-en="Dharmikta Mandali" data-ne="धार्मिकता मण्डली">Dharmikta Mandali</span>
+      <h1 data-en="Saturday Service" data-ne="शनिबारको सेवा">Saturday Service</h1>
+      <p class="hero-sub"
+         data-en="Join us every Saturday as we gather to worship, learn, pray, and grow together in faith."
+         data-ne="हामीसँग प्रत्येक शनिबार आराधना गर्न, सिक्न, प्रार्थना गर्न र विश्वासमा सँगै बढ्न सामेल हुनुहोस्।">
+        Join us every Saturday as we gather to worship, learn, pray, and grow together in faith.
+      </p>
 
-      <!-- Time + location — plain text, no icons -->
       <div class="hero-meta">
-        <div class="hero-meta-item">
+        <div class="hero-meta-item" data-en="10:00 AM — Every Saturday" data-ne="बिहान १०:०० बजे — प्रत्येक शनिबार">
           10:00 AM — Every Saturday
         </div>
         <div class="hero-meta-sep"></div>
-        <div class="hero-meta-item">
+        <div class="hero-meta-item" data-en="Bhaisepati, Lalitpur, Nepal" data-ne="भैसेपाटी, ललितपुर, नेपाल">
           Bhaisepati, Lalitpur, Nepal
         </div>
       </div>
 
-      <!-- Countdown — plain numbers, no glass card -->
       <div class="hero-countdown">
-        <span class="cd-label">Next service begins in</span>
+        <span class="cd-label" data-en="Next service begins in" data-ne="अर्को सेवा सुरु हुन बाँकी">Next service begins in</span>
         <div class="cd-digits">
           <div class="cd-unit">
             <span class="cd-num" id="cd-days">00</span>
-            <span class="cd-unit-label">Days</span>
+            <span class="cd-unit-label" data-en="Days" data-ne="दिन">Days</span>
           </div>
           <span class="cd-sep">:</span>
           <div class="cd-unit">
             <span class="cd-num" id="cd-hours">00</span>
-            <span class="cd-unit-label">Hours</span>
+            <span class="cd-unit-label" data-en="Hours" data-ne="घण्टा">Hours</span>
           </div>
           <span class="cd-sep">:</span>
           <div class="cd-unit">
             <span class="cd-num" id="cd-mins">00</span>
-            <span class="cd-unit-label">Mins</span>
+            <span class="cd-unit-label" data-en="Mins" data-ne="मिनेट">Mins</span>
           </div>
         </div>
       </div>
 
-      <!-- CTA buttons -->
       <div class="hero-ctas">
-        <a href="contact.html" class="hero-btn hero-btn--secondary">Contact Us</a>
+        <a href="contact.html" class="hero-btn hero-btn--secondary"
+           data-en="Contact Us" data-ne="सम्पर्क गर्नुहोस्">Contact Us</a>
         <a href="https://www.google.com/maps/place/27%C2%B038'30.4%22N+85%C2%B018'39.0%22E"
-           target="_blank" rel="noopener" class="hero-btn hero-btn--primary">Get Directions</a>
+           target="_blank" rel="noopener" class="hero-btn hero-btn--primary"
+           data-en="Get Directions" data-ne="दिशानिर्देश पाउनुहोस्">Get Directions</a>
       </div>
     </div>
-
   </section>
 
   <!-- Countdown script -->
   <script>
     (function () {
       function tick() {
-        const now = new Date();
-        const day = now.getDay(), h = now.getHours();
-        let diff = (6 - day + 7) % 7;
+        var now = new Date();
+        var day = now.getDay(), h = now.getHours();
+        var diff = (6 - day + 7) % 7;
         if (day === 6 && h >= 10) diff = 7;
         if (day === 6 && h < 10)  diff = 0;
-        const target = new Date(now);
+        var target = new Date(now);
         target.setDate(now.getDate() + diff);
         target.setHours(10, 0, 0, 0);
-        const ms   = target - now;
-        const pad  = n => String(Math.max(0, n)).padStart(2, '0');
+        var ms  = target - now;
+        var pad = function(n) { return String(Math.max(0, n)).padStart(2, '0'); };
         document.getElementById('cd-days').textContent  = pad(Math.floor(ms / 86400000));
         document.getElementById('cd-hours').textContent = pad(Math.floor((ms % 86400000) / 3600000));
         document.getElementById('cd-mins').textContent  = pad(Math.floor((ms % 3600000) / 60000));
@@ -150,45 +187,53 @@
     })();
   </script>
 
-  <!-- ══════════════════════════════════════════════════════════
-       PAGE BODY — same .about-page-body as every about partial.
-       Service cards use .about-block.accented extended with
-       .service-card for the image layout.
-  ══════════════════════════════════════════════════════════ -->
+  <!-- ── Page Body ── -->
   <div class="about-page-body">
 
-    <!-- Intro — same as .about-intro-text -->
     <div class="about-intro-text">
-      <p>Experience spiritual growth through our diverse ministries and fellowship opportunities. Everyone is welcome — come as you are.</p>
+      <p data-en="Experience spiritual growth through our diverse ministries and fellowship opportunities. Everyone is welcome — come as you are."
+         data-ne="हाम्रा विविध सेवाहरू र सङ्गति अवसरहरू मार्फत आत्मिक वृद्धि अनुभव गर्नुहोस्। सबैलाई स्वागत छ — जस्तो हुनुहुन्छ त्यस्तै आउनुहोस्।">
+        Experience spiritual growth through our diverse ministries and fellowship opportunities. Everyone is welcome — come as you are.
+      </p>
     </div>
 
     <!-- ── Main Service ── -->
     <div class="about-block accented service-card">
       <div class="card-img">
         <img src="static/images/main-service.jpg" alt="Main Service" loading="lazy"/>
-        <span class="card-badge">Weekly</span>
+        <span class="card-badge" data-en="Weekly" data-ne="साप्ताहिक">Weekly</span>
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title">Main Service</h3>
+          <h3 class="card-title" data-en="Main Service" data-ne="मुख्य सेवा">Main Service</h3>
           <div class="card-sched">
-            <span class="card-sched-day">Saturdays</span>
+            <span class="card-sched-day" data-en="Saturdays" data-ne="शनिबारहरू">Saturdays</span>
             <span class="card-sched-sep"></span>
-            <span class="card-sched-time">10:00 AM</span>
+            <span class="card-sched-time" data-en="10:00 AM" data-ne="बिहान १०:०० बजे">10:00 AM</span>
           </div>
         </div>
-        <p class="card-desc">Our Saturday gathering is the heartbeat of Dharmikta Mandali — a time for worship, the Word, prayer, and community fellowship.</p>
+        <p class="card-desc"
+           data-en="Our Saturday gathering of Dharmikta Mandali — a time for worship, the Word, prayer, and community fellowship."
+           data-ne="हाम्रो शनिबारको धार्मिकता मण्डलीको भेला — आराधना, वचन, प्रार्थना र सामुदायिक सङ्गतिको समय।">
+          Our Saturday gathering of Dharmikta Mandali — a time for worship, the Word, prayer, and community fellowship.
+        </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p>Our main service is the cornerstone of our weekly gatherings, designed to strengthen your faith and connect you with our church family.</p>
+            <p data-en="Our main service is the cornerstone of our weekly gatherings, designed to strengthen your faith and connect you with our church family."
+               data-ne="हाम्रो मुख्य सेवा हाम्रो साप्ताहिक भेलाको आधारशिला हो, तपाईंको विश्वास बलियो बनाउन र तपाईंलाई हाम्रो मण्डली परिवारसँग जोड्न डिजाइन गरिएको।">
+              Our main service is the cornerstone of our weekly gatherings, designed to strengthen your faith and connect you with our church family.
+            </p>
             <div class="card-highlight">
-              <span class="card-highlight-label">What to expect</span>
-              <p>Heartfelt worship, powerful biblical teaching, and altar prayer. We also hold dedicated fellowship for children, women, youth, and fathers — ensuring everyone finds encouragement and belonging.</p>
+              <span class="card-highlight-label" data-en="What to expect" data-ne="के अपेक्षा गर्ने">What to expect</span>
+              <p data-en="Heartfelt worship, powerful biblical teaching, and altar prayer. We also hold dedicated fellowship for children, women, youth, and fathers — ensuring everyone finds encouragement and belonging."
+                 data-ne="हार्दिक आराधना, शक्तिशाली बाइबलीय शिक्षा र बेदीको प्रार्थना। हामी बालबालिका, महिला, युवा र पिताहरूको लागि समर्पित सङ्गति पनि राख्छौं — सबैले प्रोत्साहन र आत्मीयता पाओस् भनी।">
+                Heartfelt worship, powerful biblical teaching, and altar prayer. We also hold dedicated fellowship for children, women, youth, and fathers — ensuring everyone finds encouragement and belonging.
+              </p>
             </div>
           </div>
         </div>
         <button class="card-toggle" aria-expanded="false">
-          <span class="card-toggle-text">View Details</span>
+          <span class="card-toggle-text" data-en="View Details" data-ne="विवरण हेर्नुहोस्">View Details</span>
           <span class="card-toggle-arrow" aria-hidden="true">↓</span>
         </button>
       </div>
@@ -198,29 +243,39 @@
     <div class="about-block accented service-card">
       <div class="card-img">
         <img src="static/images/Womens_Fellowship.jpg" alt="Women's Ministry" loading="lazy"/>
-        <span class="card-badge">Weekly</span>
+        <span class="card-badge" data-en="Weekly" data-ne="साप्ताहिक">Weekly</span>
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title">Women's Ministry</h3>
+          <h3 class="card-title" data-en="Women's Ministry" data-ne="महिला मन्त्रालय">Women's Ministry</h3>
           <div class="card-sched">
-            <span class="card-sched-day">Wednesdays</span>
+            <span class="card-sched-day" data-en="Wednesdays" data-ne="बुधबारहरू">Wednesdays</span>
             <span class="card-sched-sep"></span>
-            <span class="card-sched-time">10:30 AM</span>
+            <span class="card-sched-time" data-en="10:30 AM" data-ne="बिहान १०:३० बजे">10:30 AM</span>
           </div>
         </div>
-        <p class="card-desc">A supportive community for women to grow spiritually and build meaningful relationships rooted in faith.</p>
+        <p class="card-desc"
+           data-en="A supportive community for women to grow spiritually and build meaningful relationships rooted in faith."
+           data-ne="महिलाहरूलाई आत्मिकरूपले बढ्न र विश्वासमा आधारित अर्थपूर्ण सम्बन्धहरू निर्माण गर्न एक सहयोगी समुदाय।">
+          A supportive community for women to grow spiritually and build meaningful relationships rooted in faith.
+        </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p>Our Women's Ministry provides a safe space for women of all ages to connect, share, and deepen their faith journey together.</p>
+            <p data-en="Our Women's Ministry provides a safe space for women of all ages to connect, share, and deepen their faith journey together."
+               data-ne="हाम्रो महिला मन्त्रालयले सबै उमेरका महिलाहरूलाई जोडिन, साझा गर्न र आफ्नो विश्वास यात्रा सँगै गहिरो बनाउन सुरक्षित ठाउँ प्रदान गर्छ।">
+              Our Women's Ministry provides a safe space for women of all ages to connect, share, and deepen their faith journey together.
+            </p>
             <div class="card-highlight">
-              <span class="card-highlight-label">In detail</span>
-              <p>Weekly Bible study, intimate prayer, and encouraging fellowship. Annual combined events and mentorship programs nurture spiritual growth and lasting friendships.</p>
+              <span class="card-highlight-label" data-en="In detail" data-ne="विस्तृत जानकारी">In detail</span>
+              <p data-en="Weekly Bible study, intimate prayer, and encouraging fellowship. Annual combined events and mentorship programs nurture spiritual growth and lasting friendships."
+                 data-ne="साप्ताहिक बाइबल अध्ययन, आत्मीय प्रार्थना र प्रोत्साहक सङ्गति। वार्षिक संयुक्त कार्यक्रमहरू र मेन्टरशिप कार्यक्रमहरूले आत्मिक वृद्धि र दीर्घकालीन मित्रताको पोषण गर्छन्।">
+                Weekly Bible study, intimate prayer, and encouraging fellowship. Annual combined events and mentorship programs nurture spiritual growth and lasting friendships.
+              </p>
             </div>
           </div>
         </div>
         <button class="card-toggle" aria-expanded="false">
-          <span class="card-toggle-text">View Details</span>
+          <span class="card-toggle-text" data-en="View Details" data-ne="विवरण हेर्नुहोस्">View Details</span>
           <span class="card-toggle-arrow" aria-hidden="true">↓</span>
         </button>
       </div>
@@ -230,29 +285,39 @@
     <div class="about-block accented service-card">
       <div class="card-img">
         <img src="static/images/Fathers_Fellowship.jpg" alt="Father's Fellowship" loading="lazy"/>
-        <span class="card-badge">Monthly</span>
+        <span class="card-badge" data-en="Monthly" data-ne="मासिक">Monthly</span>
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title">Father's Fellowship</h3>
+          <h3 class="card-title" data-en="Father's Fellowship" data-ne="पिताहरूको सङ्गति">Father's Fellowship</h3>
           <div class="card-sched">
-            <span class="card-sched-day">Third Saturday</span>
+            <span class="card-sched-day" data-en="Third Saturday" data-ne="तेस्रो शनिबार">Third Saturday</span>
             <span class="card-sched-sep"></span>
-            <span class="card-sched-time">After service</span>
+            <span class="card-sched-time" data-en="After service" data-ne="सेवापछि">After service</span>
           </div>
         </div>
-        <p class="card-desc">Equipping fathers to lead with integrity in their families, workplaces, and communities.</p>
+        <p class="card-desc"
+           data-en="Equipping fathers to lead with integrity in their families, workplaces, and communities."
+           data-ne="पिताहरूलाई आफ्नो परिवार, कार्यस्थल र समुदायमा इमानदारीपूर्वक नेतृत्व गर्न सक्षम बनाउने।">
+          Equipping fathers to lead with integrity in their families, workplaces, and communities.
+        </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p>Focused on building godly character and practical tools for biblical fatherhood.</p>
+            <p data-en="Focused on building godly character and practical tools for biblical fatherhood."
+               data-ne="ईश्वरीय चरित्र निर्माण र बाइबलीय पितृत्वका लागि व्यावहारिक उपकरणहरूमा केन्द्रित।">
+              Focused on building godly character and practical tools for biblical fatherhood.
+            </p>
             <div class="card-highlight">
-              <span class="card-highlight-label">Program highlights</span>
-              <p>Monthly gathering for sharing, encouragement, and prayer — creating an environment for spiritual sharpening, mutual accountability, and faith-based leadership.</p>
+              <span class="card-highlight-label" data-en="Program highlights" data-ne="कार्यक्रमका मुख्य बुँदाहरू">Program highlights</span>
+              <p data-en="Monthly gathering for sharing, encouragement, and prayer — creating an environment for spiritual sharpening, mutual accountability, and faith-based leadership."
+                 data-ne="साझेदारी, प्रोत्साहन र प्रार्थनाको लागि मासिक भेला — आत्मिक तीक्ष्णता, पारस्परिक जवाफदेहिता र विश्वास-आधारित नेतृत्वको वातावरण सिर्जना गर्दै।">
+                Monthly gathering for sharing, encouragement, and prayer — creating an environment for spiritual sharpening, mutual accountability, and faith-based leadership.
+              </p>
             </div>
           </div>
         </div>
         <button class="card-toggle" aria-expanded="false">
-          <span class="card-toggle-text">View Details</span>
+          <span class="card-toggle-text" data-en="View Details" data-ne="विवरण हेर्नुहोस्">View Details</span>
           <span class="card-toggle-arrow" aria-hidden="true">↓</span>
         </button>
       </div>
@@ -261,30 +326,40 @@
     <!-- ── Children's Ministry ── -->
     <div class="about-block accented service-card">
       <div class="card-img">
-        <img src="static/images/children_ministry.jpg" alt="Children's Ministry" loading="lazy"/>
-        <span class="card-badge">Weekly</span>
+        <img src="static/images/children_ministry.jpg" alt="Children Fellowship" loading="lazy"/>
+        <span class="card-badge" data-en="Weekly" data-ne="साप्ताहिक">Weekly</span>
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title">Children's Ministry</h3>
+          <h3 class="card-title" data-en="Children Fellowship" data-ne="बालबालिका सङ्गति">Children Fellowship</h3>
           <div class="card-sched">
-            <span class="card-sched-day">Saturdays</span>
+            <span class="card-sched-day" data-en="Saturdays" data-ne="शनिबारहरू">Saturdays</span>
             <span class="card-sched-sep"></span>
-            <span class="card-sched-time">10:00 AM</span>
+            <span class="card-sched-time" data-en="10:00 AM" data-ne="बिहान १०:०० बजे">10:00 AM</span>
           </div>
         </div>
-        <p class="card-desc">A fun, safe environment where children discover God's love through age-appropriate activities and teaching.</p>
+        <p class="card-desc"
+           data-en="A fun, safe environment where children discover God's love through age-appropriate activities and teaching."
+           data-ne="एक मजेदार, सुरक्षित वातावरण जहाँ बालबालिकाहरूले उमेर-उपयुक्त गतिविधिहरू र शिक्षा मार्फत परमेश्वरको प्रेम पत्ता लगाउँछन्।">
+          A fun, safe environment where children discover God's love through age-appropriate activities and teaching.
+        </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p>Engaging programs that help children build a strong spiritual foundation while having fun.</p>
+            <p data-en="Engaging programs that help children build a strong spiritual foundation while having fun."
+               data-ne="बालबालिकाहरूलाई मज्जा गर्दैगर्दा बलियो आत्मिक आधार निर्माण गर्न मद्दत गर्ने संलग्न कार्यक्रमहरू।">
+              Engaging programs that help children build a strong spiritual foundation while having fun.
+            </p>
             <div class="card-highlight">
-              <span class="card-highlight-label">Our programs</span>
-              <p>Interactive Bible lessons, Christian films, and learning quizzes. Special programs and celebrations help children grow in faith and friendships from an early age.</p>
+              <span class="card-highlight-label" data-en="Our programs" data-ne="हाम्रा कार्यक्रमहरू">Our programs</span>
+              <p data-en="Interactive Bible lessons, Christian films, and learning quizzes. Special programs and celebrations help children grow in faith and friendships from an early age."
+                 data-ne="अन्तरक्रियात्मक बाइबल पाठहरू, ईसाई फिल्महरू र सिकाइ क्विजहरू। विशेष कार्यक्रमहरू र उत्सवहरूले बालबालिकाहरूलाई सानै उमेरदेखि विश्वास र मित्रतामा बढ्न मद्दत गर्छन्।">
+                Interactive Bible lessons, Christian films, and learning quizzes. Special programs and celebrations help children grow in faith and friendships from an early age.
+              </p>
             </div>
           </div>
         </div>
         <button class="card-toggle" aria-expanded="false">
-          <span class="card-toggle-text">View Details</span>
+          <span class="card-toggle-text" data-en="View Details" data-ne="विवरण हेर्नुहोस्">View Details</span>
           <span class="card-toggle-arrow" aria-hidden="true">↓</span>
         </button>
       </div>
@@ -293,30 +368,40 @@
     <!-- ── Youth Ministry ── -->
     <div class="about-block accented service-card">
       <div class="card-img">
-        <img src="static/images/Youth_Fellowship.jpg" alt="Youth Ministry" loading="lazy"/>
-        <span class="card-badge">Monthly</span>
+        <img src="static/images/Youth_Fellowship.jpg" alt="Youth Fellowship" loading="lazy"/>
+        <span class="card-badge" data-en="Monthly" data-ne="मासिक">Monthly</span>
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title">Youth Ministry</h3>
+          <h3 class="card-title" data-en="Youth Fellowship" data-ne="युवा सङ्गति">Youth Fellowship</h3>
           <div class="card-sched">
-            <span class="card-sched-day">Saturdays</span>
+            <span class="card-sched-day" data-en="Saturdays" data-ne="शनिबारहरू">Saturdays</span>
             <span class="card-sched-sep"></span>
-            <span class="card-sched-time">After service</span>
+            <span class="card-sched-time" data-en="After service" data-ne="सेवापछि">After service</span>
           </div>
         </div>
-        <p class="card-desc">A vibrant community where teens and young adults explore faith, build friendships, and grow spiritually.</p>
+        <p class="card-desc"
+           data-en="A vibrant community where teens and young adults explore faith, build friendships, and grow spiritually."
+           data-ne="एक जीवन्त समुदाय जहाँ किशोरकिशोरी र युवा वयस्कहरूले विश्वास अन्वेषण गर्छन्, मित्रता बनाउँछन् र आत्मिकरूपले बढ्छन्।">
+          A vibrant community where teens and young adults explore faith, build friendships, and grow spiritually.
+        </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p>A relevant space for teenagers to connect with God and with each other.</p>
+            <p data-en="A relevant space for teenagers to connect with God and with each other."
+               data-ne="किशोरकिशोरीहरूलाई परमेश्वर र एकआपसमा जोडिन प्रासंगिक ठाउँ।">
+              A relevant space for teenagers to connect with God and with each other.
+            </p>
             <div class="card-highlight">
-              <span class="card-highlight-label">What we do</span>
-              <p>Weekly prayer, monthly programs and fellowship, and annual mission trips. Leadership training helps young people grow into confident, faith-filled adults.</p>
+              <span class="card-highlight-label" data-en="What we do" data-ne="हामी के गर्छौं">What we do</span>
+              <p data-en="Weekly prayer, monthly programs and fellowship, and annual mission trips. Leadership training helps young people grow into confident, faith-filled adults."
+                 data-ne="साप्ताहिक प्रार्थना, मासिक कार्यक्रमहरू र सङ्गति, र वार्षिक मिशन यात्राहरू। नेतृत्व तालिमले युवाहरूलाई आत्मविश्वासी, विश्वासले भरिएको वयस्कमा बढ्न मद्दत गर्छ।">
+                Weekly prayer, monthly programs and fellowship, and annual mission trips. Leadership training helps young people grow into confident, faith-filled adults.
+              </p>
             </div>
           </div>
         </div>
         <button class="card-toggle" aria-expanded="false">
-          <span class="card-toggle-text">View Details</span>
+          <span class="card-toggle-text" data-en="View Details" data-ne="विवरण हेर्नुहोस्">View Details</span>
           <span class="card-toggle-arrow" aria-hidden="true">↓</span>
         </button>
       </div>
@@ -326,27 +411,37 @@
     <div class="about-block accented service-card">
       <div class="card-img">
         <img src="static/images/Pillars_Academy.jpg" alt="Pillars Academy" loading="lazy"/>
-        <span class="card-badge">Annual</span>
+        <span class="card-badge" data-en="Annual" data-ne="वार्षिक">Annual</span>
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title">Pillars Academy</h3>
+          <h3 class="card-title" data-en="Pillars Academy" data-ne="पिलर्स एकेडेमी">Pillars Academy</h3>
           <div class="card-sched">
-            <span class="card-sched-day">6-month program</span>
+            <span class="card-sched-day" data-en="6-month program" data-ne="६ महिने कार्यक्रम">6-month program</span>
           </div>
         </div>
-        <p class="card-desc">An intensive discipleship program for those seeking deeper biblical knowledge and leadership development.</p>
+        <p class="card-desc"
+           data-en="An intensive discipleship program for those seeking deeper biblical knowledge and leadership development."
+           data-ne="गहिरो बाइबलीय ज्ञान र नेतृत्व विकास खोज्नेहरूका लागि गहन शिष्यत्व कार्यक्रम।">
+          An intensive discipleship program for those seeking deeper biblical knowledge and leadership development.
+        </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p>A transformative program equipping participants for effective ministry and personal spiritual growth.</p>
+            <p data-en="A transformative program equipping participants for effective ministry and personal spiritual growth."
+               data-ne="सहभागीहरूलाई प्रभावकारी सेवाकार्य र व्यक्तिगत आत्मिक वृद्धिका लागि सक्षम बनाउने परिवर्तनकारी कार्यक्रम।">
+              A transformative program equipping participants for effective ministry and personal spiritual growth.
+            </p>
             <div class="card-highlight">
-              <span class="card-highlight-label">Program components</span>
-              <p>Biblical teaching five days a week, daily devotions, personal mentorship, church service opportunities, and occasional retreats for holistic growth.</p>
+              <span class="card-highlight-label" data-en="Program components" data-ne="कार्यक्रमका घटकहरू">Program components</span>
+              <p data-en="Biblical teaching five days a week, daily devotions, personal mentorship, church service opportunities, and occasional retreats for holistic growth."
+                 data-ne="हप्तामा पाँच दिन बाइबलीय शिक्षा, दैनिक भक्ति, व्यक्तिगत मेन्टरशिप, मण्डली सेवाका अवसरहरू र समग्र विकासका लागि कहिलेकाहीँ रिट्रिट।">
+                Biblical teaching five days a week, daily devotions, personal mentorship, church service opportunities, and occasional retreats for holistic growth.
+              </p>
             </div>
           </div>
         </div>
         <button class="card-toggle" aria-expanded="false">
-          <span class="card-toggle-text">View Details</span>
+          <span class="card-toggle-text" data-en="View Details" data-ne="विवरण हेर्नुहोस्">View Details</span>
           <span class="card-toggle-arrow" aria-hidden="true">↓</span>
         </button>
       </div>
@@ -356,37 +451,51 @@
     <div class="about-block accented service-card">
       <div class="card-img">
         <img src="static/images/Vocational_Training.jpg" alt="Vocational Training" loading="lazy"/>
-        <span class="card-badge">Annual</span>
+        <span class="card-badge" data-en="Annual" data-ne="वार्षिक">Annual</span>
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title">Vocational Training</h3>
+          <h3 class="card-title" data-en="Vocational Training" data-ne="व्यावसायिक तालिम">Vocational Training</h3>
           <div class="card-sched">
-            <span class="card-sched-day">6-month program</span>
+            <span class="card-sched-day" data-en="6-month program" data-ne="६ महिने कार्यक्रम">6-month program</span>
           </div>
         </div>
-        <p class="card-desc">Practical skills training integrated with biblical principles for workplace excellence and honest living.</p>
+        <p class="card-desc"
+           data-en="Practical skills training integrated with biblical principles for workplace excellence and honest living."
+           data-ne="कार्यस्थल उत्कृष्टता र इमानदार जीवनका लागि बाइबलीय सिद्धान्तहरूसँग एकीकृत व्यावहारिक कौशल तालिम।">
+          Practical skills training integrated with biblical principles for workplace excellence and honest living.
+        </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p>Preparing participants for meaningful employment while emphasising Christian work ethics.</p>
+            <p data-en="Preparing participants for meaningful employment while emphasising Christian work ethics."
+               data-ne="ईसाई कार्य नैतिकतामा जोड दिँदै सहभागीहरूलाई अर्थपूर्ण रोजगारीका लागि तयार पार्दै।">
+              Preparing participants for meaningful employment while emphasising Christian work ethics.
+            </p>
             <div class="card-highlight">
-              <span class="card-highlight-label">Training areas</span>
-              <p>Hands-on instruction in tailoring and fashion design, animal husbandry, and agriculture — each rooted in biblical principles of integrity and excellence.</p>
+              <span class="card-highlight-label" data-en="Training areas" data-ne="तालिम क्षेत्रहरू">Training areas</span>
+              <p data-en="Hands-on instruction in tailoring and fashion design, animal husbandry, and agriculture — each rooted in biblical principles of integrity and excellence."
+                 data-ne="दर्जी र फेसन डिजाइन, पशुपालन र कृषिमा व्यावहारिक निर्देशन — प्रत्येक इमानदारी र उत्कृष्टताका बाइबलीय सिद्धान्तहरूमा आधारित।">
+                Hands-on instruction in tailoring and fashion design, animal husbandry, and agriculture — each rooted in biblical principles of integrity and excellence.
+              </p>
             </div>
           </div>
         </div>
         <button class="card-toggle" aria-expanded="false">
-          <span class="card-toggle-text">View Details</span>
+          <span class="card-toggle-text" data-en="View Details" data-ne="विवरण हेर्नुहोस्">View Details</span>
           <span class="card-toggle-arrow" aria-hidden="true">↓</span>
         </button>
       </div>
     </div>
 
-    <!-- CTA — same .about-cta-block as jesus + testimony pages -->
+    <!-- CTA block -->
     <div class="about-cta-block">
-      <h3>Join Us This Saturday</h3>
-      <p>We'd love to welcome you. Come as you are — everyone has a place at Dharmikta Mandali.</p>
-      <a href="contact.html" class="about-cta-btn">Get in Touch</a>
+      <h3 data-en="Join Us This Saturday" data-ne="यस शनिबार हामीसँग सामेल हुनुहोस्">Join Us This Saturday</h3>
+      <p data-en="We'd love to welcome you. Come as you are — everyone has a place at Dharmikta Mandali."
+         data-ne="हामी तपाईंलाई स्वागत गर्न चाहन्छौं। जस्तो हुनुहुन्छ त्यस्तै आउनुहोस् — धार्मिकता मण्डलीमा सबैको स्थान छ।">
+        We'd love to welcome you. Come as you are — everyone has a place at Dharmikta Mandali.
+      </p>
+      <a href="contact.html" class="about-cta-btn"
+         data-en="Get in Touch" data-ne="सम्पर्कमा आउनुहोस्">Get in Touch</a>
     </div>
 
   </div><!-- /about-page-body -->
@@ -394,42 +503,45 @@
   <!-- Expand / collapse script -->
   <script>
     (function () {
-      const cards   = document.querySelectorAll('.service-card');
-      const toggles = document.querySelectorAll('.card-toggle');
+      var cards   = document.querySelectorAll('.service-card');
+      var toggles = document.querySelectorAll('.card-toggle');
 
       function closeAll() {
-        cards.forEach((c, j) => {
+        cards.forEach(function(c, j) {
           c.classList.remove('open');
           toggles[j].setAttribute('aria-expanded', 'false');
-          toggles[j].querySelector('.card-toggle-text').textContent = 'View Details';
+          var lang = document.documentElement.lang === 'ne' ? 'ne' : 'en';
+          var textEl = toggles[j].querySelector('.card-toggle-text');
+          textEl.textContent = lang === 'ne' ? 'विवरण हेर्नुहोस्' : 'View Details';
         });
       }
 
-      toggles.forEach((btn, i) => {
+      toggles.forEach(function(btn, i) {
         btn.addEventListener('click', function (e) {
           e.stopPropagation();
-          const opening = !cards[i].classList.contains('open');
+          var opening = !cards[i].classList.contains('open');
           closeAll();
           if (opening) {
             cards[i].classList.add('open');
             btn.setAttribute('aria-expanded', 'true');
-            btn.querySelector('.card-toggle-text').textContent = 'Hide Details';
-            setTimeout(() => cards[i].scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+            var lang = document.documentElement.lang === 'ne' ? 'ne' : 'en';
+            btn.querySelector('.card-toggle-text').textContent = lang === 'ne' ? 'विवरण लुकाउनुहोस्' : 'Hide Details';
+            setTimeout(function() { cards[i].scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 80);
           }
         });
       });
 
       document.addEventListener('click', closeAll);
-      cards.forEach(c => c.addEventListener('click', e => e.stopPropagation()));
-      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+      cards.forEach(function(c) { c.addEventListener('click', function(e) { e.stopPropagation(); }); });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAll(); });
     })();
   </script>
 
-  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <!-- ── Footer ── -->
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-section">
-        <h3>Contact Us</h3>
+        <h3 data-en="Contact Us" data-ne="सम्पर्क गर्नुहोस्">Contact Us</h3>
         <p><i class="fas fa-map-marker-alt"></i>
           <a href="https://www.google.com/maps/place/27%C2%B038'30.4%22N+85%C2%B018'39.0%22E" target="_blank">
             Gokul Awas Rd, Bhaisepati-25, Lalitpur, Nepal
@@ -438,15 +550,15 @@
         <p><i class="fas fa-envelope"></i> <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a></p>
       </div>
       <div class="footer-section">
-        <h3>Quick Links</h3>
+        <h3 data-en="Quick Links" data-ne="द्रुत लिङ्कहरू">Quick Links</h3>
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="events.html">Events</a></li>
+          <li><a href="index.html"    data-en="Home"     data-ne="गृहपृष्ठ">Home</a></li>
+          <li><a href="services.html" data-en="Services" data-ne="सेवाहरू">Services</a></li>
+          <li><a href="events.html"   data-en="Events"   data-ne="कार्यक्रमहरू">Events</a></li>
         </ul>
       </div>
       <div class="footer-section">
-        <h3>Follow Us</h3>
+        <h3 data-en="Follow Us" data-ne="हामीलाई फलो गर्नुहोस्">Follow Us</h3>
         <div class="social-icons">
           <a href="https://www.facebook.com/profile.php?id=100068116715888" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
           <a href="#" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -454,4 +566,51 @@
         </div>
       </div>
     </div>
-    <div class="footer-b
+    <div class="footer-bottom">
+      <div class="divider"></div>
+      <p data-en="&copy; 2025 Dharmikta Mandali. All Rights Reserved."
+         data-ne="&copy; २०२५ धार्मिकता मण्डली। सर्वाधिकार सुरक्षित।">
+        &copy; 2025 Dharmikta Mandali. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ── Language Script ── -->
+  <script>
+  (function () {
+    function syncButtons(lang) {
+      ['btn-en', 'btn-en-mob'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.toggle('active', lang === 'en');
+      });
+      ['btn-ne', 'btn-ne-mob'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.toggle('active', lang === 'ne');
+      });
+    }
+
+    function applyLang(lang) {
+      document.documentElement.lang = lang === 'ne' ? 'ne' : 'en';
+      syncButtons(lang);
+
+      document.querySelectorAll('[data-en]').forEach(function (el) {
+        if (el.classList.contains('lang-btn')) return;
+        var text = el.getAttribute('data-' + lang);
+        if (text !== null) el.innerHTML = text;
+      });
+
+      try { localStorage.setItem('dm-lang', lang); } catch (e) {}
+    }
+
+    window.setLang = function (lang) { applyLang(lang); };
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var saved = 'en';
+      try { saved = localStorage.getItem('dm-lang') || 'en'; } catch (e) {}
+      applyLang(saved);
+    });
+  })();
+  </script>
+
+</body>
+</html>

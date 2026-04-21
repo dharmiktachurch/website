@@ -30,6 +30,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const loadingBuf = document.getElementById("loading-buffer");
   const urlParams  = new URLSearchParams(window.location.search);
 
+  // ── Helper: get current saved language ───────────────────────
+  function getSavedLang() {
+    try { return localStorage.getItem('dm-lang') || 'en'; } catch (e) { return 'en'; }
+  }
+
+  // ── Helper: re-apply language to the whole document ───────────
+  function reApplyLang() {
+    if (typeof window.applyLang === 'function') {
+      window.applyLang(window.dmLang || getSavedLang());
+    }
+  }
+
   // ── Skeleton loader ───────────────────────────────────────────
   function showLoader() {
     contentDiv.classList.remove('visible');
@@ -73,6 +85,10 @@ document.addEventListener("DOMContentLoaded", function () {
           if (page === 'events-upcoming') initUpcoming();
           if (page === 'events-past')     initPast();
           hideLoader();
+
+          // ✅ Re-apply saved language AFTER partial is fully injected
+          // This fixes the flash-of-English bug when the user has Nepali selected
+          reApplyLang();
         });
       })
       .catch(() => {
@@ -199,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
     shownSmall    = 0;
 
     // ── Big events ──
-    const groupBig    = document.getElementById('group-big');
+    const groupBig     = document.getElementById('group-big');
     const containerBig = document.getElementById('container-big');
 
     if (bigEvents.length > 0 && groupBig && containerBig) {
@@ -213,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ── Small events ──
-    const groupSmall    = document.getElementById('group-small');
+    const groupSmall     = document.getElementById('group-small');
     const containerSmall = document.getElementById('event-container');
 
     if (groupSmall && containerSmall) {
@@ -228,6 +244,9 @@ document.addEventListener("DOMContentLoaded", function () {
         groupSmall.style.display = 'none';
       }
     }
+
+    // ✅ Re-apply language after cards are rendered from CSV data
+    reApplyLang();
   }
 
   function renderSmallBatch() {
@@ -261,12 +280,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (events.length === 0) {
       container.innerHTML = '<div class="events-empty">No past events found.</div>';
+      // ✅ Re-apply language even for empty state
+      reApplyLang();
       return;
     }
 
     const frag = document.createDocumentFragment();
     events.forEach(ev => frag.appendChild(buildTimelineItem(ev)));
     container.appendChild(frag);
+
+    // ✅ Re-apply language after timeline items are rendered from CSV data
+    reApplyLang();
   }
 
   // ── FILTERS ───────────────────────────────────────────────────

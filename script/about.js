@@ -1,67 +1,58 @@
 // ================================
-// ABOUT PAGE – SMOOTH LOADER SYSTEM (FIXED)
+// ABOUT PAGE – SMOOTH LOADER SYSTEM
+// Fix: re-executes <script> tags after innerHTML injection
 // ================================
 
 document.addEventListener("DOMContentLoaded", function () {
-  const navLinks = document.querySelectorAll(".about-nav a");
-  const contentDiv = document.getElementById("about-content");
+  const navLinks      = document.querySelectorAll(".about-nav a");
+  const contentDiv    = document.getElementById("about-content");
   const loadingBuffer = document.getElementById("loading-buffer");
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const pageParam = urlParams.get("page") || "about-jesus";
-  let currentPage = null;
+  const urlParams   = new URLSearchParams(window.location.search);
+  const pageParam   = urlParams.get("page") || "about-jesus";
+  let   currentPage = null;
 
-  // ── Preload CSS upfront — all styles live in about.css now ───────────────
-  const cssFiles = [
-    "style/about.css",
-    // about-testimony.css is merged into about.css — no separate file needed
-  ];
+  // ── Preload CSS ──────────────────────────────────────────────────────────
+  const cssFiles = ["style/about.css"];
 
   function preloadCSS(href) {
     if (document.querySelector(`link[href="${href}"]`)) return Promise.resolve();
     return new Promise((resolve) => {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = href;
-      link.onload = resolve;
-      link.onerror = resolve; // don't block on missing files
+      const link   = document.createElement("link");
+      link.rel     = "stylesheet";
+      link.href    = href;
+      link.onload  = resolve;
+      link.onerror = resolve;
       document.head.appendChild(link);
     });
   }
 
-  // Fire all CSS loads immediately on DOMContentLoaded
   const cssReady = Promise.all(cssFiles.map(preloadCSS));
 
-  /* --------------------
-     LOADER CONTROLS
-  -------------------- */
+  // ── Loader controls ──────────────────────────────────────────────────────
   function showLoader() {
     loadingBuffer.removeAttribute("hidden");
-    loadingBuffer.style.opacity = "1";
-    loadingBuffer.style.visibility = "visible";
+    loadingBuffer.style.opacity       = "1";
+    loadingBuffer.style.visibility    = "visible";
     loadingBuffer.style.pointerEvents = "all";
 
-    contentDiv.style.opacity = "0";
+    contentDiv.style.opacity    = "0";
     contentDiv.style.visibility = "hidden";
-    contentDiv.style.display = "none";
+    contentDiv.style.display    = "none";
   }
 
   function hideLoader() {
-    // Show content first (still invisible), then fade loader out
     contentDiv.style.display = "block";
-
-    // Force reflow so the transition actually fires
     void contentDiv.offsetHeight;
 
     requestAnimationFrame(() => {
-      contentDiv.style.opacity = "1";
+      contentDiv.style.opacity    = "1";
       contentDiv.style.visibility = "visible";
 
-      loadingBuffer.style.opacity = "0";
-      loadingBuffer.style.visibility = "hidden";
+      loadingBuffer.style.opacity       = "0";
+      loadingBuffer.style.visibility    = "hidden";
       loadingBuffer.style.pointerEvents = "none";
 
-      // After transition completes, set display:none so it doesn't intercept clicks
       loadingBuffer.addEventListener(
         "transitionend",
         () => {
@@ -74,33 +65,53 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* --------------------
-     STRIP <link> tags from partial HTML
-     (CSS is already preloaded into <head>)
-  -------------------- */
   function stripLinkTags(html) {
     return html.replace(/<link[^>]*rel=["']stylesheet["'][^>]*>/gi, "");
   }
 
-  /* --------------------
-     CONTENT LOADER
-  -------------------- */
+  // ── KEY FIX: re-execute <script> tags after innerHTML injection ──────────
+  // innerHTML silently drops <script> tags — we extract and re-run them manually.
+  function runScripts(container) {
+    const scripts = container.querySelectorAll("script");
+    scripts.forEach(function (oldScript) {
+      const newScript = document.createElement("script");
+      // Copy any attributes (e.g. type, src)
+      Array.from(oldScript.attributes).forEach(function (attr) {
+        newScript.setAttribute(attr.name, attr.value);
+      });
+      // Copy inline script content
+      newScript.textContent = oldScript.textContent;
+      // Replace old (inert) script with new (live) one
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+  }
+
+  // ── Re-apply saved language after every partial inject ───────────────────
+  function reapplyLang() {
+    var lang = "en";
+    try { lang = localStorage.getItem("dm-lang") || "en"; } catch (e) {}
+
+    document.dispatchEvent(
+      new CustomEvent("dm:langchange", { detail: { lang: lang } })
+    );
+
+    if (typeof window.setLang === "function") {
+      window.setLang(lang);
+    }
+  }
+
+  // ── Content loader ───────────────────────────────────────────────────────
   function loadContent(page) {
     if (currentPage === page) return;
     currentPage = page;
     showLoader();
 
-    // Update active nav
     navLinks.forEach((link) => link.classList.remove("active"));
-    const activeLink = document.querySelector(
-      `.about-nav a[data-page="${page}"]`
-    );
+    const activeLink = document.querySelector(`.about-nav a[data-page="${page}"]`);
     if (activeLink) activeLink.classList.add("active");
 
-    // Update URL
     history.pushState(null, "", `?page=${page}`);
 
-    // Wait for CSS AND fetch to both complete before revealing
     const fetchHTML = fetch(`partials/${page}.html`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -112,18 +123,18 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(([html]) => {
         contentDiv.innerHTML = html;
 
-        // Small breathing room for browser to paint injected DOM
+        // Re-execute scripts that innerHTML silently killed
+        runScripts(contentDiv);
+
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             hideLoader();
+            reapplyLang();
 
-            // Init testimony carousel AFTER the fade-in transition ends
-            // so the template element is fully in the live DOM
             if (
               page === "about-testimony" &&
               typeof window.initializeTestimoniesPage === "function"
             ) {
-              // 420ms matches the opacity transition in #about-content (0.4s)
               setTimeout(() => window.initializeTestimoniesPage(), 420);
             }
           });
@@ -144,9 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  /* --------------------
-     NAVIGATION EVENTS
-  -------------------- */
+  // ── Navigation events ────────────────────────────────────────────────────
   navLinks.forEach((link) => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
@@ -156,14 +165,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   window.addEventListener("popstate", () => {
-    const page =
-      new URLSearchParams(window.location.search).get("page") || "about-jesus";
-    currentPage = null; // force reload on back/forward
+    const page = new URLSearchParams(window.location.search).get("page") || "about-jesus";
+    currentPage = null;
     loadContent(page);
   });
 
-  /* --------------------
-     INITIAL LOAD
-  -------------------- */
+  // ── Initial load ─────────────────────────────────────────────────────────
   loadContent(pageParam);
 });

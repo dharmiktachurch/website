@@ -8,12 +8,56 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link rel="stylesheet" href="style/contact.css" />
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function() { emailjs.init({ publicKey: "MoTUpsISKXLTAnyxm" }); })();
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="script/script.js" defer></script>
   <script src="script/Email.js" defer></script>
+  <style>
+    .lang-toggle {
+      display: flex;
+      background: var(--surface-off);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 3px;
+      gap: 2px;
+      margin-left: 1rem;
+      flex-shrink: 0;
+    }
+    .lang-btn {
+      padding: 5px 14px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: transparent;
+      color: var(--ink-muted, #777);
+      transition: all 0.2s ease;
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+    .lang-btn.active             { background: var(--ink, #111); color: #fff; }
+    .lang-btn:hover:not(.active) { background: var(--surface-mid, #ececec); color: var(--ink, #111); }
+
+    @media (max-width: 768px) {
+      .lang-toggle { display: none; }
+      .nav-lang-row {
+        display: flex !important;
+        justify-content: center;
+        padding: 0.75rem 1.5rem 0.5rem;
+        border-top: 1px solid var(--border, rgba(0,0,0,0.08));
+        margin-top: 0.25rem;
+        list-style: none;
+      }
+      .nav-lang-row .lang-toggle {
+        display: flex !important;
+        margin-left: 0;
+      }
+    }
+    @media (min-width: 769px) {
+      .nav-lang-row { display: none !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -22,35 +66,45 @@
     <a href="index.html" class="logo-link">
       <div class="logo-container">
         <img src="static/images/logo.png" alt="Dharmikta Mandali" class="church-logo" />
-        <div class="logo-text">Dharmikta Church</div>
+        <div class="logo-text" data-en="Dharmikta Church" data-ne="धार्मिकता मण्डली">Dharmikta Church</div>
       </div>
     </a>
     <ul class="nav-links" id="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="notices.html">Notices</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="index.html"    data-en="Home"     data-ne="गृहपृष्ठ">Home</a></li>
+      <li><a href="about.html"    data-en="About"    data-ne="हाम्रोबारे">About</a></li>
+      <li><a href="services.html" data-en="Services" data-ne="सेवाहरू">Services</a></li>
+      <li><a href="events.html"   data-en="Events"   data-ne="कार्यक्रमहरू">Events</a></li>
+      <li><a href="notices.html"  data-en="Notices"  data-ne="सूचनाहरू">Notices</a></li>
+      <li><a href="contact.html"  data-en="Contact"  data-ne="सम्पर्क">Contact</a></li>
+      <li class="nav-lang-row">
+        <div class="lang-toggle">
+          <button class="lang-btn" id="btn-en-mob" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" id="btn-ne-mob" onclick="setLang('ne')">नेपा</button>
+        </div>
+      </li>
     </ul>
+
+    <div class="lang-toggle" id="lang-toggle" aria-label="Switch language">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn"        id="btn-ne" onclick="setLang('ne')">नेपा</button>
+    </div>
+
     <div class="burger" id="burger">
       <div class="line"></div><div class="line"></div><div class="line"></div>
     </div>
   </nav>
 
   <!-- ── Hero ── -->
-  <!--
-    Contact hero intentionally keeps the real church photo + blur treatment —
-    it gives the page a warm, personal feel unlike the geometric gradient heroes.
-    Typography follows the same eyebrow / h1 / subtitle pattern as every other page.
-  -->
   <section class="contact-hero">
     <div class="blurred-bg"></div>
     <div class="overlay"></div>
     <div class="hero-content">
-      <span class="eyebrow">Dharmikta Mandali</span>
-      <h1>Get in Touch</h1>
-      <p>We would love to hear from you. Send us a message or reach us through the details below.</p>
+      <span class="eyebrow" data-en="Dharmikta Mandali" data-ne="धार्मिकता मण्डली">Dharmikta Mandali</span>
+      <h1 data-en="Get in Touch" data-ne="सम्पर्कमा आउनुहोस्">Get in Touch</h1>
+      <p data-en="We would love to hear from you. Send us a message or reach us through the details below."
+         data-ne="हामी तपाईंबाट सुन्न चाहन्छौं। हामीलाई सन्देश पठाउनुहोस् वा तलका विवरणहरू मार्फत हामीसम्म पुग्नुहोस्।">
+        We would love to hear from you. Send us a message or reach us through the details below.
+      </p>
     </div>
   </section>
 
@@ -60,29 +114,27 @@
 
       <!-- Form card -->
       <div class="contact-form">
-        <h2>Send a Message</h2>
+        <h2 data-en="Send a Message" data-ne="सन्देश पठाउनुहोस्">Send a Message</h2>
         <form id="contact-form">
-          <input  type="text"  id="user_name"    placeholder="Your Name"    required />
-          <input  type="email" id="user_email"   placeholder="Your Email"   required />
-          <input  type="text"  id="user_subject" placeholder="Subject"      required />
-          <textarea            id="user_message" placeholder="Your Message" required></textarea>
+          <input  type="text"  id="user_name"    data-placeholder-en="Your Name"    data-placeholder-ne="तपाईंको नाम"    placeholder="Your Name"    required />
+          <input  type="email" id="user_email"   data-placeholder-en="Your Email"   data-placeholder-ne="तपाईंको इमेल"   placeholder="Your Email"   required />
+          <input  type="text"  id="user_subject" data-placeholder-en="Subject"      data-placeholder-ne="विषय"           placeholder="Subject"      required />
+          <textarea            id="user_message" data-placeholder-en="Your Message" data-placeholder-ne="तपाईंको सन्देश" placeholder="Your Message" required></textarea>
           <div id="form-status"></div>
-          <button type="submit" class="cta-button">Send Message</button>
+          <button type="submit" class="cta-button" data-en="Send Message" data-ne="सन्देश पठाउनुहोस्">Send Message</button>
         </form>
       </div>
 
       <!-- Info card -->
       <div class="contact-info">
-        <h2>Contact Info</h2>
+        <h2 data-en="Contact Info" data-ne="सम्पर्क जानकारी">Contact Info</h2>
 
         <div class="contact-info-items">
 
           <div class="contact-info-item">
-            <div class="contact-info-icon">
-              <i class="fas fa-map-marker-alt"></i>
-            </div>
+            <div class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></div>
             <div class="contact-info-text">
-              <span class="contact-info-label">Address</span>
+              <span class="contact-info-label" data-en="Address" data-ne="ठेगाना">Address</span>
               <span class="contact-info-value">
                 <a href="https://www.google.com/maps/place/27%C2%B038'30.4%22N+85%C2%B018'39.0%22E"
                    target="_blank" rel="noopener noreferrer">
@@ -93,11 +145,9 @@
           </div>
 
           <div class="contact-info-item">
-            <div class="contact-info-icon">
-              <i class="fas fa-phone"></i>
-            </div>
+            <div class="contact-info-icon"><i class="fas fa-phone"></i></div>
             <div class="contact-info-text">
-              <span class="contact-info-label">Phone</span>
+              <span class="contact-info-label" data-en="Phone" data-ne="फोन">Phone</span>
               <span class="contact-info-value">
                 <a href="tel:+9779841258639">+977 9841258639</a>
               </span>
@@ -105,11 +155,9 @@
           </div>
 
           <div class="contact-info-item">
-            <div class="contact-info-icon">
-              <i class="fas fa-envelope"></i>
-            </div>
+            <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
             <div class="contact-info-text">
-              <span class="contact-info-label">Email</span>
+              <span class="contact-info-label" data-en="Email" data-ne="इमेल">Email</span>
               <span class="contact-info-value">
                 <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a>
               </span>
@@ -117,37 +165,34 @@
           </div>
 
           <div class="contact-info-item">
-            <div class="contact-info-icon">
-              <i class="far fa-clock"></i>
-            </div>
+            <div class="contact-info-icon"><i class="far fa-clock"></i></div>
             <div class="contact-info-text">
-              <span class="contact-info-label">Service Hours</span>
-              <span class="contact-info-value">Every Saturday · 10:00 AM</span>
+              <span class="contact-info-label" data-en="Service Hours" data-ne="सेवा समय">Service Hours</span>
+              <span class="contact-info-value"
+                    data-en="Every Saturday · 10:00 AM"
+                    data-ne="प्रत्येक शनिबार · बिहान १०:०० बजे">
+                Every Saturday · 10:00 AM
+              </span>
             </div>
           </div>
 
         </div>
 
-        <!-- Social links -->
-        <h3>Follow Us</h3>
+        <h3 data-en="Follow Us" data-ne="हामीलाई फलो गर्नुहोस्">Follow Us</h3>
         <div class="contact-social-icons">
           <a href="https://www.facebook.com/profile.php?id=100068116715888"
-             class="contact-social-icon" target="_blank" rel="noopener"
-             aria-label="Facebook">
+             class="contact-social-icon" target="_blank" rel="noopener" aria-label="Facebook">
             <i class="fab fa-facebook-f"></i>
           </a>
-          <a href="#" class="contact-social-icon" target="_blank"
-             aria-label="Instagram">
+          <a href="#" class="contact-social-icon" target="_blank" aria-label="Instagram">
             <i class="fab fa-instagram"></i>
           </a>
           <a href="https://www.youtube.com/@DharmiktaChurch"
-             class="contact-social-icon" target="_blank" rel="noopener"
-             aria-label="YouTube">
+             class="contact-social-icon" target="_blank" rel="noopener" aria-label="YouTube">
             <i class="fab fa-youtube"></i>
           </a>
         </div>
 
-        <!-- Embedded map -->
         <div class="map-embed">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d883.4!2d85.3108!3d27.6418!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjfCsDM4JzMwLjQiTiA4NcKwMTgnMzkuMCJF!5e0!3m2!1sen!2snp!4v1"
@@ -165,7 +210,7 @@
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-section">
-        <h3>Contact Us</h3>
+        <h3 data-en="Contact Us" data-ne="सम्पर्क गर्नुहोस्">Contact Us</h3>
         <p><i class="fas fa-map-marker-alt"></i>
           <a href="https://www.google.com/maps/place/27%C2%B038'30.4%22N+85%C2%B018'39.0%22E" target="_blank">
             Gokul Awas Rd, Bhaisepati-25, Lalitpur, Nepal
@@ -175,15 +220,15 @@
         <p><i class="fas fa-envelope"></i> <a href="mailto:churchdharmikta@gmail.com">churchdharmikta@gmail.com</a></p>
       </div>
       <div class="footer-section">
-        <h3>Quick Links</h3>
+        <h3 data-en="Quick Links" data-ne="द्रुत लिङ्कहरू">Quick Links</h3>
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="events.html">Events</a></li>
+          <li><a href="index.html"    data-en="Home"     data-ne="गृहपृष्ठ">Home</a></li>
+          <li><a href="services.html" data-en="Services" data-ne="सेवाहरू">Services</a></li>
+          <li><a href="events.html"   data-en="Events"   data-ne="कार्यक्रमहरू">Events</a></li>
         </ul>
       </div>
       <div class="footer-section">
-        <h3>Follow Us</h3>
+        <h3 data-en="Follow Us" data-ne="हामीलाई फलो गर्नुहोस्">Follow Us</h3>
         <div class="social-icons">
           <a href="https://www.facebook.com/profile.php?id=100068116715888" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
           <a href="#" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -191,7 +236,57 @@
         </div>
       </div>
     </div>
+    <div class="footer-bottom">
+      <div class="divider"></div>
+      <p data-en="&copy; 2025 Dharmikta Mandali. All Rights Reserved."
+         data-ne="&copy; २०२५ धार्मिकता मण्डली। सर्वाधिकार सुरक्षित।">
+        &copy; 2025 Dharmikta Mandali. All Rights Reserved.
+      </p>
+    </div>
   </footer>
+
+  <!-- ── Language Script ── -->
+  <script>
+  (function () {
+    function syncButtons(lang) {
+      ['btn-en', 'btn-en-mob'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.toggle('active', lang === 'en');
+      });
+      ['btn-ne', 'btn-ne-mob'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.toggle('active', lang === 'ne');
+      });
+    }
+
+    function applyLang(lang) {
+      document.documentElement.lang = lang === 'ne' ? 'ne' : 'en';
+      syncButtons(lang);
+
+      document.querySelectorAll('[data-en]').forEach(function (el) {
+        if (el.classList.contains('lang-btn')) return;
+        var text = el.getAttribute('data-' + lang);
+        if (text !== null) el.innerHTML = text;
+      });
+
+      /* Update input placeholders */
+      document.querySelectorAll('[data-placeholder-en]').forEach(function (el) {
+        var ph = el.getAttribute('data-placeholder-' + lang);
+        if (ph) el.placeholder = ph;
+      });
+
+      try { localStorage.setItem('dm-lang', lang); } catch (e) {}
+    }
+
+    window.setLang = function (lang) { applyLang(lang); };
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var saved = 'en';
+      try { saved = localStorage.getItem('dm-lang') || 'en'; } catch (e) {}
+      applyLang(saved);
+    });
+  })();
+  </script>
 
 </body>
 </html>

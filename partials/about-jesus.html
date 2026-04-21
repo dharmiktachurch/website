@@ -3,9 +3,13 @@
 
   <div class="about-page-hero hero--jesus">
     <div class="about-hero-content">
-      <span class="eyebrow">Dharmikta Mandali</span>
-      <h1>Jesus Christ</h1>
-      <p>The Way, the Truth, and the Life</p>
+      <span class="eyebrow"
+            data-en="Dharmikta Mandali"
+            data-ne="धार्मिकता मण्डली">Dharmikta Mandali</span>
+      <h1 data-en="Jesus Christ"
+          data-ne="प्रभु येशू ख्रीष्ट">Jesus Christ</h1>
+      <p  data-en="The Way, the Truth, and the Life"
+          data-ne="मार्ग, सत्य र जीवन">The Way, the Truth, and the Life</p>
     </div>
   </div>
 
@@ -13,53 +17,143 @@
 
     <!-- Intro -->
     <div class="about-intro-text">
-      <p>Jesus Christ, the Son of God, came to Earth to save us. He healed the sick, loved the broken, taught truth, and gave His life to reconnect us with God. Through His resurrection, He defeated death and brought us hope that lasts forever.</p>
+      <p data-en="Jesus Christ, the Son of God, came to Earth to save us. He healed the sick, loved the broken, taught truth, and gave His life to reconnect us with God. Through His resurrection, He defeated death and brought us hope that lasts forever."
+         data-ne="परमेश्वरका पुत्र येशू ख्रीष्ट हामीलाई उद्धार गर्न पृथ्वीमा आउनुभयो। उहाँले बिरामीलाई निको पार्नुभयो, टुटेकाहरूलाई प्रेम गर्नुभयो, सत्य सिकाउनुभयो, र हामीलाई परमेश्वरसँग जोड्न आफ्नो ज्यान दिनुभयो। उहाँको पुनरुत्थानद्वारा, उहाँले मृत्युलाई जित्नुभयो र हामीलाई अनन्त आशा दिनुभयो।">
+        Jesus Christ, the Son of God, came to Earth to save us. He healed the sick, loved the broken, taught truth, and gave His life to reconnect us with God. Through His resurrection, He defeated death and brought us hope that lasts forever.
+      </p>
     </div>
 
     <!-- Three values cards -->
     <div class="jesus-cards">
       <div class="jesus-card">
-        <h3>Love</h3>
-        <p>Jesus loves you unconditionally. His love is not based on what you've done, but who you are.</p>
+        <h3 data-en="Love" data-ne="प्रेम">Love</h3>
+        <p  data-en="Jesus loves you unconditionally. His love is not based on what you've done, but who you are."
+            data-ne="येशूले तपाईंलाई बिनाशर्त प्रेम गर्नुहुन्छ। उहाँको प्रेम तपाईंले के गर्नुभयो भन्नेमा होइन, तपाईं को हुनुहुन्छ भन्नेमा आधारित छ।">
+          Jesus loves you unconditionally. His love is not based on what you've done, but who you are.
+        </p>
       </div>
       <div class="jesus-card">
-        <h3>Forgiveness</h3>
-        <p>No matter your past, Jesus offers forgiveness and a fresh start with a clean heart.</p>
+        <h3 data-en="Forgiveness" data-ne="क्षमा">Forgiveness</h3>
+        <p  data-en="No matter your past, Jesus offers forgiveness and a fresh start with a clean heart."
+            data-ne="तपाईंको विगत जस्तोसुकै भए पनि, येशूले क्षमा र शुद्ध हृदयसहित नयाँ सुरुवात दिनुहुन्छ।">
+          No matter your past, Jesus offers forgiveness and a fresh start with a clean heart.
+        </p>
       </div>
       <div class="jesus-card">
-        <h3>Purpose</h3>
-        <p>In Jesus, your life has meaning, direction, and eternal value that goes beyond this world.</p>
+        <h3 data-en="Purpose" data-ne="उद्देश्य">Purpose</h3>
+        <p  data-en="In Jesus, your life has meaning, direction, and eternal value that goes beyond this world."
+            data-ne="येशूमा, तपाईंको जीवनको अर्थ, दिशा र यस संसारभन्दा पर जाने अनन्त मूल्य छ।">
+          In Jesus, your life has meaning, direction, and eternal value that goes beyond this world.
+        </p>
       </div>
     </div>
 
     <!-- Salvation -->
     <div class="about-block accented">
-      <span class="eyebrow">The Gospel</span>
-      <h2 class="about-heading">What is Salvation?</h2>
-      <p>Salvation is a free gift from God. By believing in Jesus, repenting from your sins, and choosing to follow Him, you receive forgiveness, new life, and eternal hope.</p>
-      <div class="jesus-scripture">
+      <span class="eyebrow"
+            data-en="The Gospel"
+            data-ne="सुसमाचार">The Gospel</span>
+      <h2 class="about-heading"
+          data-en="What is Salvation?"
+          data-ne="मुक्ति भनेको के हो?">What is Salvation?</h2>
+      <p data-en="Salvation is a free gift from God. By believing in Jesus, repenting from your sins, and choosing to follow Him, you receive forgiveness, new life, and eternal hope."
+         data-ne="मुक्ति परमेश्वरको नि:शुल्क उपहार हो। येशूमा विश्वास गरेर, आफ्ना पापहरूबाट पश्चाताप गरेर, र उहाँलाई पछ्याउने निर्णय गरेर, तपाईंले क्षमा, नयाँ जीवन र अनन्त आशा पाउनुहुन्छ।">
+        Salvation is a free gift from God. By believing in Jesus, repenting from your sins, and choosing to follow Him, you receive forgiveness, new life, and eternal hope.
+      </p>
+
+      <!--
+        Scripture: two separate blocks toggled by JS.
+        Both exist in the DOM at all times — JS shows/hides via display.
+      -->
+      <div class="jesus-scripture" id="jesus-scripture-en">
         <p>"If you declare with your mouth, 'Jesus is Lord,' and believe in your heart that God raised him from the dead, you will be saved."</p>
         <span class="verse-ref">— Romans 10:9 (NIV)</span>
+      </div>
+      <div class="jesus-scripture" id="jesus-scripture-ne" style="display:none;">
+        <p>"यदि तँ आफ्नो मुखले येशू प्रभु हुनुहुन्छ भनी स्वीकार गर्छस् र आफ्नो हृदयमा विश्वास गर्छस् कि परमेश्‍वरले उहाँलाई मृतकहरूबाट उठाउनुभयो, तब तू उद्धार पाउनेछस्।"</p>
+        <span class="verse-ref">— रोमी १०:९ (NNRV)</span>
       </div>
     </div>
 
     <!-- Prayer -->
     <div class="about-block">
-      <span class="eyebrow">Faith</span>
-      <h2 class="about-heading">A Simple Prayer</h2>
-      <div class="prayer-box">
+      <span class="eyebrow"
+            data-en="Faith"
+            data-ne="विश्वास">Faith</span>
+      <h2 class="about-heading"
+          data-en="A Simple Prayer"
+          data-ne="एक सरल प्रार्थना">A Simple Prayer</h2>
+
+      <!-- Prayer EN -->
+      <div class="prayer-box" id="prayer-box-en">
         <p><strong>Dear Jesus,</strong></p>
         <p>I believe You are the Son of God. Thank You for loving me and dying for me.</p>
         <p>Please forgive me and come into my heart. Be my Savior and Lord. I want to follow You forever.</p>
         <p><strong>Amen.</strong></p>
       </div>
+      <!-- Prayer NE -->
+      <div class="prayer-box" id="prayer-box-ne" style="display:none;">
+        <p><strong>प्रिय येशू,</strong></p>
+        <p>म विश्वास गर्छु कि तपाईं परमेश्वरका पुत्र हुनुहुन्छ। मलाई प्रेम गर्नुभएकोमा र मेरो निम्ति ज्यान दिनुभएकोमा धन्यवाद।</p>
+        <p>कृपया मलाई क्षमा गर्नुहोस् र मेरो हृदयमा आउनुहोस्। मेरो उद्धारकर्ता र प्रभु बन्नुहोस्। म सदासर्वदा तपाईंलाई पछ्याउन चाहन्छु।</p>
+        <p><strong>आमेन।</strong></p>
+      </div>
     </div>
 
     <!-- CTA -->
     <div class="about-cta-block">
-      <h3>Jesus Is Calling You</h3>
-      <p>You are never too far gone. Today is the perfect day to begin your journey with Jesus.</p>
+      <h3 data-en="Jesus Is Calling You"
+          data-ne="येशूले तपाईंलाई बोलाउँदै हुनुहुन्छ">Jesus Is Calling You</h3>
+      <p  data-en="You are never too far gone. Today is the perfect day to begin your journey with Jesus."
+          data-ne="तपाईं कहिल्यै धेरै टाढा हुनुहुन्न। आज येशूसँगको आफ्नो यात्रा सुरु गर्न उत्तम दिन हो।">
+        You are never too far gone. Today is the perfect day to begin your journey with Jesus.
+      </p>
     </div>
 
   </div>
 </div>
+
+<script>
+(function () {
+  /* Toggle the ID-based blocks (scripture + prayer boxes) */
+  function toggleBlocks(lang) {
+    var scriptureEn = document.getElementById('jesus-scripture-en');
+    var scriptureNe = document.getElementById('jesus-scripture-ne');
+    var prayerEn    = document.getElementById('prayer-box-en');
+    var prayerNe    = document.getElementById('prayer-box-ne');
+
+    if (scriptureEn) scriptureEn.style.display = lang === 'en' ? '' : 'none';
+    if (scriptureNe) scriptureNe.style.display = lang === 'ne' ? '' : 'none';
+    if (prayerEn)    prayerEn.style.display    = lang === 'en' ? '' : 'none';
+    if (prayerNe)    prayerNe.style.display    = lang === 'ne' ? '' : 'none';
+  }
+
+  /* Swap all data-en/data-ne text inside this partial */
+  function swapText(lang) {
+    document.querySelectorAll('.about-jesus-page [data-en]').forEach(function (el) {
+      if (el.classList.contains('lang-btn')) return;
+      var text = el.getAttribute('data-' + lang);
+      if (text !== null) el.innerHTML = text;
+    });
+  }
+
+  function applyJesusLang(lang) {
+    swapText(lang);
+    toggleBlocks(lang);
+  }
+
+  /* React to navbar toggle on this page */
+  document.addEventListener('dm:langchange', function (e) {
+    applyJesusLang(e.detail.lang);
+  });
+
+  /*
+    Init: about.js injects this partial THEN calls hideLoader().
+    By the time this <script> runs, the DOM nodes above are live,
+    so we can read localStorage and apply immediately.
+  */
+  var saved = 'en';
+  try { saved = localStorage.getItem('dm-lang') || 'en'; } catch (e) {}
+  applyJesusLang(saved);
+})();
+</script>

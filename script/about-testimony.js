@@ -1,35 +1,39 @@
 // ============================================================
-// ABOUT-TESTIMONY.JS — TESTIMONIES CAROUSEL
-// ============================================================
-// Key fixes vs previous version:
-//   1. querySelector target changed from '.testimonies-page' (old HTML)
-//      to '.about-testimony-page' (unified HTML structure)
-//   2. Template lookup now searches the full document, not just the
-//      container — templates are siblings, not children of the carousel
-//   3. initializeTestimoniesPage is safe to call multiple times
-//   4. Keyboard listener is scoped + cleaned up to avoid stacking
+// ABOUT-TESTIMONY.JS — TESTIMONIES CAROUSEL (BILINGUAL)
 // ============================================================
 
-let currentSlide     = 0;
-let totalSlides      = 0;
-let testimoniesData  = [];
-let track            = null;
+let currentSlide      = 0;
+let totalSlides       = 0;
+let testimoniesData   = [];
+let track             = null;
 let autoSlideInterval = null;
-let keydownHandler   = null;   // kept so we can remove it on re-init
+let keydownHandler    = null;
 
-// ── Entry point called by about.js ─────────────────────────────────────────
+// ── Helpers ─────────────────────────────────────────────────────────────────
+function _currentLang() {
+  try { return localStorage.getItem('dm-lang') || 'en'; } catch (e) { return 'en'; }
+}
+
+function _t(testimony, field) {
+  // Return the NE variant if active and it exists, else fall back to EN
+  var lang = _currentLang();
+  var neKey = field + '_ne';
+  if (lang === 'ne' && testimony[neKey] !== undefined) return testimony[neKey];
+  return testimony[field];
+}
+
+// ── Entry point ──────────────────────────────────────────────────────────────
 window.initializeTestimoniesPage = function () {
-  // Clean up any previous instance
   _cleanup();
 
   const container = document.getElementById('testimonies-container');
   if (!container) return;
 
-  // Show spinner while fetching
+  var loadingText = _currentLang() === 'ne' ? 'साक्षीहरू लोड हुँदैछ…' : 'Loading testimonies…';
   container.innerHTML = `
     <div class="loading-testimonies">
       <div class="loading-spinner"></div>
-      <p>Loading testimonies…</p>
+      <p>${loadingText}</p>
     </div>`;
 
   loadTestimonies()
@@ -43,7 +47,7 @@ window.initializeTestimoniesPage = function () {
     });
 };
 
-// ── Cleanup previous listeners / timers ────────────────────────────────────
+// ── Cleanup ──────────────────────────────────────────────────────────────────
 function _cleanup() {
   if (autoSlideInterval) { clearInterval(autoSlideInterval); autoSlideInterval = null; }
   if (keydownHandler)    { document.removeEventListener('keydown', keydownHandler); keydownHandler = null; }
@@ -52,7 +56,7 @@ function _cleanup() {
   track        = null;
 }
 
-// ── Fetch testimony data ────────────────────────────────────────────────────
+// ── Fetch ────────────────────────────────────────────────────────────────────
 function loadTestimonies() {
   return fetch('/data/testimony.json')
     .then(res => {
@@ -62,58 +66,48 @@ function loadTestimonies() {
     .then(data => data.testimonies || data || []);
 }
 
-// ── Fallback data if fetch fails ────────────────────────────────────────────
+// ── Fallback ─────────────────────────────────────────────────────────────────
 function _fallbackData() {
   return [
     {
       id: 1,
-      author: "John Smith",
-      role: "Church Member",
-      date: "January 2024",
-      excerpt: "God's grace transformed my life in ways I never imagined possible.",
-      fullText: ["God's grace transformed my life in ways I never imagined possible. Through prayer and faith, I found peace and purpose that I had been searching for my entire life."]
-    },
-    {
-      id: 2,
-      author: "Sarah Johnson",
-      role: "Youth Leader",
-      date: "December 2023",
-      excerpt: "Finding community in this church has been a blessing to my whole family.",
-      fullText: ["Finding community in this church has been a blessing to my whole family. The support and love we've received have helped us through the most difficult seasons of our lives."]
+      author: 'Prashanna Parajuli',
+      role: 'Church Member', role_ne: 'मण्डली सदस्य',
+      date: 'January 2024',  date_ne: 'जनवरी २०२४',
+      excerpt:    "God's grace transformed my life in ways I never imagined possible.",
+      excerpt_ne: "परमेश्वरको अनुग्रहले मेरो जीवनलाई यस्तो तरिकाले रूपान्तरण गर्‍यो जुन मैले कहिल्यै सम्भव सोचेको थिइनँ।",
+      fullText:    ["God's grace transformed my life in ways I never imagined possible. Through prayer and faith, I found peace and purpose."],
+      fullText_ne: ["परमेश्वरको अनुग्रहले मेरो जीवनलाई यस्तो तरिकाले रूपान्तरण गर्‍यो जुन मैले कहिल्यै सम्भव सोचेको थिइनँ। प्रार्थना र विश्वासद्वारा मैले शान्ति र उद्देश्य पाएँ।"]
     }
   ];
 }
 
-// ── Main setup after data is ready ─────────────────────────────────────────
+// ── Setup ────────────────────────────────────────────────────────────────────
 function _setup(container) {
   totalSlides = testimoniesData.length;
 
   if (totalSlides === 0) {
-    container.innerHTML = `
-      <div class="error-state" style="position:static;">
-        <h3>No Testimonies Yet</h3>
-        <p>Be the first to share what God has done in your life.</p>
-      </div>`;
+    var msg = _currentLang() === 'ne'
+      ? 'अहिलेसम्म कुनै साक्षी छैन।'
+      : 'No Testimonies Yet';
+    container.innerHTML = `<div class="error-state" style="position:static;"><h3>${msg}</h3></div>`;
     return;
   }
 
   _renderSlides(container);
   _setupNavigation();
-  _goToSlide(0, false);           // go to first without animation
-
+  _goToSlide(0, false);
   if (totalSlides > 1) _startAutoSlide();
 }
 
-// ── Render all testimony slides ─────────────────────────────────────────────
+// ── Render ────────────────────────────────────────────────────────────────────
 function _renderSlides(container) {
   container.innerHTML = '';
 
-  track = document.createElement('div');
-  track.className = 'testimonies-track';
-  track.id = 'testimonies-track';
+  track            = document.createElement('div');
+  track.className  = 'testimonies-track';
+  track.id         = 'testimonies-track';
 
-  // Template lives in the same partial — it's a sibling of the carousel section
-  // document.getElementById works regardless of where in #about-content it sits
   const template = document.getElementById('testimony-template');
   if (!template) {
     container.innerHTML = '<p style="padding:2rem;color:#666;">Error: testimony template not found.</p>';
@@ -132,66 +126,118 @@ function _renderSlides(container) {
     const excerptEl         = clone.querySelector('.testimony-excerpt p');
     const fullTextContainer = clone.querySelector('.testimony-full');
     const readMoreBtn       = clone.querySelector('.read-more-btn');
+    const btnTextEl         = readMoreBtn ? readMoreBtn.querySelector('.btn-text') : null;
 
-    // IDs / data
     slide.id                 = `testimony-slide-${index}`;
     slide.dataset.index      = index;
     card.dataset.testimonyId = testimony.id ?? index + 1;
+    // Store testimony index so we can re-render on lang change
+    card.dataset.tIndex      = index;
 
-    // Initials avatar — derive up to 2 letters from author name, no icon
-    const name    = testimony.author || 'Anonymous';
-    const parts   = name.trim().split(/\s+/);
+    // Initials avatar
+    const name     = testimony.author || 'Anonymous';
+    const parts    = name.trim().split(/\s+/);
     const initials = (parts.length >= 2)
       ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
       : name.slice(0, 2).toUpperCase();
-    const initialsSpan = document.createElement('span');
+    const initialsSpan       = document.createElement('span');
     initialsSpan.className   = 'author-initials';
     initialsSpan.textContent = initials;
     avatarContainer.appendChild(initialsSpan);
 
-    // Text content
+    // Author name (always in original script)
     authorNameEl.textContent = name;
-    authorRoleEl.textContent = testimony.role  || 'Member';
-    if (dateEl) dateEl.textContent = testimony.date || '';
 
-    excerptEl.textContent = testimony.excerpt || '';
+    // Language-aware fields
+    var lang = _currentLang();
+    authorRoleEl.textContent = _t(testimony, 'role');
+    if (dateEl)     dateEl.textContent    = _t(testimony, 'date');
+    excerptEl.textContent                 = _t(testimony, 'excerpt');
 
-    // Full text paragraphs
-    if (testimony.fullText) {
-      fullTextContainer.innerHTML = '';
-      const paragraphs = Array.isArray(testimony.fullText) ? testimony.fullText : [testimony.fullText];
-      paragraphs.forEach(text => {
-        const p = document.createElement('p');
-        p.textContent = text;
-        fullTextContainer.appendChild(p);
-      });
+    // Full text
+    _renderFullText(fullTextContainer, testimony);
+
+    // Read more button label
+    if (btnTextEl) {
+      btnTextEl.textContent = lang === 'ne' ? 'थप पढ्नुहोस्' : 'Read More';
     }
 
-    // No tags — template has none, data tags are ignored
-
-    // Read more toggle
     readMoreBtn.addEventListener('click', _toggleExpand);
-
     track.appendChild(clone);
   });
 
   container.appendChild(track);
 }
 
-// ── Wire up nav buttons, indicators, keyboard, touch ───────────────────────
+// ── Fill full-text paragraphs ────────────────────────────────────────────────
+function _renderFullText(container, testimony) {
+  container.innerHTML = '';
+  var paragraphs = _t(testimony, 'fullText');
+  if (!Array.isArray(paragraphs)) paragraphs = [paragraphs];
+  paragraphs.forEach(function (text) {
+    var p        = document.createElement('p');
+    p.textContent = text;
+    container.appendChild(p);
+  });
+}
+
+// ── Update rendered slides when language changes ─────────────────────────────
+function _updateRenderedLang() {
+  var lang = _currentLang();
+
+  document.querySelectorAll('.testimony-card').forEach(function (card) {
+    var idx      = parseInt(card.dataset.tIndex, 10);
+    var testimony = testimoniesData[idx];
+    if (!testimony) return;
+
+    var roleEl      = card.querySelector('.author-role');
+    var dateEl      = card.querySelector('.testimony-date');
+    var excerptEl   = card.querySelector('.testimony-excerpt p');
+    var fullTextEl  = card.querySelector('.testimony-full');
+    var btnTextEl   = card.querySelector('.read-more-btn .btn-text');
+
+    if (roleEl)    roleEl.textContent    = _t(testimony, 'role');
+    if (dateEl)    dateEl.textContent    = _t(testimony, 'date');
+    if (excerptEl) excerptEl.textContent = _t(testimony, 'excerpt');
+    if (fullTextEl) _renderFullText(fullTextEl, testimony);
+
+    // Read more / less button — preserve expanded state label
+    if (btnTextEl) {
+      var btn        = card.querySelector('.read-more-btn');
+      var isExpanded = btn && btn.classList.contains('expanded');
+      if (isExpanded) {
+        btnTextEl.textContent = lang === 'ne' ? 'कम पढ्नुहोस्' : 'Read Less';
+      } else {
+        btnTextEl.textContent = lang === 'ne' ? 'थप पढ्नुहोस्' : 'Read More';
+      }
+    }
+  });
+
+  // Also update the "of" word in counter
+  var counter = document.getElementById('testimony-counter');
+  if (counter) {
+    var ofSpan = counter.querySelector('[data-en]');
+    if (ofSpan) ofSpan.innerHTML = lang === 'ne' ? ' / ' : ' of ';
+  }
+}
+
+// ── Listen for global language change ────────────────────────────────────────
+document.addEventListener('dm:langchange', function (e) {
+  _updateRenderedLang();
+});
+
+// ── Navigation ────────────────────────────────────────────────────────────────
 function _setupNavigation() {
-  const prevBtn            = document.querySelector('.prev-btn');
-  const nextBtn            = document.querySelector('.next-btn');
+  const prevBtn             = document.querySelector('.prev-btn');
+  const nextBtn             = document.querySelector('.next-btn');
   const indicatorsContainer = document.getElementById('carousel-indicators');
+  var lang = _currentLang();
 
-  if (!prevBtn || !nextBtn) return;
-
-  // Indicators
   if (indicatorsContainer) {
     indicatorsContainer.innerHTML = '';
     for (let i = 0; i < totalSlides; i++) {
-      const btn = document.createElement('button');
-      btn.className = 'indicator' + (i === 0 ? ' active' : '');
+      const btn         = document.createElement('button');
+      btn.className     = 'indicator' + (i === 0 ? ' active' : '');
       btn.dataset.index = i;
       btn.setAttribute('aria-label', `Go to testimony ${i + 1}`);
       btn.addEventListener('click', () => _goToSlide(i));
@@ -199,17 +245,15 @@ function _setupNavigation() {
     }
   }
 
-  prevBtn.addEventListener('click', _prevSlide);
-  nextBtn.addEventListener('click', _nextSlide);
+  if (prevBtn) prevBtn.addEventListener('click', _prevSlide);
+  if (nextBtn) nextBtn.addEventListener('click', _nextSlide);
 
-  // Keyboard — stored so we can remove it later
   keydownHandler = (e) => {
     if (e.key === 'ArrowLeft')  _prevSlide();
     if (e.key === 'ArrowRight') _nextSlide();
   };
   document.addEventListener('keydown', keydownHandler);
 
-  // Touch / swipe
   if (track) {
     let startX = 0;
     track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
@@ -219,7 +263,6 @@ function _setupNavigation() {
     }, { passive: true });
   }
 
-  // Pause auto-slide on hover
   const carousel = document.querySelector('.testimonies-carousel');
   if (carousel) {
     carousel.addEventListener('mouseenter', _pauseAutoSlide);
@@ -227,7 +270,6 @@ function _setupNavigation() {
   }
 }
 
-// ── Navigation helpers ──────────────────────────────────────────────────────
 function _nextSlide() { _goToSlide((currentSlide + 1) % totalSlides); }
 function _prevSlide() { _goToSlide((currentSlide - 1 + totalSlides) % totalSlides); }
 
@@ -239,12 +281,10 @@ function _goToSlide(index, animate = true) {
   track.style.transform = `translateX(${-currentSlide * 100}%)`;
   if (!animate) requestAnimationFrame(() => { track.style.transition = ''; });
 
-  // Update indicators
   document.querySelectorAll('.indicator').forEach((el, i) =>
     el.classList.toggle('active', i === currentSlide)
   );
 
-  // Update counter
   const counter = document.getElementById('testimony-counter');
   if (counter) {
     const cs = counter.querySelector('.current-slide');
@@ -253,7 +293,6 @@ function _goToSlide(index, animate = true) {
     if (ts) ts.textContent = totalSlides;
   }
 
-  // Disable buttons only when there's exactly 1 slide
   const prevBtn = document.querySelector('.prev-btn');
   const nextBtn = document.querySelector('.next-btn');
   if (prevBtn) prevBtn.disabled = totalSlides <= 1;
@@ -262,8 +301,9 @@ function _goToSlide(index, animate = true) {
   _resetAutoSlide();
 }
 
-// ── Read more / less toggle ─────────────────────────────────────────────────
+// ── Read more / less ──────────────────────────────────────────────────────────
 function _toggleExpand(event) {
+  var lang     = _currentLang();
   const btn     = event.currentTarget;
   const card    = btn.closest('.testimony-card');
   const excerpt = card.querySelector('.testimony-excerpt');
@@ -271,33 +311,30 @@ function _toggleExpand(event) {
   const arrow   = btn.querySelector('.read-more-arrow');
   const label   = btn.querySelector('.btn-text');
 
-  const expanding = full.style.display !== 'block';
-  excerpt.style.display = expanding ? 'none'  : 'block';
-  full.style.display    = expanding ? 'block' : 'none';
-  label.textContent     = expanding ? 'Read Less' : 'Read More';
+  const expanding           = full.style.display !== 'block';
+  excerpt.style.display     = expanding ? 'none'  : 'block';
+  full.style.display        = expanding ? 'block' : 'none';
+  if (label) label.textContent = expanding
+    ? (lang === 'ne' ? 'कम पढ्नुहोस्' : 'Read Less')
+    : (lang === 'ne' ? 'थप पढ्नुहोस्' : 'Read More');
   if (arrow) arrow.style.transform = expanding ? 'rotate(180deg)' : 'rotate(0deg)';
   btn.classList.toggle('expanded', expanding);
 }
 
-// ── Auto-slide ──────────────────────────────────────────────────────────────
+// ── Auto-slide ────────────────────────────────────────────────────────────────
 function _startAutoSlide() {
   if (autoSlideInterval || totalSlides <= 1) return;
   autoSlideInterval = setInterval(_nextSlide, 5000);
 }
-
 function _pauseAutoSlide() {
   if (autoSlideInterval) { clearInterval(autoSlideInterval); autoSlideInterval = null; }
 }
+function _resetAutoSlide() { _pauseAutoSlide(); _startAutoSlide(); }
 
-function _resetAutoSlide() {
-  _pauseAutoSlide();
-  _startAutoSlide();
-}
-
-// ── Public API ──────────────────────────────────────────────────────────────
+// ── Public API ────────────────────────────────────────────────────────────────
 window.testimoniesCarousel = {
-  next:      _nextSlide,
-  prev:      _prevSlide,
-  goTo:      _goToSlide,
-  refresh:   window.initializeTestimoniesPage,
+  next:    _nextSlide,
+  prev:    _prevSlide,
+  goTo:    _goToSlide,
+  refresh: window.initializeTestimoniesPage,
 };
