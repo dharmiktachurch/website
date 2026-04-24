@@ -5,71 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dharmikta Mandali</title>
   <link rel="icon" type="image/png" href="static/images/Favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link rel="stylesheet" href="style/index.css" />
+  <link rel="stylesheet" href="style/navbar.css" />
+  <!-- navbar.js loaded first, NOT deferred — so setLang() exists before any onclick fires -->
+  <script src="script/navbar.js"></script>
   <script src="script/script.js" defer></script>
   <script src="script/index-events.js" defer></script>
-  <style>
-    /* ── Lang toggle — desktop only (inline in navbar) ── */
-    .lang-toggle {
-      display: flex;
-      background: var(--surface-off);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      padding: 3px;
-      gap: 2px;
-      margin-left: 1rem;
-      flex-shrink: 0;
-    }
-    .lang-btn {
-      padding: 5px 14px;
-      border-radius: 50px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.78rem;
-      font-weight: 600;
-      background: transparent;
-      color: var(--ink-muted);
-      transition: all 0.2s ease;
-      font-family: 'Poppins', sans-serif;
-      letter-spacing: 0.03em;
-      white-space: nowrap;
-    }
-    .lang-btn.active             { background: var(--ink); color: #fff; }
-    .lang-btn:hover:not(.active) { background: var(--surface-mid); color: var(--ink); }
-
-    /* ── Mobile: hide desktop toggle, show one inside the dropdown ── */
-    @media (max-width: 768px) {
-      .lang-toggle { display: none; }
-
-      /* Row appended inside .nav-links */
-      .nav-lang-row {
-        display: flex !important;
-        justify-content: center;
-        padding: 0.75rem 1.5rem 0.5rem;
-        border-top: 1px solid var(--border);
-        margin-top: 0.25rem;
-        list-style: none;
-      }
-      .nav-lang-row .lang-toggle {
-        display: flex !important;
-        margin-left: 0;
-      }
-    }
-    @media (min-width: 769px) {
-      .nav-lang-row { display: none !important; }
-    }
-  </style>
 </head>
 <body>
 
-  <!-- ── Navbar ── -->
+  <!-- ── NAVBAR ── -->
   <nav class="navbar">
     <a href="index.html" class="logo-link">
       <div class="logo-container">
         <img src="static/images/logo.png" alt="Dharmikta Mandali" class="church-logo" />
-        <div class="logo-text" data-en="Dharmikta Church" data-ne="धार्मिकता मण्डली">Dharmikta Church</div>
+        <span class="logo-text" data-en="Dharmikta Church" data-ne="धार्मिकता मण्डली">Dharmikta Church</span>
       </div>
     </a>
 
@@ -78,10 +30,8 @@
       <li><a href="about.html"    data-en="About"    data-ne="हाम्रोबारे">About</a></li>
       <li><a href="services.html" data-en="Services" data-ne="सेवाहरू">Services</a></li>
       <li><a href="events.html"   data-en="Events"   data-ne="कार्यक्रमहरू">Events</a></li>
-      <li><a href="notices.html"  data-en="Notices"  data-ne="सूचनाहरू">Notices</a></li>
       <li><a href="contact.html"  data-en="Contact"  data-ne="सम्पर्क">Contact</a></li>
-      <!-- Mobile-only lang toggle row inside the dropdown -->
-      <li class="nav-lang-row">
+      <li class="mob-lang-row" style="display:none;">
         <div class="lang-toggle">
           <button class="lang-btn" id="btn-en-mob" onclick="setLang('en')">EN</button>
           <button class="lang-btn" id="btn-ne-mob" onclick="setLang('ne')">नेपा</button>
@@ -89,16 +39,55 @@
       </li>
     </ul>
 
-    <!-- Desktop lang toggle (hidden on mobile via CSS) -->
-    <div class="lang-toggle" id="lang-toggle" aria-label="Switch language">
-      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn"        id="btn-ne" onclick="setLang('ne')">नेपा</button>
-    </div>
+    <div class="nav-controls">
+      <div class="notif-wrapper" id="notif-wrapper">
+        <button class="notif-btn" id="notif-btn" aria-label="Notices" aria-expanded="false">
+          <i class="fas fa-bell"></i>
+          <span class="notif-badge hidden" id="notif-badge">0</span>
+        </button>
+        <div class="notif-panel" id="notif-panel" role="dialog" aria-label="Notices">
+          <div class="panel-header">
+            <div class="panel-title"><i class="fas fa-bell"></i> Notices</div>
+            <button class="mark-all-btn" id="mark-all-btn">Mark all read</button>
+          </div>
+          <div class="notif-list" id="notif-list">
+            <div class="notif-loading"><div class="spin"></div><span>Loading…</span></div>
+          </div>
+        </div>
+      </div>
 
-    <div class="burger" id="burger">
-      <div class="line"></div><div class="line"></div><div class="line"></div>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn"        id="btn-ne" onclick="setLang('ne')">नेपा</button>
+      </div>
+
+      <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </button>
     </div>
   </nav>
+
+  <!-- ── TOAST ── -->
+  <div class="notif-toast" id="notif-toast" role="status" aria-live="polite">
+    <div class="toast-bar" id="toast-bar"></div>
+    <button class="toast-close" id="toast-close" aria-label="Dismiss"><i class="fas fa-times"></i></button>
+    <div class="toast-inner">
+      <div class="toast-icon-wrap" id="toast-icon"><i class="fas fa-bullhorn"></i></div>
+      <div class="toast-text-wrap">
+        <div class="toast-cat" id="toast-cat">Notice</div>
+        <div class="toast-ttl" id="toast-ttl"></div>
+        <div class="toast-dsc" id="toast-dsc"></div>
+      </div>
+    </div>
+    <div class="toast-action">
+      <button class="toast-view-btn" id="toast-view-btn">
+        <i class="fas fa-bell"></i> View all notices
+      </button>
+    </div>
+    <div class="toast-progress"><div class="toast-progress-fill" id="toast-fill"></div></div>
+  </div>
 
   <!-- ── Hero ── -->
   <section class="hero">
@@ -112,7 +101,7 @@
       <div class="divider"></div>
       <p class="verse"
          data-en="&ldquo;Righteousness exalts a nation&rdquo; — Proverbs 14:34"
-         data-ne="&ldquo;धार्मिकताले देशलाई उचाल्‍छ।&rdquo; — हितोपदेश १४:३४">
+         data-ne="&ldquo;धार्मिकताले राष्ट्रलाई उचाल्‍छ।&rdquo; — हितोपदेश १४:३४">
         "Righteousness exalts a nation" — Proverbs 14:34
       </p>
       <a href="contact.html" class="cta-button"
@@ -215,7 +204,7 @@
            data-ne="&ldquo;यसकारण तिमीहरू प्रिय बालकहरूझैँ परमेश्‍वरको देखासिकी गर्नेहरू होओ। तिमीहरू प्रेममा चल, जसरी ख्रीष्‍टले पनि हामीहरूसँग प्रेम गर्नुभयो, र परमेश्‍वरको निम्‍ति सुगन्‍धित भेटी र बलिदान भएर आफैलाई हाम्रा निम्‍ति अर्पण गर्नुभयो…&rdquo;">
           "Therefore be imitators of God, as beloved children, and walk in love, just as Christ loved us and gave himself up for us…"
         </p>
-        <div class="full-message">
+        <div class="full-message" style="display:none;">
           <div class="full-lang-en">
             <p>In the current situation, the relationship between pastors, leaders, and the believer families must be like super glue — strong and inseparable. Otherwise, the devil will find ways to create problems.</p>
             <ol>
@@ -344,75 +333,32 @@
     </div>
   </footer>
 
-  <!-- ── Language + Read-More Logic ── -->
+  <!-- ── Read More / Read Less — index.html only ── -->
   <script>
-  (function () {
+  document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.querySelector('.senior-message-modern .read-more-btn');
+    var msg = document.querySelector('.senior-message-modern .full-message');
+    if (!btn || !msg) return;
 
-    /* Sync all button instances (desktop + mobile) */
-    function syncButtons(lang) {
-      ['btn-en', 'btn-en-mob'].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.classList.toggle('active', lang === 'en');
-      });
-      ['btn-ne', 'btn-ne-mob'].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.classList.toggle('active', lang === 'ne');
-      });
-    }
+    btn.addEventListener('click', function () {
+      var open = msg.style.display === 'block';
+      msg.style.display = open ? 'none' : 'block';
 
-    function applyLang(lang) {
-      document.documentElement.lang = lang === 'ne' ? 'ne' : 'en';
-      syncButtons(lang);
-
-      document.querySelectorAll('[data-en]').forEach(function (el) {
-        /* Never overwrite the button labels themselves */
-        if (el.classList.contains('lang-btn')) return;
-        var text = el.getAttribute('data-' + lang);
-        if (text !== null) el.innerHTML = text;
-      });
-
-      if (typeof window.runTypeWriter === 'function') window.runTypeWriter(lang);
-
-      /* Toggle bilingual pastor message blocks */
-      var enBlock = document.querySelector('.full-lang-en');
-      var neBlock = document.querySelector('.full-lang-ne');
-      if (enBlock) enBlock.style.display = lang === 'en' ? '' : 'none';
-      if (neBlock) neBlock.style.display = lang === 'ne' ? '' : 'none';
-
-      /* Keep read-more button label in sync */
-      var rmBtn = document.querySelector('.senior-message-modern .read-more-btn');
-      var rmMsg = document.querySelector('.senior-message-modern .full-message');
-      if (rmBtn && rmMsg && rmMsg.style.display !== 'block') {
-        rmBtn.textContent = lang === 'ne' ? 'थप पढ्नुहोस्' : 'Read More';
+      /* When opening, show the right language block */
+      if (!open) {
+        var lang = document.documentElement.lang === 'ne' ? 'ne' : 'en';
+        var enB = msg.querySelector('.full-lang-en');
+        var neB = msg.querySelector('.full-lang-ne');
+        if (enB) enB.style.display = lang === 'en' ? '' : 'none';
+        if (neB) neB.style.display = lang === 'ne' ? '' : 'none';
       }
 
-      try { localStorage.setItem('dm-lang', lang); } catch (e) {}
-    }
-
-    window.setLang = function (lang) { applyLang(lang); };
-
-    /* Read More / Read Less */
-    document.addEventListener('DOMContentLoaded', function () {
-      var btn = document.querySelector('.senior-message-modern .read-more-btn');
-      var msg = document.querySelector('.senior-message-modern .full-message');
-      if (btn && msg) {
-        btn.addEventListener('click', function () {
-          var open = msg.style.display === 'block';
-          msg.style.display = open ? 'none' : 'block';
-          var lang = document.documentElement.lang === 'ne' ? 'ne' : 'en';
-          btn.textContent = open
-            ? (lang === 'ne' ? 'थप पढ्नुहोस्' : 'Read More')
-            : (lang === 'ne' ? 'कम पढ्नुहोस्' : 'Read Less');
-        });
-      }
-
-      /* Init — read saved language */
-      var saved = 'en';
-      try { saved = localStorage.getItem('dm-lang') || 'en'; } catch (e) {}
-      applyLang(saved);
+      var lang = document.documentElement.lang === 'ne' ? 'ne' : 'en';
+      btn.textContent = open
+        ? (lang === 'ne' ? 'थप पढ्नुहोस्' : 'Read More')
+        : (lang === 'ne' ? 'कम पढ्नुहोस्'  : 'Read Less');
     });
-
-  })();
+  });
   </script>
 
 </body>

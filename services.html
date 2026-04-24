@@ -9,6 +9,9 @@
   <link rel="stylesheet" href="style/services.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <script src="script/script.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="style/navbar.css" />
   <style>
     .lang-toggle {
       display: flex;
@@ -59,22 +62,23 @@
 </head>
 <body>
 
-  <!-- ── Navbar ── -->
+  <!-- ── NAVBAR ── -->
   <nav class="navbar">
     <a href="index.html" class="logo-link">
       <div class="logo-container">
         <img src="static/images/logo.png" alt="Dharmikta Mandali" class="church-logo" />
-        <div class="logo-text" data-en="Dharmikta Church" data-ne="धार्मिकता मण्डली">Dharmikta Church</div>
+        <span class="logo-text" data-en="Dharmikta Church" data-ne="धार्मिकता मण्डली">Dharmikta Church</span>
       </div>
     </a>
+
     <ul class="nav-links" id="nav-links">
       <li><a href="index.html"    data-en="Home"     data-ne="गृहपृष्ठ">Home</a></li>
       <li><a href="about.html"    data-en="About"    data-ne="हाम्रोबारे">About</a></li>
       <li><a href="services.html" data-en="Services" data-ne="सेवाहरू">Services</a></li>
       <li><a href="events.html"   data-en="Events"   data-ne="कार्यक्रमहरू">Events</a></li>
-      <li><a href="notices.html"  data-en="Notices"  data-ne="सूचनाहरू">Notices</a></li>
       <li><a href="contact.html"  data-en="Contact"  data-ne="सम्पर्क">Contact</a></li>
-      <li class="nav-lang-row">
+      <!-- Mobile-only language row — shows inside burger menu on small screens -->
+      <li class="mob-lang-row" style="display:none;">
         <div class="lang-toggle">
           <button class="lang-btn" id="btn-en-mob" onclick="setLang('en')">EN</button>
           <button class="lang-btn" id="btn-ne-mob" onclick="setLang('ne')">नेपा</button>
@@ -82,13 +86,36 @@
       </li>
     </ul>
 
-    <div class="lang-toggle" id="lang-toggle" aria-label="Switch language">
-      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn"        id="btn-ne" onclick="setLang('ne')">नेपा</button>
-    </div>
+    <div class="nav-controls">
+      <!-- Notification bell -->
+      <div class="notif-wrapper" id="notif-wrapper">
+        <button class="notif-btn" id="notif-btn" aria-label="Notices" aria-expanded="false">
+          <i class="fas fa-bell"></i>
+          <span class="notif-badge hidden" id="notif-badge">0</span>
+        </button>
+        <div class="notif-panel" id="notif-panel" role="dialog" aria-label="Notices">
+          <div class="panel-header">
+            <div class="panel-title"><i class="fas fa-bell"></i> Notices</div>
+            <button class="mark-all-btn" id="mark-all-btn">Mark all read</button>
+          </div>
+          <div class="notif-list" id="notif-list">
+            <div class="notif-loading"><div class="spin"></div><span>Loading…</span></div>
+          </div>
+        </div>
+      </div>
 
-    <div class="burger" id="burger">
-      <div class="line"></div><div class="line"></div><div class="line"></div>
+      <!-- Language toggle (desktop) -->
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn"        id="btn-ne" onclick="setLang('ne')">नेपा</button>
+      </div>
+
+      <!-- Burger (mobile) -->
+      <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </button>
     </div>
   </nav>
 
@@ -120,9 +147,9 @@
       <span class="eyebrow" data-en="Dharmikta Mandali" data-ne="धार्मिकता मण्डली">Dharmikta Mandali</span>
       <h1 data-en="Saturday Service" data-ne="शनिबारको सेवा">Saturday Service</h1>
       <p class="hero-sub"
-         data-en="Join us every Saturday as we gather to worship, learn, pray, and grow together in faith."
-         data-ne="हामीसँग प्रत्येक शनिबार आराधना गर्न, सिक्न, प्रार्थना गर्न र विश्वासमा सँगै बढ्न सामेल हुनुहोस्।">
-        Join us every Saturday as we gather to worship, learn, pray, and grow together in faith.
+         data-en="Every Saturday at 10:00 AM, the church gathers at Bhaisepati, Lalitpur for worship and the Word."
+         data-ne="प्रत्येक शनिबार बिहान १०:०० बजे, मण्डली भैसेपाटी, ललितपुरमा आराधना र वचनका लागि भेला हुन्छ।">
+        Every Saturday at 10:00 AM, the church gathers at Bhaisepati, Lalitpur for worship and the Word.
       </p>
 
       <div class="hero-meta">
@@ -190,13 +217,6 @@
   <!-- ── Page Body ── -->
   <div class="about-page-body">
 
-    <div class="about-intro-text">
-      <p data-en="Experience spiritual growth through our diverse ministries and fellowship opportunities. Everyone is welcome — come as you are."
-         data-ne="हाम्रा विविध सेवाहरू र सङ्गति अवसरहरू मार्फत आत्मिक वृद्धि अनुभव गर्नुहोस्। सबैलाई स्वागत छ — जस्तो हुनुहुन्छ त्यस्तै आउनुहोस्।">
-        Experience spiritual growth through our diverse ministries and fellowship opportunities. Everyone is welcome — come as you are.
-      </p>
-    </div>
-
     <!-- ── Main Service ── -->
     <div class="about-block accented service-card">
       <div class="card-img">
@@ -213,21 +233,21 @@
           </div>
         </div>
         <p class="card-desc"
-           data-en="Our Saturday gathering of Dharmikta Mandali — a time for worship, the Word, prayer, and community fellowship."
-           data-ne="हाम्रो शनिबारको धार्मिकता मण्डलीको भेला — आराधना, वचन, प्रार्थना र सामुदायिक सङ्गतिको समय।">
-          Our Saturday gathering of Dharmikta Mandali — a time for worship, the Word, prayer, and community fellowship.
+           data-en="The main weekly gathering of Dharmikta Mandali, held every Saturday morning at 10:00 AM in Bhaisepati, Lalitpur."
+           data-ne="धार्मिकता मण्डलीको मुख्य साप्ताहिक भेला, प्रत्येक शनिबार बिहान १०:०० बजे भैसेपाटी, ललितपुरमा गरिन्छ।">
+          The main weekly gathering of Dharmikta Mandali, held every Saturday morning at 10:00 AM in Bhaisepati, Lalitpur.
         </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p data-en="Our main service is the cornerstone of our weekly gatherings, designed to strengthen your faith and connect you with our church family."
-               data-ne="हाम्रो मुख्य सेवा हाम्रो साप्ताहिक भेलाको आधारशिला हो, तपाईंको विश्वास बलियो बनाउन र तपाईंलाई हाम्रो मण्डली परिवारसँग जोड्न डिजाइन गरिएको।">
-              Our main service is the cornerstone of our weekly gatherings, designed to strengthen your faith and connect you with our church family.
+            <p data-en="The service begins with hymn singing, followed by a time for testimonies from members of the congregation. Worship then continues before the pastor brings the sermon from the Word of God. The service closes with a time of prayer."
+               data-ne="सेवा भजन गाउनबाट सुरु हुन्छ, त्यसपछि मण्डलीका सदस्यहरूले गवाही दिने समय हुन्छ। त्यसपछि आराधना जारी रहन्छ र पास्टरले परमेश्वरको वचनबाट सन्देश दिनुहुन्छ। अन्तमा प्रार्थनाको समयसँगै सेवा समाप्त हुन्छ।">
+              The service begins with hymn singing, followed by a time for testimonies from members of the congregation. Worship then continues before the pastor brings the sermon from the Word of God. The service closes with a time of prayer.
             </p>
             <div class="card-highlight">
-              <span class="card-highlight-label" data-en="What to expect" data-ne="के अपेक्षा गर्ने">What to expect</span>
-              <p data-en="Heartfelt worship, powerful biblical teaching, and altar prayer. We also hold dedicated fellowship for children, women, youth, and fathers — ensuring everyone finds encouragement and belonging."
-                 data-ne="हार्दिक आराधना, शक्तिशाली बाइबलीय शिक्षा र बेदीको प्रार्थना। हामी बालबालिका, महिला, युवा र पिताहरूको लागि समर्पित सङ्गति पनि राख्छौं — सबैले प्रोत्साहन र आत्मीयता पाओस् भनी।">
-                Heartfelt worship, powerful biblical teaching, and altar prayer. We also hold dedicated fellowship for children, women, youth, and fathers — ensuring everyone finds encouragement and belonging.
+              <span class="card-highlight-label" data-en="Sub-fellowships" data-ne="उप-सङ्गतिहरू">Sub-fellowships</span>
+              <p data-en="During the main service, children attend their own separate fellowship held at the same time. After the main service concludes, the women's, youth, and fathers' fellowships meet separately on their respective scheduled days."
+                 data-ne="मुख्य सेवाको क्रममा, बालबालिकाहरू आफ्नै छुट्टै सङ्गतिमा सहभागी हुन्छन्। मुख्य सेवा सकिएपछि, महिला, युवा र बुबाहरूको सङ्गति आ-आफ्नो तोकिएको दिनमा छुट्टाछुट्टै भेला हुन्छन्।">
+                During the main service, children attend their own separate fellowship held at the same time. After the main service concludes, the women's, youth, and fathers' fellowships meet separately on their respective scheduled days.
               </p>
             </div>
           </div>
@@ -239,37 +259,37 @@
       </div>
     </div>
 
-    <!-- ── Women's Ministry ── -->
+    <!-- ── Women's Fellowship ── -->
     <div class="about-block accented service-card">
       <div class="card-img">
-        <img src="static/images/Womens_Fellowship.jpg" alt="Women's Ministry" loading="lazy"/>
+        <img src="static/images/Womens_Fellowship.jpg" alt="Women's Fellowship" loading="lazy"/>
         <span class="card-badge" data-en="Weekly" data-ne="साप्ताहिक">Weekly</span>
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title" data-en="Women's Ministry" data-ne="महिला मन्त्रालय">Women's Ministry</h3>
+          <h3 class="card-title" data-en="Women's Fellowship" data-ne="दिदीबहिनी सङ्गति">Women's Fellowship</h3>
           <div class="card-sched">
             <span class="card-sched-day" data-en="Wednesdays" data-ne="बुधबारहरू">Wednesdays</span>
             <span class="card-sched-sep"></span>
-            <span class="card-sched-time" data-en="10:30 AM" data-ne="बिहान १०:३० बजे">10:30 AM</span>
+            <span class="card-sched-time" data-en="11:00 AM" data-ne="बिहान ११:०० बजे">11:00 AM</span>
           </div>
         </div>
         <p class="card-desc"
-           data-en="A supportive community for women to grow spiritually and build meaningful relationships rooted in faith."
-           data-ne="महिलाहरूलाई आत्मिकरूपले बढ्न र विश्वासमा आधारित अर्थपूर्ण सम्बन्धहरू निर्माण गर्न एक सहयोगी समुदाय।">
-          A supportive community for women to grow spiritually and build meaningful relationships rooted in faith.
+           data-en="A weekly gathering for the women of the church, held every Wednesday at 11:00 AM."
+           data-ne="मण्डलीका महिलाहरूको साप्ताहिक भेला, प्रत्येक बुधबार बिहान ११:०० बजे गरिन्छ।">
+          A weekly gathering for the women of the church, held every Wednesday at 11:00 AM.
         </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p data-en="Our Women's Ministry provides a safe space for women of all ages to connect, share, and deepen their faith journey together."
-               data-ne="हाम्रो महिला मन्त्रालयले सबै उमेरका महिलाहरूलाई जोडिन, साझा गर्न र आफ्नो विश्वास यात्रा सँगै गहिरो बनाउन सुरक्षित ठाउँ प्रदान गर्छ।">
-              Our Women's Ministry provides a safe space for women of all ages to connect, share, and deepen their faith journey together.
+            <p data-en="The women of the church meet every Wednesday morning. It is a time set aside for reading from the Bible, praying together, and sitting with one another. Members share from what they are going through and the group prays over those things together."
+              data-ne="मण्डलीका महिलाहरू प्रत्येक बुधबार बिहान भेला हुन्छन्। यो बाइबल पढ्न, सँगै प्रार्थना गर्न र एकआपसमा बस्नका लागि छुट्याइएको समय हो। सदस्यहरूले आफू के गुज्रिरहेका छन् त्यो साझा गर्छन् र समूहले ती कुराहरूमाथि सँगै प्रार्थना गर्छ।">
+              The women of the church meet every Wednesday morning. It is a time set aside for reading from the Bible, praying together, and sitting with one another. Members share from what they are going through and the group prays over those things together.
             </p>
             <div class="card-highlight">
-              <span class="card-highlight-label" data-en="In detail" data-ne="विस्तृत जानकारी">In detail</span>
-              <p data-en="Weekly Bible study, intimate prayer, and encouraging fellowship. Annual combined events and mentorship programs nurture spiritual growth and lasting friendships."
-                 data-ne="साप्ताहिक बाइबल अध्ययन, आत्मीय प्रार्थना र प्रोत्साहक सङ्गति। वार्षिक संयुक्त कार्यक्रमहरू र मेन्टरशिप कार्यक्रमहरूले आत्मिक वृद्धि र दीर्घकालीन मित्रताको पोषण गर्छन्।">
-                Weekly Bible study, intimate prayer, and encouraging fellowship. Annual combined events and mentorship programs nurture spiritual growth and lasting friendships.
+              <span class="card-highlight-label" data-en="Combined gatherings" data-ne="संयुक्त भेलाहरू">Combined gatherings</span>
+              <p data-en="From time to time, the women's fellowship also holds larger combined gatherings that bring together women from the church's branch congregations. These events usually involve extended worship, teaching, and a shared meal."
+                 data-ne="कहिलेकाहीँ, महिला सङ्गतिले मण्डलीका शाखा मण्डलीहरूका महिलाहरूलाई एकसाथ ल्याउने ठूला संयुक्त भेलाहरू पनि आयोजना गर्छ। यी कार्यक्रमहरूमा सामान्यतः लामो आराधना, शिक्षा र सामूहिक खानाको व्यवस्था हुन्छ।">
+                From time to time, the women's fellowship also holds larger combined gatherings that bring together women from the church's branch congregations. These events usually involve extended worship, teaching, and a shared meal.
               </p>
             </div>
           </div>
@@ -289,7 +309,7 @@
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title" data-en="Father's Fellowship" data-ne="पिताहरूको सङ्गति">Father's Fellowship</h3>
+          <h3 class="card-title" data-en="Father's Fellowship" data-ne="बुबा सङ्गति">Father's Fellowship</h3>
           <div class="card-sched">
             <span class="card-sched-day" data-en="Third Saturday" data-ne="तेस्रो शनिबार">Third Saturday</span>
             <span class="card-sched-sep"></span>
@@ -297,21 +317,21 @@
           </div>
         </div>
         <p class="card-desc"
-           data-en="Equipping fathers to lead with integrity in their families, workplaces, and communities."
-           data-ne="पिताहरूलाई आफ्नो परिवार, कार्यस्थल र समुदायमा इमानदारीपूर्वक नेतृत्व गर्न सक्षम बनाउने।">
-          Equipping fathers to lead with integrity in their families, workplaces, and communities.
+           data-en="A monthly gathering for the Father of the church, held after the main service on the third Saturday of each month."
+           data-ne="मण्डलीका बुबाहरूको मासिक भेला, प्रत्येक महिनाको तेस्रो शनिबार मुख्य सेवापछि आयोजना गरिन्छ।">
+          A monthly gathering for the Father of the church, held after the main service on the third Saturday of each month.
         </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p data-en="Focused on building godly character and practical tools for biblical fatherhood."
-               data-ne="ईश्वरीय चरित्र निर्माण र बाइबलीय पितृत्वका लागि व्यावहारिक उपकरणहरूमा केन्द्रित।">
-              Focused on building godly character and practical tools for biblical fatherhood.
+            <p data-en="The Father's Fellowship meets once a month on the third Saturday, right after the main service ends. The gathering is a time for the Father of the congregation to sit together, read from the Bible, discuss the Word, and pray. Topics often center on faith, family, and how to walk uprightly in daily life."
+               data-ne="बुबा सङ्गति महिनाको तेस्रो शनिबार, मुख्य सेवा सकिएलगत्तै महिनामा एक पटक भेला हुन्छ। यो भेला मण्डलीका बुबाहरूका लागि सँगै बस्ने, बाइबल पढ्ने, वचनमा छलफल गर्ने र प्रार्थना गर्ने समय हो। विषयवस्तु प्रायः विश्वास, परिवार र दैनिक जीवनमा सोझो हिँड्ने तरिकामा केन्द्रित हुन्छन्।">
+              The Father's Fellowship meets once a month on the third Saturday, right after the main service ends. The gathering is a time for the Father of the congregation to sit together, read from the Bible, discuss the Word, and pray. Topics often center on faith, family, and how to walk uprightly in daily life.
             </p>
             <div class="card-highlight">
-              <span class="card-highlight-label" data-en="Program highlights" data-ne="कार्यक्रमका मुख्य बुँदाहरू">Program highlights</span>
-              <p data-en="Monthly gathering for sharing, encouragement, and prayer — creating an environment for spiritual sharpening, mutual accountability, and faith-based leadership."
-                 data-ne="साझेदारी, प्रोत्साहन र प्रार्थनाको लागि मासिक भेला — आत्मिक तीक्ष्णता, पारस्परिक जवाफदेहिता र विश्वास-आधारित नेतृत्वको वातावरण सिर्जना गर्दै।">
-                Monthly gathering for sharing, encouragement, and prayer — creating an environment for spiritual sharpening, mutual accountability, and faith-based leadership.
+              <span class="card-highlight-label" data-en="Format" data-ne="ढाँचा">Format</span>
+              <p data-en="The session usually includes a short teaching or reading, open sharing among the Fathers present, and a closing time of prayer. It is an informal setting where members speak honestly about the challenges and responsibilities they carry."
+                 data-ne="सत्रमा सामान्यतः छोटो शिक्षा वा पठन, उपस्थित बुबाहरूबीच खुला साझेदारी र प्रार्थनाको अन्त्य समय समावेश हुन्छ। यो एक अनौपचारिक वातावरण हो जहाँ सदस्यहरूले आफूले बोकेका चुनौती र जिम्मेवारीहरूबारे इमानदारीपूर्वक बोल्छन्।">
+                The session usually includes a short teaching or reading, open sharing among the Fathers present, and a closing time of prayer. It is an informal setting where members speak honestly about the challenges and responsibilities they carry.
               </p>
             </div>
           </div>
@@ -323,7 +343,7 @@
       </div>
     </div>
 
-    <!-- ── Children's Ministry ── -->
+    <!-- ── Children's Fellowship ── -->
     <div class="about-block accented service-card">
       <div class="card-img">
         <img src="static/images/children_ministry.jpg" alt="Children Fellowship" loading="lazy"/>
@@ -331,7 +351,7 @@
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title" data-en="Children Fellowship" data-ne="बालबालिका सङ्गति">Children Fellowship</h3>
+          <h3 class="card-title" data-en="Children Fellowship" data-ne="बाल सङ्गति">Children Fellowship</h3>
           <div class="card-sched">
             <span class="card-sched-day" data-en="Saturdays" data-ne="शनिबारहरू">Saturdays</span>
             <span class="card-sched-sep"></span>
@@ -339,21 +359,21 @@
           </div>
         </div>
         <p class="card-desc"
-           data-en="A fun, safe environment where children discover God's love through age-appropriate activities and teaching."
-           data-ne="एक मजेदार, सुरक्षित वातावरण जहाँ बालबालिकाहरूले उमेर-उपयुक्त गतिविधिहरू र शिक्षा मार्फत परमेश्वरको प्रेम पत्ता लगाउँछन्।">
-          A fun, safe environment where children discover God's love through age-appropriate activities and teaching.
+           data-en="A separate Saturday gathering for children, running at the same time as the main service."
+           data-ne="बालबालिकाहरूको लागि छुट्टै शनिबार सङ्गति, जुन मुख्य सेवासँगै एकैसाथ सञ्चालन हुन्छ।">
+          A separate Saturday gathering for children, running at the same time as the main service.
         </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p data-en="Engaging programs that help children build a strong spiritual foundation while having fun."
-               data-ne="बालबालिकाहरूलाई मज्जा गर्दैगर्दा बलियो आत्मिक आधार निर्माण गर्न मद्दत गर्ने संलग्न कार्यक्रमहरू।">
-              Engaging programs that help children build a strong spiritual foundation while having fun.
+            <p data-en="While the main service is going on, the children meet separately in another room. The session follows its own order and is kept suitable for the age of the children attending."
+              data-ne="मुख्य सेवा चलिरहँदा, बालबालिकाहरू अर्कै कोठामा छुट्टै भेला हुन्छन्। सत्रको आफ्नै क्रम हुन्छ र सहभागी बालबालिकाहरूको उमेरअनुसार उपयुक्त हुने गरी राखिन्छ।">
+              While the main service is going on, the children meet separately in another room. The session follows its own order and is kept suitable for the age of the children attending.
             </p>
             <div class="card-highlight">
-              <span class="card-highlight-label" data-en="Our programs" data-ne="हाम्रा कार्यक्रमहरू">Our programs</span>
-              <p data-en="Interactive Bible lessons, Christian films, and learning quizzes. Special programs and celebrations help children grow in faith and friendships from an early age."
-                 data-ne="अन्तरक्रियात्मक बाइबल पाठहरू, ईसाई फिल्महरू र सिकाइ क्विजहरू। विशेष कार्यक्रमहरू र उत्सवहरूले बालबालिकाहरूलाई सानै उमेरदेखि विश्वास र मित्रतामा बढ्न मद्दत गर्छन्।">
-                Interactive Bible lessons, Christian films, and learning quizzes. Special programs and celebrations help children grow in faith and friendships from an early age.
+              <span class="card-highlight-label" data-en="What takes place" data-ne="के हुन्छ">What takes place</span>
+              <p data-en="The children's session includes Bible stories told in simple language, Christian films, and small quiz activities based on what they have heard. Special programs are held on occasions such as Christmas and Easter, where children take part in performances and recitations."
+                 data-ne="बालबालिकाहरूको सत्रमा सरल भाषामा बाइबलका कथाहरू, ईसाई फिल्महरू र उनीहरूले सुनेका कुराहरूमा आधारित साना क्विज गतिविधिहरू समावेश हुन्छन्। क्रिसमस र इस्टर जस्ता अवसरहरूमा विशेष कार्यक्रमहरू आयोजना गरिन्छन्, जहाँ बालबालिकाहरूले प्रस्तुति र सस्वर पाठमा भाग लिन्छन्।">
+                The children's session includes Bible stories told in simple language, Christian films, and small quiz activities based on what they have heard. Special programs are held on occasions such as Christmas and Easter, where children take part in performances and recitations.
               </p>
             </div>
           </div>
@@ -365,7 +385,7 @@
       </div>
     </div>
 
-    <!-- ── Youth Ministry ── -->
+    <!-- ── Youth Fellowship ── -->
     <div class="about-block accented service-card">
       <div class="card-img">
         <img src="static/images/Youth_Fellowship.jpg" alt="Youth Fellowship" loading="lazy"/>
@@ -373,7 +393,7 @@
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title" data-en="Youth Fellowship" data-ne="युवा सङ्गति">Youth Fellowship</h3>
+          <h3 class="card-title" data-en="Youth Fellowship" data-ne="जवान सङ्गति">Youth Fellowship</h3>
           <div class="card-sched">
             <span class="card-sched-day" data-en="Saturdays" data-ne="शनिबारहरू">Saturdays</span>
             <span class="card-sched-sep"></span>
@@ -381,21 +401,21 @@
           </div>
         </div>
         <p class="card-desc"
-           data-en="A vibrant community where teens and young adults explore faith, build friendships, and grow spiritually."
-           data-ne="एक जीवन्त समुदाय जहाँ किशोरकिशोरी र युवा वयस्कहरूले विश्वास अन्वेषण गर्छन्, मित्रता बनाउँछन् र आत्मिकरूपले बढ्छन्।">
-          A vibrant community where teens and young adults explore faith, build friendships, and grow spiritually.
+           data-en="A monthly gathering for the young people of the church, held after the main Saturday service."
+           data-ne="मण्डलीका युवाहरूको मासिक भेला, शनिबारको मुख्य सेवापछि आयोजना गरिन्छ।">
+          A monthly gathering for the young people of the church, held after the main Saturday service.
         </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p data-en="A relevant space for teenagers to connect with God and with each other."
-               data-ne="किशोरकिशोरीहरूलाई परमेश्वर र एकआपसमा जोडिन प्रासंगिक ठाउँ।">
-              A relevant space for teenagers to connect with God and with each other.
+            <p data-en="The youth meet once a month after the main Saturday service. The gathering is a time to read scripture, talk openly about questions related to faith, and pray. Outside of the monthly meeting, the youth also gather separately for prayer during the week."
+              data-ne="युवाहरू शनिबारको मुख्य सेवापछि महिनामा एक पटक भेला हुन्छन्। यो भेला धर्मशास्त्र पढ्न, विश्वाससँग सम्बन्धित प्रश्नहरूबारे खुलेर कुरा गर्न र प्रार्थना गर्ने समय हो। मासिक भेलाबाहेक, युवाहरू हप्ताको बीचमा प्रार्थनाका लागि पनि छुट्टै भेला हुन्छन्।">
+              The youth meet once a month after the main Saturday service. The gathering is a time to read scripture, talk openly about questions related to faith, and pray. Outside of the monthly meeting, the youth also gather separately for prayer during the week.
             </p>
             <div class="card-highlight">
-              <span class="card-highlight-label" data-en="What we do" data-ne="हामी के गर्छौं">What we do</span>
-              <p data-en="Weekly prayer, monthly programs and fellowship, and annual mission trips. Leadership training helps young people grow into confident, faith-filled adults."
-                 data-ne="साप्ताहिक प्रार्थना, मासिक कार्यक्रमहरू र सङ्गति, र वार्षिक मिशन यात्राहरू। नेतृत्व तालिमले युवाहरूलाई आत्मविश्वासी, विश्वासले भरिएको वयस्कमा बढ्न मद्दत गर्छ।">
-                Weekly prayer, monthly programs and fellowship, and annual mission trips. Leadership training helps young people grow into confident, faith-filled adults.
+              <span class="card-highlight-label" data-en="Other activities" data-ne="अन्य गतिविधिहरू">Other activities</span>
+              <p data-en="Beyond the regular monthly meeting, the youth occasionally organise outings, community service activities, and annual programs. Some members have also participated in short-term mission visits to other areas."
+                 data-ne="नियमित मासिक बैठकभन्दा बाहिर, युवाहरूले कहिलेकाहीँ भ्रमण, सामुदायिक सेवा गतिविधिहरू र वार्षिक कार्यक्रमहरू आयोजना गर्छन्। केही सदस्यहरूले अन्य क्षेत्रहरूमा अल्पकालीन मिशन भ्रमणमा पनि भाग लिएका छन्।">
+                Beyond the regular monthly meeting, the youth occasionally organise outings, community service activities, and annual programs. Some members have also participated in short-term mission visits to other areas.
               </p>
             </div>
           </div>
@@ -417,25 +437,25 @@
         <div class="card-top">
           <h3 class="card-title" data-en="Pillars Academy" data-ne="पिलर्स एकेडेमी">Pillars Academy</h3>
           <div class="card-sched">
-            <span class="card-sched-day" data-en="6-month program" data-ne="६ महिने कार्यक्रम">6-month program</span>
+            <span class="card-sched-day" data-en="February – July / August" data-ne="फेब्रुअरी – जुलाई / अगस्ट">February – July / August</span>
           </div>
         </div>
         <p class="card-desc"
-           data-en="An intensive discipleship program for those seeking deeper biblical knowledge and leadership development."
-           data-ne="गहिरो बाइबलीय ज्ञान र नेतृत्व विकास खोज्नेहरूका लागि गहन शिष्यत्व कार्यक्रम।">
-          An intensive discipleship program for those seeking deeper biblical knowledge and leadership development.
+           data-en="A six-month biblical discipleship Training run annually by Dharmikta Mandali, generally from February through to July or August."
+           data-ne="धार्मिकता मण्डलीद्वारा वार्षिक रूपमा सञ्चालित ६ महिनाको बाइबलीय चेलापन तालिम, सामान्यतः फेब्रुअरीदेखि जुलाई वा अगस्टसम्म।">
+          A six-month biblical discipleship Training run annually by Dharmikta Mandali, generally from February through to July or August.
         </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p data-en="A transformative program equipping participants for effective ministry and personal spiritual growth."
-               data-ne="सहभागीहरूलाई प्रभावकारी सेवाकार्य र व्यक्तिगत आत्मिक वृद्धिका लागि सक्षम बनाउने परिवर्तनकारी कार्यक्रम।">
-              A transformative program equipping participants for effective ministry and personal spiritual growth.
+            <p data-en="Pillars Academy is a discipleship Training that runs for approximately six months each year, starting around February. It is open to those who wish to study the Bible more deeply and grow in their understanding of Christian faith and ministry. "
+               data-ne="पिलर्स एकेडेमी एक चेलापन तालिम हो जुन प्रत्येक वर्ष लगभग छ महिनासम्म, फेब्रुअरी आसपासबाट सुरु हुन्छ। बाइबललाई थप गहिरोसँग अध्ययन गर्न र ईसाई विश्वास र सेवाकार्यको आफ्नो बुझाइ बढाउन चाहनेहरूका लागि यो खुला छ।">
+              Pillars Academy is a discipleship Training that runs for approximately six months each year, starting around February. It is open to those who wish to study the Bible more deeply and grow in their understanding of Christian faith and ministry.
             </p>
             <div class="card-highlight">
-              <span class="card-highlight-label" data-en="Program components" data-ne="कार्यक्रमका घटकहरू">Program components</span>
-              <p data-en="Biblical teaching five days a week, daily devotions, personal mentorship, church service opportunities, and occasional retreats for holistic growth."
-                 data-ne="हप्तामा पाँच दिन बाइबलीय शिक्षा, दैनिक भक्ति, व्यक्तिगत मेन्टरशिप, मण्डली सेवाका अवसरहरू र समग्र विकासका लागि कहिलेकाहीँ रिट्रिट।">
-                Biblical teaching five days a week, daily devotions, personal mentorship, church service opportunities, and occasional retreats for holistic growth.
+              <span class="card-highlight-label" data-en="Program structure" data-ne="कार्यक्रमको संरचना">Program structure</span>
+              <p data-en="Teaching is held five days a week. Alongside classroom sessions, students take part in daily devotions, personal mentoring with a church leader, and practical service within the church. Occasional retreats are also held during the program period."
+                 data-ne="हप्तामा पाँच दिन शिक्षा दिइन्छ। कक्षा सत्रहरूको साथसाथै, विद्यार्थीहरू दैनिक भक्ति, मण्डलीका नेतासँग व्यक्तिगत मेन्टरिङ र मण्डलीभित्र व्यावहारिक सेवामा भाग लिन्छन्। कार्यक्रम अवधिमा कहिलेकाहीँ रिट्रिट पनि आयोजना गरिन्छ।">
+                Teaching is held five days a week. Alongside classroom sessions, students take part in daily devotions, personal mentoring with a church leader, and practical service within the church. Occasional retreats are also held during the program period.
               </p>
             </div>
           </div>
@@ -455,27 +475,27 @@
       </div>
       <div class="card-body">
         <div class="card-top">
-          <h3 class="card-title" data-en="Vocational Training" data-ne="व्यावसायिक तालिम">Vocational Training</h3>
+          <h3 class="card-title" data-en="Vocational Training" data-ne="शिप बिकाश तालिम">Vocational Training</h3>
           <div class="card-sched">
-            <span class="card-sched-day" data-en="6-month program" data-ne="६ महिने कार्यक्रम">6-month program</span>
+            <span class="card-sched-day" data-en="February – July / August" data-ne="फेब्रुअरी – जुलाई / अगस्ट">February – July / August</span>
           </div>
         </div>
         <p class="card-desc"
-           data-en="Practical skills training integrated with biblical principles for workplace excellence and honest living."
-           data-ne="कार्यस्थल उत्कृष्टता र इमानदार जीवनका लागि बाइबलीय सिद्धान्तहरूसँग एकीकृत व्यावहारिक कौशल तालिम।">
-          Practical skills training integrated with biblical principles for workplace excellence and honest living.
+           data-en="A six-month skills training program held alongside Pillars Academy, offering practical instruction in tailoring, animal husbandry, and agriculture."
+           data-ne="पिलर्स एकेडेमीसँगै सञ्चालित छ महिनाको सीप तालिम कार्यक्रम, जसले सिलाई, पशुपालन र कृषिमा व्यावहारिक निर्देशन प्रदान गर्छ।">
+          A six-month skills training program held alongside Pillars Academy, offering practical instruction in tailoring, animal husbandry, and agriculture.
         </p>
         <div class="card-detail">
           <div class="card-detail-body">
-            <p data-en="Preparing participants for meaningful employment while emphasising Christian work ethics."
-               data-ne="ईसाई कार्य नैतिकतामा जोड दिँदै सहभागीहरूलाई अर्थपूर्ण रोजगारीका लागि तयार पार्दै।">
-              Preparing participants for meaningful employment while emphasising Christian work ethics.
+            <p data-en="The Vocational Training program runs during the same period as Pillars Academy — from around February to July or August each year. It provides hands-on skills training in areas such as tailoring and fashion design, animal husbandry, and agriculture. The program is grounded in the church's belief that honest work and good character go hand in hand."
+               data-ne="व्यावसायिक तालिम कार्यक्रम पिलर्स एकेडेमीसँगै — प्रत्येक वर्ष फेब्रुअरी आसपासदेखि जुलाई वा अगस्टसम्म सञ्चालन हुन्छ। यसले सिलाई र फेसन डिजाइन, पशुपालन र कृषि जस्ता क्षेत्रहरूमा व्यावहारिक सीप तालिम प्रदान गर्छ। यो कार्यक्रम मण्डलीको यस विश्वासमा आधारित छ कि इमानदार काम र असल चरित्र एकसाथ चल्छन्।">
+              The Vocational Training program runs during the same period as Pillars Academy — from around February to July or August each year. It provides hands-on skills training in areas such as tailoring and fashion design, animal husbandry, and agriculture. The program is grounded in the church's belief that honest work and good character go hand in hand.
             </p>
             <div class="card-highlight">
               <span class="card-highlight-label" data-en="Training areas" data-ne="तालिम क्षेत्रहरू">Training areas</span>
-              <p data-en="Hands-on instruction in tailoring and fashion design, animal husbandry, and agriculture — each rooted in biblical principles of integrity and excellence."
-                 data-ne="दर्जी र फेसन डिजाइन, पशुपालन र कृषिमा व्यावहारिक निर्देशन — प्रत्येक इमानदारी र उत्कृष्टताका बाइबलीय सिद्धान्तहरूमा आधारित।">
-                Hands-on instruction in tailoring and fashion design, animal husbandry, and agriculture — each rooted in biblical principles of integrity and excellence.
+              <p data-en="Participants receive practical instruction in one or more of the following: tailoring and basic fashion design, livestock care and animal husbandry, and small-scale farming and agriculture. Biblical teaching on integrity and stewardship is woven into the program alongside the skills training."
+                 data-ne="सहभागीहरूले निम्नमध्ये एक वा बढी क्षेत्रमा व्यावहारिक निर्देशन पाउँछन्: सिलाई र आधारभूत फेसन डिजाइन, पशुपालन र पशु स्याहार, र साना पैमानाको खेती र कृषि। इमानदारी र भण्डारीपनाको बाइबलीय शिक्षा सीप तालिमको साथसाथै कार्यक्रममा समेटिएको छ।">
+                Participants receive practical instruction in one or more of the following: tailoring and basic fashion design, livestock care and animal husbandry, and small-scale farming and agriculture. Biblical teaching on integrity and stewardship is woven into the program alongside the skills training.
               </p>
             </div>
           </div>
@@ -489,13 +509,13 @@
 
     <!-- CTA block -->
     <div class="about-cta-block">
-      <h3 data-en="Join Us This Saturday" data-ne="यस शनिबार हामीसँग सामेल हुनुहोस्">Join Us This Saturday</h3>
-      <p data-en="We'd love to welcome you. Come as you are — everyone has a place at Dharmikta Mandali."
-         data-ne="हामी तपाईंलाई स्वागत गर्न चाहन्छौं। जस्तो हुनुहुन्छ त्यस्तै आउनुहोस् — धार्मिकता मण्डलीमा सबैको स्थान छ।">
-        We'd love to welcome you. Come as you are — everyone has a place at Dharmikta Mandali.
+      <h3 data-en="Have a question?" data-ne="कुनै प्रश्न छ?">Have a question?</h3>
+      <p data-en="If you would like to know more about any of the services or programs listed here, you are welcome to reach out to us through the contact page."
+         data-ne="यहाँ उल्लेखित कुनै पनि सेवा वा कार्यक्रमबारे थप जान्न चाहनुहुन्छ भने, सम्पर्क पृष्ठ मार्फत हामीलाई सम्पर्क गर्न सक्नुहुन्छ।">
+        If you would like to know more about any of the services or programs listed here, you are welcome to reach out to us through the contact page.
       </p>
       <a href="contact.html" class="about-cta-btn"
-         data-en="Get in Touch" data-ne="सम्पर्कमा आउनुहोस्">Get in Touch</a>
+         data-en="Contact Us" data-ne="सम्पर्क गर्नुहोस्">Contact Us</a>
     </div>
 
   </div><!-- /about-page-body -->
@@ -611,6 +631,6 @@
     });
   })();
   </script>
-
+  <script src="script/navbar.js" defer></script>
 </body>
 </html>

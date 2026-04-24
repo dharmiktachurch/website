@@ -1,0 +1,336 @@
+/* ================================================================
+   NAVBAR — navbar.css
+   Include in every page's <head> after Font Awesome + Poppins.
+   ================================================================ */
+
+:root {
+  --ink:         #111111;
+  --ink-soft:    #444444;
+  --ink-muted:   #777777;
+  --surface:     #ffffff;
+  --surface-off: #f7f7f7;
+  --surface-mid: #ececec;
+  --border:      rgba(0,0,0,0.08);
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+  --shadow-md:   0 8px 32px rgba(0,0,0,0.12);
+  --shadow-lg:   0 16px 48px rgba(0,0,0,0.15);
+  --urgent:      #c0392b;
+  --event:       #1a7a4a;
+  --general:     #1a5fa8;
+  --gold:        #c8a035;
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.8rem 2rem; gap: 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 1000;
+}
+
+.logo-link { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+.logo-container { display: flex; align-items: center; gap: 10px; }
+.church-logo { height: 40px; width: auto; object-fit: contain; }
+.logo-text { font-size: 1.25rem; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+
+.nav-links { list-style: none; display: flex; gap: 0.25rem; align-items: center; }
+.nav-links li a {
+  position: relative; text-decoration: none; color: var(--ink-soft);
+  font-weight: 500; font-size: 0.9rem; padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm); white-space: nowrap;
+  transition: color 0.22s ease, background 0.22s ease; display: inline-block;
+}
+.nav-links li a::after {
+  content: ''; position: absolute;
+  left: 50%; bottom: 2px; transform: translateX(-50%);
+  width: 0; height: 2px; background: var(--ink);
+  border-radius: 2px; transition: width 0.22s var(--ease-out);
+}
+.nav-links li a:hover              { color: var(--ink); background: var(--surface-off); }
+.nav-links li a:hover::after       { width: calc(100% - 1.7rem); }
+.nav-links li a.active-page        { color: var(--ink); font-weight: 600; }
+.nav-links li a.active-page::after { width: calc(100% - 1.7rem); }
+
+.nav-controls { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+
+/* ── BELL BUTTON ── */
+.notif-wrapper { position: relative; }
+
+.notif-btn {
+  position: relative; width: 38px; height: 38px;
+  border-radius: 50%; border: 1px solid var(--border);
+  background: var(--surface-off); color: var(--ink-soft);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 0.95rem; flex-shrink: 0;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.notif-btn:hover { background: var(--ink); color: #fff; border-color: var(--ink); transform: translateY(-1px); }
+.notif-btn.has-unread .fa-bell { animation: bellShake 0.55s ease 0.4s both; }
+
+@keyframes bellShake {
+  0%,100% { transform: rotate(0); }
+  20%     { transform: rotate(-16deg); }
+  40%     { transform: rotate(16deg); }
+  60%     { transform: rotate(-9deg); }
+  80%     { transform: rotate(7deg); }
+}
+
+.notif-badge {
+  position: absolute; top: 2px; right: 2px;
+  min-width: 16px; height: 16px; padding: 0 3px;
+  background: var(--urgent); color: #fff; border-radius: 50px;
+  font-size: 0.58rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--surface); pointer-events: none;
+  transition: transform 0.3s var(--ease-out), opacity 0.3s;
+}
+.notif-badge.hidden { transform: scale(0); opacity: 0; }
+
+/* ── NOTIFICATION PANEL ── */
+.notif-panel {
+  position: absolute; top: calc(100% + 10px); right: 0;
+  width: 320px; background: var(--surface);
+  border-radius: var(--radius-lg); border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg); overflow: hidden; z-index: 2000;
+  transform: translateY(-6px) scale(0.97); opacity: 0; pointer-events: none;
+  transition: transform 0.25s var(--ease-out), opacity 0.2s ease;
+  transform-origin: top right;
+}
+.notif-panel.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.9rem 1rem 0.75rem; border-bottom: 1px solid var(--border);
+}
+.panel-title { font-size: 0.82rem; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 0.45rem; }
+.panel-title i { color: var(--gold); font-size: 0.78rem; }
+
+.mark-all-btn {
+  font-size: 0.7rem; color: var(--ink-muted); background: none; border: none;
+  cursor: pointer; padding: 0.25rem 0.6rem; border-radius: var(--radius-sm);
+  font-family: 'Poppins', sans-serif; transition: background 0.18s, color 0.18s;
+}
+.mark-all-btn:hover { background: var(--surface-off); color: var(--ink); }
+
+/* ── NOTICE LIST ── */
+.notif-list {
+  max-height: 340px; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: var(--surface-mid) transparent;
+}
+.notif-list::-webkit-scrollbar { width: 3px; }
+.notif-list::-webkit-scrollbar-thumb { background: var(--surface-mid); border-radius: 3px; }
+
+/* Collapsed notice row */
+.notif-item {
+  display: flex; gap: 0.75rem; align-items: center;
+  padding: 0.85rem 1rem; border-bottom: 1px solid var(--border);
+  cursor: pointer; width: 100%; background: none;
+  border-left: none; border-right: none; border-top: none;
+  text-align: left; font-family: 'Poppins', sans-serif;
+  transition: background 0.15s; position: relative;
+}
+.notif-item:last-child { border-bottom: none; }
+.notif-item:hover      { background: var(--surface-off); }
+.notif-item.unread     { background: #f8fbff; }
+.notif-item.unread:hover { background: #f0f6ff; }
+
+.notif-item.unread::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; border-radius: 0 2px 2px 0; background: var(--general);
+}
+.notif-item.unread.cat-urgent::before { background: var(--urgent); }
+.notif-item.unread.cat-event::before  { background: var(--event); }
+
+.notif-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  background: var(--surface-mid);
+}
+.notif-item.unread            .notif-dot { background: var(--general); }
+.notif-item.unread.cat-urgent .notif-dot { background: var(--urgent); }
+.notif-item.unread.cat-event  .notif-dot { background: var(--event); }
+
+/* Notice body: title row fills available space */
+.notif-body {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+}
+.notif-top  { flex: 1; min-width: 0; }
+.notif-title {
+  font-size: 0.8rem; font-weight: 600; color: var(--ink); line-height: 1.3;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.notif-date  { font-size: 0.63rem; color: var(--ink-muted); white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+
+/* Chevron indicator */
+.notif-chevron {
+  font-size: 0.65rem; color: var(--ink-muted); flex-shrink: 0;
+  transition: transform 0.25s var(--ease-out);
+}
+.notif-item.expanded .notif-chevron { transform: rotate(180deg); }
+
+/* Expanded panel — description shown here only */
+.notif-expanded {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.32s var(--ease-out);
+  background: var(--surface-off); border-bottom: 1px solid var(--border);
+  font-size: 0.78rem; color: var(--ink-soft); line-height: 1.65;
+}
+.notif-expanded.open { max-height: 200px; }
+.notif-expanded-inner { padding: 0.75rem 1rem; }
+.notif-expanded a {
+  display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.45rem;
+  color: var(--general); font-size: 0.73rem; font-weight: 600; text-decoration: none;
+}
+.notif-expanded a:hover { text-decoration: underline; }
+
+.notif-empty { text-align: center; padding: 2.5rem 1rem; color: var(--ink-muted); font-size: 0.82rem; font-family: 'Poppins', sans-serif; }
+.notif-empty i { display: block; font-size: 1.5rem; margin-bottom: 0.5rem; opacity: 0.3; }
+
+.notif-loading { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; padding: 2rem 1rem; color: var(--ink-muted); font-size: 0.78rem; font-family: 'Poppins', sans-serif; }
+.spin { width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid var(--surface-mid); border-top-color: var(--ink); animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── TOAST ── */
+.notif-toast {
+  position: fixed; top: 68px; right: 1.25rem; width: 300px;
+  background: var(--surface); border-radius: var(--radius-lg);
+  border: 1px solid var(--border); box-shadow: var(--shadow-lg);
+  overflow: hidden; z-index: 1500;
+  transform: translateX(calc(100% + 1.5rem)); opacity: 0;
+  transition: transform 0.4s var(--ease-out), opacity 0.3s ease;
+  pointer-events: none;
+}
+.notif-toast.show { transform: translateX(0); opacity: 1; pointer-events: auto; }
+
+.toast-bar          { height: 3px; background: var(--general); }
+.toast-bar.urgent   { background: var(--urgent); }
+.toast-bar.event    { background: var(--event); }
+
+.toast-inner { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.85rem 2rem 0.85rem 0.9rem; }
+.toast-icon-wrap {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; background: #f0f6ff; color: var(--general);
+}
+.toast-icon-wrap.urgent { background: #fdf2f2; color: var(--urgent); }
+.toast-icon-wrap.event  { background: #f0faf5; color: var(--event); }
+
+.toast-text-wrap { flex: 1; min-width: 0; }
+.toast-cat { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--general); margin-bottom: 0.15rem; }
+.toast-cat.urgent { color: var(--urgent); }
+.toast-cat.event  { color: var(--event); }
+.toast-ttl { font-size: 0.82rem; font-weight: 700; color: var(--ink); line-height: 1.3; margin-bottom: 0.2rem; }
+.toast-dsc { font-size: 0.72rem; color: var(--ink-muted); line-height: 1.45; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
+.toast-close {
+  position: absolute; top: 0.55rem; right: 0.55rem;
+  width: 20px; height: 20px; border-radius: 50%;
+  border: none; background: var(--surface-mid); color: var(--ink-muted);
+  font-size: 0.6rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.18s, color 0.18s;
+}
+.toast-close:hover { background: var(--ink); color: #fff; }
+
+.toast-action { padding: 0 0.9rem 0.8rem; }
+.toast-view-btn {
+  font-size: 0.72rem; font-weight: 600; color: var(--ink);
+  background: var(--surface-off); border: 1px solid var(--border);
+  padding: 0.3rem 0.85rem; border-radius: var(--radius-sm);
+  cursor: pointer; font-family: 'Poppins', sans-serif;
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+.toast-view-btn:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+.toast-progress      { height: 2px; background: var(--surface-mid); }
+.toast-progress-fill { height: 100%; width: 100%; background: var(--ink-muted); opacity: 0.35; animation: shrink linear forwards; }
+@keyframes shrink { from { width: 100%; } to { width: 0; } }
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-toggle { display: flex; background: var(--surface-off); border: 1px solid var(--border); border-radius: 50px; padding: 3px; gap: 2px; flex-shrink: 0; }
+.lang-btn { padding: 4px 13px; border-radius: 50px; border: none; cursor: pointer; font-size: 0.76rem; font-weight: 600; background: transparent; color: var(--ink-muted); font-family: 'Poppins', sans-serif; letter-spacing: 0.03em; transition: all 0.18s; white-space: nowrap; }
+.lang-btn.active             { background: var(--ink); color: #fff; }
+.lang-btn:hover:not(.active) { background: var(--surface-mid); color: var(--ink); }
+
+/* ── BURGER ── */
+.burger {
+  display: none; align-items: center; justify-content: center;
+  width: 38px; height: 38px;
+  cursor: pointer; background: none; border: none;
+  font-size: 1.15rem; color: var(--ink); flex-shrink: 0;
+  transition: color 0.2s;
+}
+.burger:hover { color: var(--ink-soft); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .burger { display: flex; }
+  .lang-toggle { display: none; }
+
+  /* ── Mobile nav drawer ──
+     position: fixed so it spans the FULL viewport width
+     regardless of the navbar's internal padding/layout.
+     top: 61px matches the navbar height.
+  ── */
+  .nav-links {
+    flex-direction: column;
+    position: fixed;
+    top: 61px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    padding: 0;
+    gap: 0;
+    max-height: 0; overflow: hidden; opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: max-height 0.35s var(--ease-out),
+                opacity 0.28s ease,
+                visibility 0s linear 0.35s,
+                padding 0s linear 0.35s;
+    z-index: 999;
+  }
+  .nav-links.open {
+    max-height: 420px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    padding: 0.4rem 0 0.6rem;
+    transition: max-height 0.35s var(--ease-out),
+                opacity 0.28s ease,
+                visibility 0s linear 0s,
+                padding 0s linear 0s;
+  }
+
+  .nav-links li { width: 100%; }
+  .nav-links li a { display: block; padding: 0.8rem 1.5rem; border-radius: 0; font-size: 0.9rem; }
+  .nav-links li a::after { display: none; }
+
+  .mob-lang-row {
+    display: flex !important; justify-content: center;
+    padding: 0.7rem 1.5rem; border-top: 1px solid var(--border);
+    margin-top: 0.2rem; list-style: none;
+  }
+  .mob-lang-row .lang-toggle { display: flex !important; }
+
+  .notif-panel {
+    position: fixed; top: 61px; left: 0; right: 0; width: 100%;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    transform-origin: top center;
+  }
+  .notif-toast { width: calc(100vw - 2.5rem); right: 1.25rem; }
+}
+
+@media (max-width: 480px) {
+  .navbar { padding: 0.65rem 1rem; }
+  .logo-text { font-size: 1.05rem; }
+  .notif-toast { right: 0.75rem; width: calc(100vw - 1.5rem); }
+}

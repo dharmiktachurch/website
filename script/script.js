@@ -31,8 +31,8 @@ function typeString(el, text, speed, onDone) {
 }
 
 // Public: run typewriter for a given language code
-// Called by applyLang() in index.html — NOT called here on DOMContentLoaded,
-// because the inline script that owns language state runs after this file loads.
+// Called by applyLang() in navbar.js on explicit language switch,
+// and by DOMContentLoaded below on initial page load.
 window.runTypeWriter = function (lang) {
   const welcomeEl    = document.querySelector(".welcome");
   const churchNameEl = document.querySelector(".church-name");
@@ -44,13 +44,19 @@ window.runTypeWriter = function (lang) {
   });
 };
 
-// On DOM load: only set up the burger; language + typewriter are handled by index.html
+// On DOM load: set up burger, then fire typewriter in the saved language
 document.addEventListener("DOMContentLoaded", function () {
   setupBurgerMenu();
 
-  // Fallback for pages that have the hero but NO language toggle
-  // (other pages like about.html, services.html, etc.)
-  if (!document.getElementById("btn-en")) {
-    window.runTypeWriter("en");
+  // Run typewriter on any page that has the hero spans
+  const welcomeEl    = document.querySelector(".welcome");
+  const churchNameEl = document.querySelector(".church-name");
+
+  if (welcomeEl && churchNameEl) {
+    // getSavedLang() is defined in navbar.js which loads before this file
+    const lang = (typeof window.getSavedLang === "function")
+      ? window.getSavedLang()
+      : "en";
+    window.runTypeWriter(lang);
   }
 });

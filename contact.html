@@ -11,6 +11,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="script/script.js" defer></script>
   <script src="script/Email.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="style/navbar.css" />
   <style>
     .lang-toggle {
       display: flex;
@@ -61,22 +64,23 @@
 </head>
 <body>
 
-  <!-- ── Navbar ── -->
+  <!-- ── NAVBAR ── -->
   <nav class="navbar">
     <a href="index.html" class="logo-link">
       <div class="logo-container">
         <img src="static/images/logo.png" alt="Dharmikta Mandali" class="church-logo" />
-        <div class="logo-text" data-en="Dharmikta Church" data-ne="धार्मिकता मण्डली">Dharmikta Church</div>
+        <span class="logo-text" data-en="Dharmikta Church" data-ne="धार्मिकता मण्डली">Dharmikta Church</span>
       </div>
     </a>
+
     <ul class="nav-links" id="nav-links">
       <li><a href="index.html"    data-en="Home"     data-ne="गृहपृष्ठ">Home</a></li>
       <li><a href="about.html"    data-en="About"    data-ne="हाम्रोबारे">About</a></li>
       <li><a href="services.html" data-en="Services" data-ne="सेवाहरू">Services</a></li>
       <li><a href="events.html"   data-en="Events"   data-ne="कार्यक्रमहरू">Events</a></li>
-      <li><a href="notices.html"  data-en="Notices"  data-ne="सूचनाहरू">Notices</a></li>
       <li><a href="contact.html"  data-en="Contact"  data-ne="सम्पर्क">Contact</a></li>
-      <li class="nav-lang-row">
+      <!-- Mobile-only language row — shows inside burger menu on small screens -->
+      <li class="mob-lang-row" style="display:none;">
         <div class="lang-toggle">
           <button class="lang-btn" id="btn-en-mob" onclick="setLang('en')">EN</button>
           <button class="lang-btn" id="btn-ne-mob" onclick="setLang('ne')">नेपा</button>
@@ -84,13 +88,36 @@
       </li>
     </ul>
 
-    <div class="lang-toggle" id="lang-toggle" aria-label="Switch language">
-      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn"        id="btn-ne" onclick="setLang('ne')">नेपा</button>
-    </div>
+    <div class="nav-controls">
+      <!-- Notification bell -->
+      <div class="notif-wrapper" id="notif-wrapper">
+        <button class="notif-btn" id="notif-btn" aria-label="Notices" aria-expanded="false">
+          <i class="fas fa-bell"></i>
+          <span class="notif-badge hidden" id="notif-badge">0</span>
+        </button>
+        <div class="notif-panel" id="notif-panel" role="dialog" aria-label="Notices">
+          <div class="panel-header">
+            <div class="panel-title"><i class="fas fa-bell"></i> Notices</div>
+            <button class="mark-all-btn" id="mark-all-btn">Mark all read</button>
+          </div>
+          <div class="notif-list" id="notif-list">
+            <div class="notif-loading"><div class="spin"></div><span>Loading…</span></div>
+          </div>
+        </div>
+      </div>
 
-    <div class="burger" id="burger">
-      <div class="line"></div><div class="line"></div><div class="line"></div>
+      <!-- Language toggle (desktop) -->
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn"        id="btn-ne" onclick="setLang('ne')">नेपा</button>
+      </div>
+
+      <!-- Burger (mobile) -->
+      <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </button>
     </div>
   </nav>
 
@@ -287,6 +314,7 @@
     });
   })();
   </script>
+  <script src="script/navbar.js" defer></script>
 
 </body>
 </html>

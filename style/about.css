@@ -130,26 +130,23 @@ body {
   z-index: 900;
 }
 
-/* Scrollable wrapper — lets links scroll horizontally on small screens
-   without wrapping or overflowing the page */
 .about-nav .container {
   max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;           /* hide scrollbar on Firefox */
+  scrollbar-width: none;
 }
 
-.about-nav .container::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+.about-nav .container::-webkit-scrollbar { display: none; }
 
-/* Nav list — always a single row, never wraps */
 .about-nav ul {
   display: flex;
   justify-content: center;
   list-style: none;
-  white-space: nowrap;   /* critical: prevents "Our\nChurch" wrapping */
+  white-space: nowrap;
   gap: 0;
   padding: 0 1rem;
-  min-width: max-content; /* shrinks to fit content, no forced min-width */
+  min-width: max-content;
 }
 
 .about-nav a {
@@ -160,7 +157,7 @@ body {
   font-size: 0.92rem;
   padding: 1rem 1.25rem;
   display: inline-block;
-  white-space: nowrap;   /* belt + suspenders — link text never wraps */
+  white-space: nowrap;
   letter-spacing: 0.02em;
   transition: color 0.25s ease;
 }
@@ -181,7 +178,6 @@ body {
 .about-nav a.active { color: var(--ink); font-weight: 600; }
 .about-nav a.active::after { transform: scaleX(1); }
 
-/* Mobile: smaller text + tighter padding, still a single scrollable row */
 @media (max-width: 600px) {
   .about-nav ul { justify-content: flex-start; padding: 0 0.5rem; }
   .about-nav a  { font-size: 0.82rem; padding: 0.85rem 1rem; }
@@ -265,7 +261,6 @@ body {
 
 /* ── 5. SHARED PAGE STRUCTURE ─────────────────────────────────────────── */
 
-/* ─ Hero base (all four pages) ─ */
 .about-page-hero {
   position: relative;
   height: 58vh;
@@ -279,7 +274,6 @@ body {
   background: var(--ink);
 }
 
-/* Dark overlay for photo-backed heroes (jesus + church) */
 .about-page-hero::before {
   content: '';
   position: absolute; inset: 0;
@@ -287,7 +281,6 @@ body {
   z-index: 1;
 }
 
-/* ── Photo heroes ─────────────────────────────────────────── */
 .about-page-hero.hero--jesus {
   background: url('../static/images/about-jesus.jpg') center/cover no-repeat;
 }
@@ -296,27 +289,21 @@ body {
   background: url('../static/images/about-church.jpg') center/cover no-repeat;
 }
 
-/* ── Graphic heroes (team + testimony — SVG artwork, no photo) ─ */
-
-/* Team: warm charcoal with a subtle warm tint — feels human/relational */
 .about-page-hero.hero--team {
   background:
     linear-gradient(155deg, #1a1a1a 0%, #2c2420 55%, #1e1a18 100%);
 }
 
-/* Testimony: deep navy-to-charcoal — conveys solemnity and sincerity */
 .about-page-hero.hero--testimony {
   background:
     linear-gradient(155deg, #0f1923 0%, #1c2b3a 50%, #111820 100%);
 }
 
-/* No extra overlay on graphic heroes — the gradient is already dark enough */
 .about-page-hero.hero--team::before,
 .about-page-hero.hero--testimony::before {
   display: none;
 }
 
-/* SVG artwork helper — position fills hero, sits behind text */
 .hero-graphic {
   position: absolute;
   inset: 0;
@@ -326,7 +313,6 @@ body {
   overflow: hidden;
 }
 
-/* Push hero text above SVG and gradient layers */
 .about-page-hero .about-hero-content { z-index: 2; }
 
 .about-hero-content {
@@ -362,7 +348,6 @@ body {
   line-height: 1.7;
 }
 
-/* ─ Body wrapper (all four pages) ─ */
 .about-page-body {
   max-width: 1100px;
   margin: 0 auto;
@@ -377,7 +362,6 @@ body {
   .about-page-body { padding: 2rem 0.75rem 3rem; }
 }
 
-/* ─ Section intro (centred paragraph) ─ */
 .about-intro-text {
   max-width: 700px;
   margin: 0 auto 3.5rem;
@@ -390,7 +374,6 @@ body {
   color: var(--ink-soft);
 }
 
-/* ─ Eyebrow label ─ */
 .eyebrow {
   display: inline-block;
   font-size: 0.7rem; font-weight: 700;
@@ -399,7 +382,6 @@ body {
   margin-bottom: 0.6rem;
 }
 
-/* ─ Section heading ─ */
 .about-heading {
   font-size: clamp(1.5rem, 2.8vw, 2rem);
   font-weight: 700;
@@ -422,7 +404,6 @@ body {
 .about-heading.centered { text-align: center; }
 .about-heading.centered::after { left: 50%; transform: translateX(-50%); }
 
-/* ─ White card block (shared) ─ */
 .about-block {
   background: var(--surface);
   border-radius: var(--radius-lg);
@@ -440,7 +421,6 @@ body {
   transform: translateY(-3px);
 }
 
-/* Left accent variant */
 .about-block.accented::before {
   content: '';
   position: absolute; top: 0; left: 0;
@@ -458,7 +438,6 @@ body {
 
 .about-block p:last-child { margin-bottom: 0; }
 
-/* Mobile: reduce card padding so content isn't cramped */
 @media (max-width: 600px) {
   .about-block { padding: 1.5rem 1.25rem; border-radius: var(--radius-md); }
 }
@@ -466,7 +445,6 @@ body {
   .about-block { padding: 1.25rem 1rem; }
 }
 
-/* ─ Dark CTA block (shared — used on jesus + testimony) ─ */
 .about-cta-block {
   background: var(--ink);
   color: #fff;
@@ -584,7 +562,6 @@ footer {
    PARTIAL: JESUS
    ================================================================== */
 
-/* Three-card row */
 .jesus-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -617,7 +594,6 @@ footer {
 .jesus-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.6rem; }
 .jesus-card p  { font-size: 0.96rem; color: var(--ink-soft); line-height: 1.75; }
 
-/* Scripture blockquote */
 .jesus-scripture {
   border-left: 4px solid var(--ink);
   padding: 1.25rem 1.75rem;
@@ -640,7 +616,6 @@ footer {
   letter-spacing: 0.05em;
 }
 
-/* Prayer box */
 .prayer-box {
   background: var(--surface-off);
   border-radius: var(--radius-md);
@@ -664,7 +639,6 @@ footer {
    PARTIAL: CHURCH
    ================================================================== */
 
-/* Values grid */
 .values-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -694,7 +668,6 @@ footer {
   color: var(--ink-soft); line-height: 1.75; margin: 0;
 }
 
-/* History list */
 .history-list { list-style: none; margin-top: 1.5rem; }
 
 .history-list li {
@@ -718,7 +691,6 @@ footer {
   font-size: 0.8rem; color: var(--ink-muted);
 }
 
-/* Branch list */
 .branch-list { list-style: none; columns: 3; column-gap: 2.5rem; margin-top: 1.5rem; }
 
 .branch-list li {
@@ -739,7 +711,6 @@ footer {
   font-size: 0.72rem; color: var(--ink-muted);
 }
 
-/* Journey gallery */
 .journey-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -800,12 +771,22 @@ footer {
   width: 100%;
 }
 
-/* Centre-align grids with fewer than 3 items (e.g. Elders row) */
+/* ── FIX: Centre-align grids with any number of items ──────────────────
+   Uses flexbox so cards are always centred horizontally.
+   Each card is sized to match a 3-column layout (≈ 33.33% - gap).
+   Works with 1, 2 or 3 cards — and scales naturally if you add more.
+   ─────────────────────────────────────────────────────────────────── */
 .team-grid--center {
-  grid-template-columns: repeat(3, 1fr);
-  max-width: 66.66%;   /* 2 of 3 cols worth of space */
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.team-grid--center .team-card {
+  /* Match width of one column in the 3-col grid above */
+  flex: 0 0 calc(33.33% - 0.84rem);   /* 1.25rem gap ÷ 1.5 ≈ 0.84 */
+  max-width: calc(33.33% - 0.84rem);
 }
 
 /* Card */
@@ -862,31 +843,38 @@ footer {
   color: var(--ink-muted); line-height: 1.5;
 }
 
+/* Tablet: 2 columns */
 @media (max-width: 768px) {
-  /* 2 columns on tablet — comfortable size */
   .team-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+
+  .team-grid--center .team-card {
+    flex: 0 0 calc(50% - 0.625rem);
+    max-width: calc(50% - 0.625rem);
+  }
 }
+
+/* Phone: 1 column */
 @media (max-width: 480px) {
-  /* Single column on phone — user explicitly wants 1 per row */
   .team-grid { grid-template-columns: 1fr; gap: 0.9rem; }
-  .team-grid--center { max-width: 100%; grid-template-columns: 1fr; }
+
+  .team-grid--center .team-card {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
 
 /* ==================================================================
    PARTIAL: TESTIMONY + CAROUSEL
-   All carousel rules merged here — no separate about-testimony.css.
    ================================================================== */
 
 .about-testimony-page .about-page-body { padding-top: 2.5rem; }
 
-/* ── Carousel wrapper ──────────────────────────────────────── */
 .testimonies-carousel {
   position: relative;
   width: 100%;
-  padding: 0 56px;           /* space for nav arrows */
+  padding: 0 56px;
 }
 
-/* ── Slide container ───────────────────────────────────────── */
 .testimonies-container {
   position: relative;
   width: 100%;
@@ -896,7 +884,6 @@ footer {
   align-items: center;
 }
 
-/* ── Track ─────────────────────────────────────────────────── */
 .testimonies-track {
   display: flex;
   transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -911,7 +898,6 @@ footer {
   box-sizing: border-box;
 }
 
-/* ── Testimony card ────────────────────────────────────────── */
 .testimony-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
@@ -934,7 +920,6 @@ footer {
   pointer-events: none;
 }
 
-/* ── Card inner layout ─────────────────────────────────────── */
 .testimony-content-wrapper {
   display: flex;
   gap: 2.5rem;
@@ -960,7 +945,6 @@ footer {
   flex-shrink: 0;
 }
 
-/* Initials rendered by JS — no icon font needed */
 .author-initials {
   font-size: 1.3rem;
   font-weight: 700;
@@ -980,14 +964,12 @@ footer {
   font-weight: 400; margin-bottom: 0.5rem; display: block;
 }
 
-/* Plain date — no pill, no icon */
 .testimony-date {
   font-size: 0.82rem;
   color: var(--ink-muted);
   display: block;
 }
 
-/* ── Main text area ────────────────────────────────────────── */
 .testimony-main-content { flex: 1; }
 
 .testimony-excerpt p {
@@ -1003,9 +985,6 @@ footer {
   margin-bottom: 1rem;
 }
 
-/* Tags removed — no .testimony-tags or .tag rules needed */
-
-/* ── Read more button ──────────────────────────────────────── */
 .read-more-btn {
   display: inline-flex; align-items: center; gap: 0.5rem;
   background: transparent;
@@ -1030,7 +1009,6 @@ footer {
 
 .read-more-btn.expanded .read-more-arrow { transform: rotate(180deg); }
 
-/* ── Nav buttons — use HTML entity arrows, larger font size ─── */
 .carousel-nav {
   position: absolute;
   top: 50%; transform: translateY(-50%);
@@ -1041,7 +1019,7 @@ footer {
   color: var(--ink);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem;   /* bigger so ‹ › HTML entities look right */
+  font-size: 1.5rem;
   line-height: 1;
   z-index: 10;
   box-shadow: var(--shadow-sm);
@@ -1060,7 +1038,6 @@ footer {
 .prev-btn { left: 0; }
 .next-btn { right: 0; }
 
-/* ── Indicators ────────────────────────────────────────────── */
 .carousel-indicators {
   display: flex; justify-content: center;
   gap: 0.6rem; margin-top: 2rem;
@@ -1078,13 +1055,11 @@ footer {
 .indicator.active { background: var(--ink); transform: scale(1.35); }
 .indicator:hover  { background: #888; }
 
-/* ── Counter ───────────────────────────────────────────────── */
 .testimony-counter {
   text-align: center; margin-top: 0.75rem;
   color: var(--ink-muted); font-size: 0.88rem;
 }
 
-/* ── Spinner (shown while fetching) ───────────────────────── */
 .loading-testimonies {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
@@ -1102,11 +1077,9 @@ footer {
 }
 
 /* ================================================================
-   LANG TOGGLE — add this to about.css
-   (paste after the existing @media (max-width: 768px) .burger rule)
+   LANG TOGGLE
    ================================================================ */
 
-/* ── Lang Toggle base styles ── */
 .lang-toggle {
   display: flex;
   background: var(--surface-off);
@@ -1136,7 +1109,6 @@ footer {
 .lang-btn.active               { background: var(--ink); color: #fff; }
 .lang-btn:hover:not(.active)   { background: var(--surface-mid); color: var(--ink); }
 
-/* ── Mobile: move toggle to its own row below logo + burger ── */
 @media (max-width: 768px) {
   .navbar {
     flex-wrap: wrap;
@@ -1152,7 +1124,6 @@ footer {
     margin: 0.45rem 0 0;
   }
 
-  /* Dropdown must clear the extra toggle row (~36px + 0.45rem gap) */
   .nav-links { top: 108px; }
 }
 
@@ -1162,18 +1133,15 @@ footer {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Responsive ────────────────────────────────────────────── */
+/* ── Testimony responsive ──────────────────────────────────────── */
 @media (max-width: 768px) {
-  /* Reduce arrow gutter */
   .testimonies-carousel { padding: 0 40px; }
 
-  /* Stack sidebar above text */
   .testimony-content-wrapper {
     flex-direction: column;
     gap: 1.25rem;
   }
 
-  /* Sidebar becomes a horizontal row: avatar + text side by side */
   .testimony-author-sidebar {
     width: 100%;
     display: flex;
@@ -1190,11 +1158,9 @@ footer {
 
   .author-initials { font-size: 1.1rem; }
 
-  /* Author name + role sit naturally in the remaining space */
   .author-info { flex: 1; min-width: 0; }
   .author-name {
     font-size: 0.97rem;
-    /* Prevent long names from overflowing */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1204,20 +1170,11 @@ footer {
 }
 
 @media (max-width: 480px) {
-  /* Minimal arrow gutter on small phones */
   .testimonies-carousel { padding: 0 32px; }
-
-  /* Tighter card padding */
   .testimony-card { padding: 1.25rem; }
-
-  /* Slightly smaller text */
   .testimony-excerpt p { font-size: 0.97rem; }
   .testimony-full   p  { font-size: 0.93rem; }
-
-  /* Keep arrows inside the block — no negative offset needed */
   .prev-btn { left: 0; }
   .next-btn { right: 0; }
-
-  /* Smaller nav circles on tiny screens */
   .carousel-nav { width: 36px; height: 36px; font-size: 1.2rem; }
 }
