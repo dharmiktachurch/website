@@ -2,36 +2,37 @@
    NAVBAR — navbar.js
    Load in <head> WITHOUT defer so setLang() exists before any
    onclick="setLang(...)" button in the HTML fires.
-   ================================================================
+
+   BURGER ICON STRATEGY
+   ────────────────────
+   We inject three plain <line> SVG elements into the .burger button:
+     .b-top  — top bar    → rotates down  to become the \ of ✕
+     .b-mid  — middle bar → shrinks/fades away from center
+     .b-bot  — bottom bar → rotates up    to become the / of ✕
+
+   CSS transitions handle all the animation via .burger.open.
+   The button background also flips dark so lines turn white.
 
    TYPEWRITER CONTRACT
    ───────────────────
    navbar.js never calls runTypeWriter() on page load.
-   script.js owns the initial typewriter run. It should read the
-   saved language like this and pass it in:
+   script.js owns the initial typewriter run:
 
        document.addEventListener('DOMContentLoaded', function () {
          var lang = window.getSavedLang ? window.getSavedLang() : 'en';
          runTypeWriter(lang);
        });
 
-   When the user explicitly switches language via the EN/NE buttons,
-   navbar.js calls window.runTypeWriter(lang) after clearing the spans.
+   When the user switches language, navbar.js calls
+   window.runTypeWriter(lang) after clearing the spans.
    ================================================================ */
 
 /* ── Expose setLang immediately (called by onclick in HTML) ── */
 window.setLang = function (lang) { applyLang(lang, true); };
 
-/*
-  applyLang(lang, userTriggered)
-    userTriggered = true  → explicit button click → restart typewriter
-    userTriggered = false → page-load restore     → skip typewriter
-                            (script.js handles it)
-*/
 function applyLang(lang, userTriggered) {
   document.documentElement.lang = lang === 'ne' ? 'ne' : 'en';
 
-  /* Sync all EN/NE toggle buttons */
   ['btn-en', 'btn-en-mob'].forEach(function (id) {
     var el = document.getElementById(id);
     if (el) el.classList.toggle('active', lang === 'en');
@@ -41,34 +42,30 @@ function applyLang(lang, userTriggered) {
     if (el) el.classList.toggle('active', lang === 'ne');
   });
 
-  /* Swap every [data-en] / [data-ne] element */
   document.querySelectorAll('[data-en]').forEach(function (el) {
     if (el.classList.contains('lang-btn')) return;
     var t = el.getAttribute('data-' + lang);
     if (t !== null) el.innerHTML = t;
   });
 
-  /* ── Only on explicit user switch ── */
   if (userTriggered) {
-    /* Clear hero spans first so typewriter starts fresh */
     var welcome    = document.querySelector('.hero-content .welcome');
     var churchName = document.querySelector('.hero-content .church-name');
     if (welcome)    welcome.textContent    = '';
     if (churchName) churchName.textContent = '';
 
-    /* Call script.js typewriter if available */
     if (typeof window.runTypeWriter === 'function') {
       window.runTypeWriter(lang);
     }
+
+    document.dispatchEvent(new CustomEvent('dm:langchange', { detail: { lang: lang } }));
   }
 
-  /* Always: toggle bilingual pastor message blocks */
   var enBlock = document.querySelector('.full-lang-en');
   var neBlock = document.querySelector('.full-lang-ne');
   if (enBlock) enBlock.style.display = lang === 'en' ? '' : 'none';
   if (neBlock) neBlock.style.display = lang === 'ne' ? '' : 'none';
 
-  /* Always: read-more button label when message is collapsed */
   var rmBtn = document.querySelector('.senior-message-modern .read-more-btn');
   var rmMsg = document.querySelector('.senior-message-modern .full-message');
   if (rmBtn && rmMsg && rmMsg.style.display !== 'block') {
@@ -78,15 +75,18 @@ function applyLang(lang, userTriggered) {
   try { localStorage.setItem('dm-lang', lang); } catch (_) {}
 }
 
-/* ── Expose saved language for script.js to read ── */
 window.getSavedLang = function () {
   try { return localStorage.getItem('dm-lang') || 'en'; } catch (_) { return 'en'; }
 };
 
-/* ── Everything that needs the DOM ── */
-document.addEventListener('DOMContentLoaded', function () {
+/* ================================================================
+   navbarInit — all DOM-dependent logic lives here.
+   ================================================================ */
+function navbarInit() {
 
-  /* Restore saved language — no typewriter, script.js handles that */
+  if (window._navbarReady) return;
+  window._navbarReady = true;
+
   var savedLang = window.getSavedLang();
   applyLang(savedLang, false);
 
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var SHEET_ID          = '1eX7ASnXSRjB7MHr6woWxfjhsti6zNCS9eP--h9J5_fs';
   var NOTICES_GID       = '998080244';
   var TOAST_MS          = 6000;
-  var TOAST_COOLDOWN_MS = 2 * 60 * 60 * 1000; /* 2 hours */
+  var TOAST_COOLDOWN_MS = 2 * 60 * 60 * 1000;
   var TOAST_TS_KEY      = 'dm-toast-last';
 
   var allNotices = [];
@@ -102,11 +102,15 @@ document.addEventListener('DOMContentLoaded', function () {
   var expandedId = null;
   var toastTimer = null;
 
-  /* Persist read state across pages within a session */
-  try { var r = sessionStorage.getItem('dm-read'); if (r) readSet = new Set(JSON.parse(r)); } catch (_) {}
-  function saveReads() { try { sessionStorage.setItem('dm-read', JSON.stringify([...readSet])); } catch (_) {} }
+  try {
+    var r = sessionStorage.getItem('dm-read');
+    if (r) readSet = new Set(JSON.parse(r));
+  } catch (_) {}
 
-  /* DOM refs */
+  function saveReads() {
+    try { sessionStorage.setItem('dm-read', JSON.stringify([...readSet])); } catch (_) {}
+  }
+
   var notifBtn   = document.getElementById('notif-btn');
   var notifBadge = document.getElementById('notif-badge');
   var notifPanel = document.getElementById('notif-panel');
@@ -117,36 +121,70 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (!notifBtn || !burger || !navLinks) return;
 
-  /* ── Burger menu ──
-     Icon swaps between fa-bars (closed) and fa-times (open).
-     No CSS transform tricks — the icon IS the state indicator.
-  ── */
-  function setBurgerIcon(open) {
-    var icon = burger.querySelector('i');
-    if (!icon) return;
-    if (open) {
-      icon.classList.remove('fa-bars');
-      icon.classList.add('fa-times');
-    } else {
-      icon.classList.remove('fa-times');
-      icon.classList.add('fa-bars');
-    }
+  /* ════════════════════════════════════════════════════════════
+     BURGER SVG INJECTION
+     ────────────────────
+     Clear any existing children, then inject a single inline SVG
+     with three <line> elements:
+       .b-top  — top bar
+       .b-mid  — middle bar
+       .b-bot  — bottom bar
+
+     CSS in navbar.css animates them via .burger.open:
+       .b-top → translateY(7px) rotate(45deg)   → becomes \
+       .b-mid → scaleX(0) + opacity 0            → disappears
+       .b-bot → translateY(-7px) rotate(-45deg)  → becomes /
+
+     transform-origin is pinned to each bar's own Y coordinate
+     so rotations pivot correctly from the bar itself.
+  ════════════════════════════════════════════════════════════ */
+  burger.innerHTML = '';
+
+  var NS  = 'http://www.w3.org/2000/svg';
+  var svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 20 20');
+  svg.setAttribute('fill', 'none');
+  svg.setAttribute('aria-hidden', 'true');
+
+  /* Helper: create a <line> at a given Y position with a CSS class */
+  function mkBar(cls, y) {
+    var l = document.createElementNS(NS, 'line');
+    l.setAttribute('class', cls);
+    l.setAttribute('x1', '3');
+    l.setAttribute('y1', String(y));
+    l.setAttribute('x2', '17');
+    l.setAttribute('y2', String(y));
+    return l;
   }
+
+  svg.appendChild(mkBar('b-top', 3));
+  svg.appendChild(mkBar('b-mid', 10));
+  svg.appendChild(mkBar('b-bot', 17));
+  burger.appendChild(svg);
+
+  /* ── Burger open/close state ── */
+  var menuOpen = false;
+
+  function setBurgerState(open) {
+    menuOpen = open;
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    navLinks.classList.toggle('open', open);
+  }
+
+  /* Always boot closed */
+  setBurgerState(false);
 
   burger.addEventListener('click', function (e) {
     e.stopPropagation();
-    var open = navLinks.classList.toggle('open');
-    setBurgerIcon(open);
-    burger.setAttribute('aria-expanded', String(open));
+    setBurgerState(!menuOpen);
   });
 
   function closeMobileMenu() {
-    navLinks.classList.remove('open');
-    setBurgerIcon(false);
-    burger.setAttribute('aria-expanded', 'false');
+    setBurgerState(false);
   }
 
-  /* Bell toggle */
+  /* ── Bell toggle ── */
   notifBtn.addEventListener('click', function (e) {
     e.stopPropagation();
     var open = notifPanel.classList.toggle('open');
@@ -154,44 +192,58 @@ document.addEventListener('DOMContentLoaded', function () {
     if (open) dismissToast();
   });
 
-  /* Close on outside click */
+  /* Prevent toast "View all" from being immediately closed */
+  var suppressNextPanelClose = false;
+
   document.addEventListener('click', function (e) {
     var wrapper = document.getElementById('notif-wrapper');
+
+    /* Close notification panel when clicking outside */
     if (wrapper && !wrapper.contains(e.target)) {
-      notifPanel.classList.remove('open');
-      notifBtn.setAttribute('aria-expanded', 'false');
+      if (suppressNextPanelClose) {
+        suppressNextPanelClose = false;
+      } else {
+        notifPanel.classList.remove('open');
+        notifBtn.setAttribute('aria-expanded', 'false');
+      }
     }
-    /* Only close mobile menu if it is currently open AND the click was outside */
-    if (navLinks.classList.contains('open') &&
-        !burger.contains(e.target) &&
-        !navLinks.contains(e.target)) {
+
+    /* Close mobile menu when clicking outside burger + nav drawer */
+    if (!burger.contains(e.target) && !navLinks.contains(e.target)) {
       closeMobileMenu();
     }
+
+    /* Close toast when clicking outside */
     if (toast && toast.classList.contains('show') && !toast.contains(e.target)) {
       dismissToast();
     }
   });
 
-  /* Mark all read */
   var markAllBtn = document.getElementById('mark-all-btn');
   if (markAllBtn) {
     markAllBtn.addEventListener('click', function () {
       allNotices.forEach(function (n) { readSet.add(n.id); });
-      saveReads(); updateBadge(); renderList();
+      saveReads();
+      updateBadge();
+      renderList();
     });
   }
 
-  /* Toast controls */
   var toastClose   = document.getElementById('toast-close');
   var toastViewBtn = document.getElementById('toast-view-btn');
-  if (toastClose)   toastClose.addEventListener('click', dismissToast);
-  if (toastViewBtn) toastViewBtn.addEventListener('click', function () {
-    dismissToast();
-    notifPanel.classList.add('open');
-    notifBtn.setAttribute('aria-expanded', 'true');
-  });
+  if (toastClose) toastClose.addEventListener('click', dismissToast);
 
-  /* Mark current page nav link active */
+  if (toastViewBtn) {
+    toastViewBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      suppressNextPanelClose = true;
+      dismissToast();
+      notifPanel.classList.add('open');
+      notifBtn.setAttribute('aria-expanded', 'true');
+    });
+  }
+
+  /* ── Active nav link ── */
   (function () {
     var current = window.location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('.nav-links li a').forEach(function (a) {
@@ -224,17 +276,12 @@ document.addEventListener('DOMContentLoaded', function () {
             link:     (c[4] && c[4].v) ? c[4].v.toString() : null
           });
         });
-        /* Newest first */
         items.sort(function (a, b) { return (b.rawDate || 0) - (a.rawDate || 0); });
         return items;
       })
       .catch(function (e) { console.error('Notices fetch error:', e); return null; });
   }
 
-  /* ── Render list ──
-     Collapsed view: title + date only (no description)
-     Expanded view:  full details + optional link
-  ── */
   function renderList() {
     if (!allNotices.length) {
       notifList.innerHTML = '<div class="notif-empty"><i class="far fa-bell-slash"></i>No notices right now</div>';
@@ -245,7 +292,10 @@ document.addEventListener('DOMContentLoaded', function () {
       var unread = !readSet.has(n.id);
       var wrap   = document.createElement('div');
 
-      /* Collapsed button — title + date only, NO description */
+      var importantBadge = n.category === 'important'
+        ? '<span class="notif-important-badge" title="Important"><i class="fas fa-exclamation-circle"></i></span>'
+        : '';
+
       var btn = document.createElement('button');
       btn.className = 'notif-item' + (unread ? ' unread' : '') + ' cat-' + n.category;
       btn.dataset.id = n.id;
@@ -253,14 +303,13 @@ document.addEventListener('DOMContentLoaded', function () {
         '<div class="notif-dot"></div>' +
         '<div class="notif-body">' +
           '<div class="notif-top">' +
-            '<div class="notif-title">' + esc(n.title) + '</div>' +
+            '<div class="notif-title">' + esc(n.title) + importantBadge + '</div>' +
             '<div class="notif-date">'  + esc(n.date)  + '</div>' +
           '</div>' +
           '<div class="notif-chevron"><i class="fas fa-chevron-down"></i></div>' +
         '</div>';
       btn.addEventListener('click', function (e) { e.stopPropagation(); toggleExpand(n); });
 
-      /* Expanded panel — full description + optional link */
       var exp = document.createElement('div');
       exp.className = 'notif-expanded';
       exp.id = 'ne-' + n.id;
@@ -278,7 +327,6 @@ document.addEventListener('DOMContentLoaded', function () {
       notifList.appendChild(wrap);
     });
 
-    /* Re-open previously expanded item */
     if (expandedId !== null) {
       setTimeout(function () {
         var el  = document.getElementById('ne-' + expandedId);
@@ -296,7 +344,6 @@ document.addEventListener('DOMContentLoaded', function () {
     renderList();
   }
 
-  /* ── Badge ── */
   function updateBadge() {
     var count = allNotices.filter(function (n) { return !readSet.has(n.id); }).length;
     notifBadge.textContent = count > 9 ? '9+' : count;
@@ -304,7 +351,6 @@ document.addEventListener('DOMContentLoaded', function () {
     notifBtn.classList.toggle('has-unread', count > 0);
   }
 
-  /* ── Toast — only "important" category, 2-hour cooldown ── */
   function maybeShowToast(notices) {
     var important = null;
     for (var i = 0; i < notices.length; i++) {
@@ -350,7 +396,6 @@ document.addEventListener('DOMContentLoaded', function () {
     clearTimeout(toastTimer);
   }
 
-  /* ── Init ── */
   fetchNotices().then(function (notices) {
     if (!notices) {
       notifList.innerHTML = '<div class="notif-empty"><i class="far fa-bell-slash"></i>Could not load notices</div>';
@@ -362,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function () {
     maybeShowToast(notices);
   });
 
-  /* ── Helpers ── */
+  /* ── Utilities ── */
   function esc(s) {
     return (s == null ? '' : String(s))
       .replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -380,5 +425,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!ts) return '';
     return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
+}
 
-});
+/* ── Run when DOM is ready, however the script was loaded ── */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', navbarInit);
+} else {
+  navbarInit();
+}

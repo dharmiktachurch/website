@@ -5,62 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>About Us - Dharmikta Mandali</title>
   <link rel="icon" type="image/png" href="static/images/Favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link rel="stylesheet" href="style/about.css">
+  <link rel="stylesheet" href="style/about.css" />
+  <link rel="stylesheet" href="style/navbar.css" />
+  <!-- navbar.js in <head> WITHOUT defer — setLang() must exist before any onclick fires -->
+  <script src="script/navbar.js"></script>
   <script src="script/script.js" defer></script>
   <script src="script/about.js" defer></script>
   <script src="script/about-testimony.js" defer></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link rel="stylesheet" href="style/navbar.css" />
-  <style>
-    .lang-toggle {
-      display: flex;
-      background: var(--surface-off);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      padding: 3px;
-      gap: 2px;
-      margin-left: 1rem;
-      flex-shrink: 0;
-    }
-    .lang-btn {
-      padding: 5px 14px;
-      border-radius: 50px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.78rem;
-      font-weight: 600;
-      background: transparent;
-      color: var(--ink-muted);
-      transition: all 0.2s ease;
-      font-family: 'Poppins', sans-serif;
-      letter-spacing: 0.03em;
-      white-space: nowrap;
-    }
-    .lang-btn.active             { background: var(--ink); color: #fff; }
-    .lang-btn:hover:not(.active) { background: var(--surface-mid); color: var(--ink); }
-
-    @media (max-width: 768px) {
-      .lang-toggle { display: none; }
-      .nav-lang-row {
-        display: flex !important;
-        justify-content: center;
-        padding: 0.75rem 1.5rem 0.5rem;
-        border-top: 1px solid var(--border);
-        margin-top: 0.25rem;
-        list-style: none;
-      }
-      .nav-lang-row .lang-toggle {
-        display: flex !important;
-        margin-left: 0;
-      }
-    }
-    @media (min-width: 769px) {
-      .nav-lang-row { display: none !important; }
-    }
-  </style>
 </head>
 <body>
 
@@ -79,7 +32,7 @@
       <li><a href="services.html" data-en="Services" data-ne="सेवाहरू">Services</a></li>
       <li><a href="events.html"   data-en="Events"   data-ne="कार्यक्रमहरू">Events</a></li>
       <li><a href="contact.html"  data-en="Contact"  data-ne="सम्पर्क">Contact</a></li>
-      <!-- Mobile-only language row — shows inside burger menu on small screens -->
+      <!-- Mobile-only language row -->
       <li class="mob-lang-row" style="display:none;">
         <div class="lang-toggle">
           <button class="lang-btn" id="btn-en-mob" onclick="setLang('en')">EN</button>
@@ -120,6 +73,26 @@
       </button>
     </div>
   </nav>
+
+  <!-- ── Toast ── -->
+  <div class="notif-toast" id="notif-toast" role="status" aria-live="polite">
+    <div class="toast-bar" id="toast-bar"></div>
+    <button class="toast-close" id="toast-close" aria-label="Dismiss"><i class="fas fa-times"></i></button>
+    <div class="toast-inner">
+      <div class="toast-icon-wrap" id="toast-icon"><i class="fas fa-bullhorn"></i></div>
+      <div class="toast-text-wrap">
+        <div class="toast-cat" id="toast-cat">Notice</div>
+        <div class="toast-ttl" id="toast-ttl"></div>
+        <div class="toast-dsc" id="toast-dsc"></div>
+      </div>
+    </div>
+    <div class="toast-action">
+      <button class="toast-view-btn" id="toast-view-btn">
+        <i class="fas fa-bell"></i> View all notices
+      </button>
+    </div>
+    <div class="toast-progress"><div class="toast-progress-fill" id="toast-fill"></div></div>
+  </div>
 
   <!-- ── About Sub-Navigation ── -->
   <section class="about-nav">
@@ -189,58 +162,10 @@
       <div class="divider"></div>
       <p data-en="&copy; 2025 Dharmikta Mandali. All Rights Reserved."
          data-ne="&copy; २०२५ धार्मिकता मण्डली। सर्वाधिकार सुरक्षित।">
-         &copy; 2025 Dharmikta Mandali. All Rights Reserved.
-        </p>
-      </div>
-    </footer>
-    
-    <script src="script/navbar.js" defer></script>
-  <!-- ── Global Language Logic ── -->
-  <script>
-  (function () {
+        &copy; 2025 Dharmikta Mandali. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
 
-    function syncButtons(lang) {
-      ['btn-en', 'btn-en-mob'].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.classList.toggle('active', lang === 'en');
-      });
-      ['btn-ne', 'btn-ne-mob'].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.classList.toggle('active', lang === 'ne');
-      });
-    }
-
-    function applyLang(lang) {
-      document.documentElement.lang = lang === 'ne' ? 'ne' : 'en';
-      syncButtons(lang);
-
-      /* Swap all data-en/data-ne elements, skipping lang-btn labels */
-      document.querySelectorAll('[data-en]').forEach(function (el) {
-        if (el.classList.contains('lang-btn')) return;
-        var text = el.getAttribute('data-' + lang);
-        if (text !== null) el.innerHTML = text;
-      });
-
-      try { localStorage.setItem('dm-lang', lang); } catch (e) {}
-
-      /* Notify injected partials */
-      document.dispatchEvent(new CustomEvent('dm:langchange', { detail: { lang: lang } }));
-    }
-
-    window.setLang = applyLang;
-    window.getLang = function () {
-      try { return localStorage.getItem('dm-lang') || 'en'; } catch (e) { return 'en'; }
-    };
-
-    /* about.js calls loadContent() on DOMContentLoaded, which injects the
-       partial. We apply language AFTER the partial is in the DOM by hooking
-       into the dm:langchange event inside each partial.
-       Here we just init the shell (navbar, footer, sub-nav) on load. */
-    document.addEventListener('DOMContentLoaded', function () {
-      applyLang(window.getLang());
-    });
-
-  })();
-  </script>
 </body>
 </html>
