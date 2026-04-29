@@ -1,17 +1,13 @@
 /* ================================================================
-   EVENTS-PAST PARTIAL — CSS
-   Dark hero + clean vertical timeline.
-   Monochrome, matches about.css / services.css design language.
+   EVENTS-PAST PARTIAL — CSS  (image-memory timeline edition)
    ================================================================ */
 
-/* ── HERO ────────────────────────────────────────────────────── */
-/* Same structure as about-page heroes (58vh, centred, dark gradient) */
+/* ── HERO ─────────────────────────────────────────────────────── */
 .events-past-hero {
   position: relative;
   height: 58vh; min-height: 400px;
   display: flex; align-items: center; justify-content: center;
   text-align: center; color: #fff; overflow: hidden;
-  /* Deep charcoal — slightly cooler tone to feel "reflective / archive" */
   background: linear-gradient(155deg, #0f1419 0%, #1a1f26 55%, #0f1419 100%);
 }
 
@@ -24,7 +20,7 @@
 .events-past-hero .about-hero-content {
   position: relative; z-index: 2;
   max-width: 720px; padding: 2rem;
-  animation: heroIn 0.85s var(--ease-out) both;
+  animation: heroIn 0.85s var(--ease-out, cubic-bezier(.16,1,.3,1)) both;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -53,14 +49,13 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* ── PAST EVENTS BODY ────────────────────────────────────────── */
+/* ── BODY ─────────────────────────────────────────────────────── */
 .events-body {
   max-width: 1100px;
   margin: 0 auto;
   padding: 4rem 2rem 6rem;
 }
 
-/* Section header */
 .events-section-header {
   display: flex;
   align-items: flex-end;
@@ -84,7 +79,7 @@
   background: var(--ink); border-radius: 2px;
 }
 
-/* Filter pills — same as upcoming */
+/* ── FILTER PILLS ─────────────────────────────────────────────── */
 .events-filters {
   display: flex; gap: 0.5rem; flex-wrap: wrap;
   margin-bottom: 2rem;
@@ -103,20 +98,13 @@
 .filter-pill:hover { border-color: var(--ink); color: var(--ink); }
 .filter-pill.active { background: var(--ink); color: #fff; border-color: var(--ink); }
 
-/* ── TIMELINE ────────────────────────────────────────────────── */
-/*
-  Clean vertical timeline centred on a 1px rule.
-  Cards alternate left/right on desktop, stack single-column on mobile.
-  Uses the same .about-block aesthetics (white card, radius, shadow).
-*/
-.timeline {
+/* ── TIMELINE SPINE ───────────────────────────────────────────── */
+.memories-timeline {
   position: relative;
   padding: 1rem 0;
-  overflow: hidden; /* prevents cards overflowing the container */
 }
 
-/* The central vertical rule */
-.timeline::before {
+.memories-timeline::before {
   content: '';
   position: absolute;
   top: 0; bottom: 0;
@@ -126,29 +114,45 @@
   background: var(--border);
 }
 
-/* Each timeline item */
-.timeline-item {
+/* ── MEMORY TIMELINE ITEM ─────────────────────────────────────── */
+.memory-item {
   position: relative;
   width: calc(50% - 2.5rem);
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
+  animation: memFadeUp 0.5s var(--ease-out, cubic-bezier(.16,1,.3,1)) both;
 }
 
+@keyframes memFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Stagger animation for each item */
+.memory-item:nth-child(1)  { animation-delay: 0.05s; }
+.memory-item:nth-child(2)  { animation-delay: 0.10s; }
+.memory-item:nth-child(3)  { animation-delay: 0.15s; }
+.memory-item:nth-child(4)  { animation-delay: 0.20s; }
+.memory-item:nth-child(5)  { animation-delay: 0.25s; }
+.memory-item:nth-child(6)  { animation-delay: 0.30s; }
+.memory-item:nth-child(7)  { animation-delay: 0.35s; }
+.memory-item:nth-child(8)  { animation-delay: 0.40s; }
+.memory-item:nth-child(9)  { animation-delay: 0.45s; }
+.memory-item:nth-child(n+10) { animation-delay: 0.5s; }
+
 /* Left side (odd) */
-.timeline-item:nth-child(odd) {
+.memory-item:nth-child(odd) {
   margin-right: auto;
-  padding-right: 0;
   text-align: right;
 }
 
 /* Right side (even) */
-.timeline-item:nth-child(even) {
+.memory-item:nth-child(even) {
   margin-left: auto;
-  padding-left: 0;
   text-align: left;
 }
 
-/* Dot on the timeline rule */
-.timeline-item::before {
+/* Dot on the spine */
+.memory-item::before {
   content: '';
   position: absolute;
   top: 1.5rem;
@@ -157,118 +161,212 @@
   background: var(--surface);
   border: 2px solid var(--ink);
   z-index: 2;
-  transition: background 0.25s ease;
+  transition: background 0.25s ease, transform 0.25s ease;
 }
 
-.timeline-item:nth-child(odd)::before  { right: -3.1rem; }
-.timeline-item:nth-child(even)::before { left:  -3.1rem; }
+.memory-item:nth-child(odd)::before  { right: -3.1rem; }
+.memory-item:nth-child(even)::before { left:  -3.1rem; }
 
-.timeline-item:hover::before { background: var(--ink); }
+.memory-item:hover::before {
+  background: var(--ink);
+  transform: scale(1.3);
+}
 
-/* Card — same .about-block treatment */
-.timeline-card {
+/* ── MEMORY CARD ──────────────────────────────────────────────── */
+.memory-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: var(--shadow-sm, 0 1px 4px rgba(0,0,0,0.06));
   overflow: hidden;
-  transition: box-shadow 0.3s ease, transform 0.3s var(--ease-out);
+  transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(.16,1,.3,1);
+  cursor: pointer;
 }
 
-.timeline-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
+.memory-card:hover {
+  box-shadow: var(--shadow-md, 0 8px 28px rgba(0,0,0,0.12));
+  transform: translateY(-4px);
 }
 
-/* Date band */
-.timeline-card-date {
-  background: var(--ink);
+/* ── IMAGE AREA ───────────────────────────────────────────────── */
+.memory-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--surface-mid, #ececec);
+}
+
+.memory-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(.16,1,.3,1);
+}
+
+.memory-card:hover .memory-img {
+  transform: scale(1.05);
+}
+
+/* "View" overlay on hover */
+.memory-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.memory-card:hover .memory-img-overlay {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.memory-img-overlay-icon {
+  opacity: 0;
   color: #fff;
-  padding: 0.85rem 1.35rem;
-  display: flex; align-items: baseline; gap: 0.4rem;
+  font-size: 1.6rem;
+  transform: scale(0.8);
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.timeline-item:nth-child(odd) .timeline-card-date {
-  justify-content: flex-end;
+.memory-card:hover .memory-img-overlay-icon {
+  opacity: 1;
+  transform: scale(1);
 }
 
-.timeline-date-day {
-  font-size: 1.8rem; font-weight: 200; line-height: 1;
-  color: #fff; font-family: 'Poppins', sans-serif;
-  font-variant-numeric: tabular-nums;
+/* Date badge over the image */
+.memory-date-badge {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 0.28rem 0.65rem;
+  border-radius: 50px;
+  font-family: 'Poppins', sans-serif;
+  pointer-events: none;
 }
 
-.timeline-date-month {
-  font-size: 0.68rem; font-weight: 700;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
+/* Odd card — badge on the right side */
+.memory-item:nth-child(odd) .memory-date-badge {
+  left: auto;
+  right: 0.75rem;
+}
+
+/* ── CARD BODY ────────────────────────────────────────────────── */
+.memory-card-body {
+  padding: 1.1rem 1.35rem 1.3rem;
+}
+
+.memory-card-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 0.45rem;
   font-family: 'Poppins', sans-serif;
 }
 
-.timeline-date-year {
-  font-size: 0.68rem; font-weight: 400;
-  color: rgba(255,255,255,0.4);
-  margin-left: auto;
+.memory-card-desc {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--ink-soft);
+  line-height: 1.75;
   font-family: 'Poppins', sans-serif;
 }
 
-/* Card body */
-.timeline-card-body { padding: 1.35rem 1.5rem; }
+/* ── LIGHTBOX ─────────────────────────────────────────────────── */
+.mem-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: lbFadeIn 0.22s ease both;
+}
 
-.timeline-card-title {
-  font-size: 1rem; font-weight: 700;
-  color: var(--ink); line-height: 1.3; margin-bottom: 0.6rem;
+.mem-lightbox[hidden] { display: none; }
+
+@keyframes lbFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.mem-lightbox-inner {
+  max-width: min(860px, 95vw);
+  width: 100%;
+  animation: lbSlideUp 0.28s cubic-bezier(.16,1,.3,1) both;
+}
+
+@keyframes lbSlideUp {
+  from { transform: translateY(24px) scale(0.97); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.mem-lightbox-img {
+  width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+  border-radius: 10px;
+  display: block;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+
+.mem-lightbox-caption {
+  margin-top: 1rem;
+  text-align: center;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.65;
   font-family: 'Poppins', sans-serif;
 }
 
-.timeline-card-meta {
-  display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.75rem;
+.mem-lightbox-caption strong {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.3rem;
 }
 
-.timeline-meta-item {
-  display: flex; align-items: center; gap: 0.45rem;
-  font-size: 0.8rem; color: var(--ink-muted);
-  font-family: 'Poppins', sans-serif;
+.mem-lightbox-close {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.5rem;
+  background: rgba(255,255,255,0.12);
+  border: none;
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s ease;
+  font-family: sans-serif;
+  z-index: 10000;
 }
 
-/* Align meta items to right on odd cards */
-.timeline-item:nth-child(odd) .timeline-meta-item { justify-content: flex-end; }
-.timeline-item:nth-child(odd) .timeline-meta-item i { order: 1; }
+.mem-lightbox-close:hover { background: rgba(255,255,255,0.22); }
 
-.timeline-meta-item i { font-size: 0.72rem; }
-
-.timeline-card-desc {
-  font-size: 0.9rem; font-weight: 300;
-  color: var(--ink-soft); line-height: 1.75;
-  font-family: 'Poppins', sans-serif;
-}
-
-/* Empty / error state */
+/* ── EMPTY / SPINNER ──────────────────────────────────────────── */
 .events-empty {
   text-align: center; padding: 4rem 2rem;
   color: var(--ink-muted); font-size: 1rem;
   font-family: 'Poppins', sans-serif;
 }
 
-/* Load more */
-.load-more-wrap {
-  display: flex; justify-content: center; margin-top: 2.5rem;
-}
-
-.load-more-btn {
-  background: transparent; border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 0.78rem 2rem;
-  font-size: 0.88rem; font-weight: 600;
-  color: var(--ink); cursor: pointer;
-  display: flex; align-items: center; gap: 0.5rem;
-  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
-  font-family: 'Poppins', sans-serif;
-}
-
-.load-more-btn:hover { background: var(--ink); color: #fff; border-color: var(--ink); transform: translateY(-1px); }
-.load-more-btn[hidden] { display: none; }
-
-/* Spinner */
 .events-spinner {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
@@ -279,7 +377,7 @@
 
 .spinner-ring {
   width: 36px; height: 36px;
-  border: 3px solid var(--surface-mid);
+  border: 3px solid var(--surface-mid, #ececec);
   border-top-color: var(--ink);
   border-radius: 50%;
   animation: spin 0.85s linear infinite;
@@ -288,41 +386,55 @@
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── RESPONSIVE ──────────────────────────────────────────────── */
+/* Load more */
+.load-more-wrap {
+  display: flex; justify-content: center; margin-top: 2.5rem;
+}
 
-/* ≤700px: collapse to single-column timeline on the left */
+.load-more-btn {
+  background: transparent; border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 8px); padding: 0.78rem 2rem;
+  font-size: 0.88rem; font-weight: 600;
+  color: var(--ink); cursor: pointer;
+  display: flex; align-items: center; gap: 0.5rem;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.load-more-btn:hover {
+  background: var(--ink); color: #fff;
+  border-color: var(--ink); transform: translateY(-1px);
+}
+
+.load-more-btn[hidden] { display: none; }
+
+/* ── RESPONSIVE ───────────────────────────────────────────────── */
+
+/* ≤700px — single column */
 @media (max-width: 700px) {
-  /* Move the vertical rule to the left edge */
-  .timeline::before { left: 16px; transform: none; }
+  .memories-timeline::before { left: 16px; transform: none; }
 
-  /* All items: full width minus the left gutter, no right overflow */
-  .timeline-item,
-  .timeline-item:nth-child(odd),
-  .timeline-item:nth-child(even) {
-    width: calc(100% - 2.75rem);  /* leaves room for the dot + rule on the left */
+  .memory-item,
+  .memory-item:nth-child(odd),
+  .memory-item:nth-child(even) {
+    width: calc(100% - 2.75rem);
     margin-left: 2.75rem;
     margin-right: 0;
     text-align: left;
     box-sizing: border-box;
   }
 
-  /* Dot: always on the left */
-  .timeline-item::before,
-  .timeline-item:nth-child(odd)::before,
-  .timeline-item:nth-child(even)::before {
+  .memory-item::before,
+  .memory-item:nth-child(odd)::before,
+  .memory-item:nth-child(even)::before {
     left: -2.25rem; right: auto;
   }
 
-  /* Reset odd-item overrides that were set for desktop right-alignment */
-  .timeline-item:nth-child(odd) .timeline-card-date  { justify-content: flex-start; }
-  .timeline-item:nth-child(odd) .timeline-meta-item  { justify-content: flex-start; }
-  .timeline-item:nth-child(odd) .timeline-meta-item i { order: 0; }
-  .timeline-item:nth-child(odd) .timeline-date-year  { margin-left: auto; }
-
-  /* Prevent long words / descriptions from overflowing card */
-  .timeline-card-title,
-  .timeline-card-desc,
-  .timeline-meta-item { overflow-wrap: break-word; word-break: break-word; }
+  /* Reset odd overrides */
+  .memory-item:nth-child(odd) .memory-date-badge {
+    left: 0.75rem;
+    right: auto;
+  }
 }
 
 @media (max-width: 600px) {
@@ -330,42 +442,40 @@
   .events-past-hero svg.hero-bg { display: none; }
   .events-past-hero .about-hero-content { padding: 1.5rem 1.25rem; }
   .events-body { padding: 2.5rem 1rem 4rem; }
-  .timeline { padding: 0.5rem 0; }
+  .memories-timeline { padding: 0.5rem 0; }
+  .memories-timeline::before { left: 12px; }
 
-  /* Slightly tighter left gutter on small phones */
-  .timeline::before { left: 12px; }
-  .timeline-item,
-  .timeline-item:nth-child(odd),
-  .timeline-item:nth-child(even) {
+  .memory-item,
+  .memory-item:nth-child(odd),
+  .memory-item:nth-child(even) {
     width: calc(100% - 2.25rem);
     margin-left: 2.25rem;
   }
-  .timeline-item::before,
-  .timeline-item:nth-child(odd)::before,
-  .timeline-item:nth-child(even)::before {
+
+  .memory-item::before,
+  .memory-item:nth-child(odd)::before,
+  .memory-item:nth-child(even)::before {
     left: -1.85rem;
   }
 }
 
 @media (max-width: 400px) {
-  .events-past-hero .about-hero-content { padding: 1.25rem 1rem; }
   .events-body { padding: 2rem 0.75rem 3rem; }
+  .memories-timeline::before { left: 10px; }
 
-  .timeline::before { left: 10px; }
-  .timeline-item,
-  .timeline-item:nth-child(odd),
-  .timeline-item:nth-child(even) {
+  .memory-item,
+  .memory-item:nth-child(odd),
+  .memory-item:nth-child(even) {
     width: calc(100% - 2rem);
     margin-left: 2rem;
   }
-  .timeline-item::before,
-  .timeline-item:nth-child(odd)::before,
-  .timeline-item:nth-child(even)::before {
+
+  .memory-item::before,
+  .memory-item:nth-child(odd)::before,
+  .memory-item:nth-child(even)::before {
     left: -1.6rem;
     width: 10px; height: 10px;
   }
 
-  .timeline-card-body { padding: 1rem 1.1rem; }
-  .timeline-card-date { padding: 0.7rem 1.1rem; }
-  .timeline-date-day  { font-size: 1.5rem; }
+  .memory-card-body { padding: 0.85rem 1rem 1rem; }
 }

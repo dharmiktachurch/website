@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ── Sheet URLs ────────────────────────────────────────────────
   const SHEET_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwzUR_NyZvDSpuMht8Xn4E8e2fNRy5cfyFprzkCy0tNRQYEVGnB-c3mKFHI8-DQACZUtCTVTRdIr7v/pub?gid=0&single=true&output=csv';
-  const SHEET_PAST     = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwzUR_NyZvDSpuMht8Xn4E8e2fNRy5cfyFprzkCy0tNRQYEVGnB-c3mKFHI8-DQACZUtCTVTRdIr7v/pub?gid=643141639&single=true&output=csv';
+  const SHEET_PAST     = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwzUR_NyZvDSpuMht8Xn4E8e2fNRy5cfyFprzkCy0tNRQYEVGnB-c3mKFHI8-DQACZUtCTVTRdIr7v/pub?gid=1201565484&single=true&output=csv';
 
   const PER_PAGE     = 9;
   const MONTHS       = ["January","February","March","April","May","June",
@@ -15,14 +15,16 @@ document.addEventListener("DOMContentLoaded", function () {
                         "Jul","Aug","Sep","Oct","Nov","Dec"];
 
   // ── State ─────────────────────────────────────────────────────
-  let cachedUpcoming  = [];
-  let cachedPast      = [];
-  let filteredSmall   = [];   // small events currently displayed
-  let shownSmall      = 0;
-  let currentFilter   = 'all';
-  let currentPage     = null;
+  let cachedUpcoming   = [];
+  let cachedMemories   = [];
+  let filteredMemories = [];
+  let filteredSmall    = [];
+  let shownSmall       = 0;
+  let shownMemories    = 0;
+  let currentFilter    = 'all';
+  let currentPage      = null;
   let calMonth, calYear;
-  let calEventMap     = {};   // "YYYY-M-D" → [events]
+  let calEventMap      = {};
 
   // ── DOM refs ──────────────────────────────────────────────────
   const navLinks   = document.querySelectorAll(".events-nav a");
@@ -30,19 +32,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const loadingBuf = document.getElementById("loading-buffer");
   const urlParams  = new URLSearchParams(window.location.search);
 
-  // ── Helper: get current saved language ───────────────────────
+  // ── Helpers ───────────────────────────────────────────────────
   function getSavedLang() {
     try { return localStorage.getItem('dm-lang') || 'en'; } catch (e) { return 'en'; }
   }
 
-  // ── Helper: re-apply language to the whole document ───────────
   function reApplyLang() {
     if (typeof window.applyLang === 'function') {
       window.applyLang(window.dmLang || getSavedLang());
     }
   }
 
-  // ── Skeleton loader ───────────────────────────────────────────
   function showLoader() {
     contentDiv.classList.remove('visible');
     contentDiv.style.display = 'none';
@@ -62,22 +62,35 @@ document.addEventListener("DOMContentLoaded", function () {
     return html.replace(/<link[^>]*>/gi, '');
   }
 
+  // ── Convert Google Drive share URL to embeddable thumbnail URL ──
+  // Google blocks uc?export=view for hotlinking; thumbnail endpoint works.
+  // sz=w1200 requests up to 1200px wide — Google serves the closest size.
+  function driveToDirectUrl(url) {
+    if (!url) return '';
+    // Extract file ID from any Drive URL format
+    const m = url.match(/\/file\/d\/([^/?#]+)/) ||
+              url.match(/[?&]id=([^&]+)/);
+    if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w1200';
+    return url;
+  }
+
   // ── Page loading ──────────────────────────────────────────────
   function loadPage(page) {
     if (currentPage === page) return;
     currentPage   = page;
     currentFilter = 'all';
     shownSmall    = 0;
+    shownMemories = 0;
     calEventMap   = {};
 
     navLinks.forEach(l => l.classList.remove('active'));
-    const active = document.querySelector(`.events-nav a[data-page="${page}"]`);
+    const active = document.querySelector('.events-nav a[data-page="' + page + '"]');
     if (active) active.classList.add('active');
 
-    history.pushState(null, '', `?page=${page}`);
+    history.pushState(null, '', '?page=' + page);
     showLoader();
 
-    fetch(`partials/${page}.html`)
+    fetch('partials/' + page + '.html')
       .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
       .then(html => {
         contentDiv.innerHTML = stripLinks(html);
@@ -85,18 +98,13 @@ document.addEventListener("DOMContentLoaded", function () {
           if (page === 'events-upcoming') initUpcoming();
           if (page === 'events-past')     initPast();
           hideLoader();
-
-          // ✅ Re-apply saved language AFTER partial is fully injected
-          // This fixes the flash-of-English bug when the user has Nepali selected
           reApplyLang();
         });
       })
       .catch(() => {
-        contentDiv.innerHTML = `
-          <div style="text-align:center;padding:4rem 2rem;
-               color:#777;font-family:'Poppins',sans-serif;">
-            Unable to load content. Please refresh the page.
-          </div>`;
+        contentDiv.innerHTML =
+          '<div style="text-align:center;padding:4rem 2rem;color:#777;font-family:Poppins,sans-serif;">' +
+          'Unable to load content. Please refresh the page.</div>';
         hideLoader();
       });
   }
@@ -109,23 +117,208 @@ document.addEventListener("DOMContentLoaded", function () {
     loadCSV(SHEET_UPCOMING, false);
   }
 
+  // ── PAST / MEMORIES ───────────────────────────────────────────
   function initPast() {
-    initFilters();
-    loadCSV(SHEET_PAST, true);
+    initMemoryFilters();
+    initLightbox();
+    loadMemories();
   }
 
-  // ── CSV ───────────────────────────────────────────────────────
+  // ── Load memories from Google Sheet CSV ───────────────────────
+  // Sheet columns: Event Name | Date(MM/DD/YYYY) | Time | Location |
+  //                Event Size | Category | Description | Images
+  function loadMemories() {
+    fetch(SHEET_PAST)
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+      .then(csv => {
+        const now   = new Date();
+        const lines = csv.split('\n');
+        cachedMemories = [];
+
+        for (let i = 1; i < lines.length; i++) {
+          const raw = lines[i].trim();
+          if (!raw) continue;
+          const c = parseCSVLine(raw);
+          if (c.length < 2) continue;
+
+          const title       = (c[0] || '').trim();
+          const dateStr     = (c[1] || '').trim();
+          // c[2] = time, c[3] = location, c[4] = size
+          const category    = (c[5] || 'others').trim().toLowerCase();
+          const description = (c[6] || '').trim();
+          const imageRaw    = (c[7] || '').trim();
+          const image       = driveToDirectUrl(imageRaw);
+
+          if (!title || !dateStr) continue;
+
+          const dp = dateStr.split('/');
+          if (dp.length !== 3) continue;
+          const dt = new Date(parseInt(dp[2], 10), parseInt(dp[0], 10) - 1, parseInt(dp[1], 10));
+          if (isNaN(dt.getTime())) continue;
+
+          // Only past entries
+          if (dt >= now) continue;
+
+          cachedMemories.push({ title, fullDateTime: dt, category, description, image });
+        }
+
+        cachedMemories.sort((a, b) => b.fullDateTime - a.fullDateTime); // newest first
+        applyMemoryFilter(currentFilter);
+      })
+      .catch(err => {
+        console.error('Memories CSV error:', err);
+        const container = document.getElementById('event-container');
+        if (container) container.innerHTML =
+          '<div class="events-empty">Unable to load memories. Please try again later.</div>';
+      });
+  }
+
+  // ── Apply filter and re-render memories ───────────────────────
+  function applyMemoryFilter(filter) {
+    currentFilter = filter;
+    shownMemories = 0;
+    const f = (filter || 'all').toLowerCase();
+    filteredMemories = f === 'all'
+      ? cachedMemories
+      : cachedMemories.filter(m => (m.category || 'others').toLowerCase() === f);
+
+    const container = document.getElementById('event-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (filteredMemories.length === 0) {
+      container.innerHTML = '<div class="events-empty">No memories found for this filter.</div>';
+      reApplyLang();
+      return;
+    }
+
+    renderMemoryBatch();
+    reApplyLang();
+  }
+
+  // ── Render a batch of memory cards ────────────────────────────
+  function renderMemoryBatch() {
+    const container = document.getElementById('event-container');
+    const loadBtn   = document.getElementById('load-more-btn');
+    if (!container) return;
+
+    const batch = filteredMemories.slice(shownMemories, shownMemories + PER_PAGE);
+    shownMemories += batch.length;
+
+    const frag = document.createDocumentFragment();
+    batch.forEach(m => frag.appendChild(buildMemoryItem(m)));
+    container.appendChild(frag);
+
+    if (loadBtn) {
+      loadBtn.hidden = shownMemories >= filteredMemories.length;
+      loadBtn.onclick = renderMemoryBatch;
+    }
+  }
+
+  // ── Build a single memory timeline item ───────────────────────
+  function buildMemoryItem(mem) {
+    const { title, fullDateTime, description, image } = mem;
+    const day       = fullDateTime.getDate();
+    const month     = MONTHS_SHORT[fullDateTime.getMonth()];
+    const year      = fullDateTime.getFullYear();
+    const dateLabel = day + ' ' + month + ' ' + year;
+
+    const item = document.createElement('div');
+    item.className = 'memory-item';
+
+    const imgHtml = image
+      ? '<img class="memory-img" src="' + esc(image) + '" alt="' + esc(title) + '" loading="lazy" ' +
+        'onerror="this.closest(\'.memory-img-wrap\').classList.add(\'img-error\')" />'
+      : '<div class="memory-img-placeholder"><i class="fas fa-image"></i></div>';
+
+    item.innerHTML =
+      '<div class="memory-card" role="button" tabindex="0" aria-label="View memory: ' + esc(title) + '">' +
+        '<div class="memory-img-wrap">' +
+          imgHtml +
+          '<div class="memory-img-overlay">' +
+            '<i class="fas fa-expand memory-img-overlay-icon"></i>' +
+          '</div>' +
+          '<span class="memory-date-badge">' + dateLabel + '</span>' +
+        '</div>' +
+        '<div class="memory-card-body">' +
+          '<h3 class="memory-card-title">' + esc(title) + '</h3>' +
+          (description ? '<p class="memory-card-desc">' + esc(description) + '</p>' : '') +
+        '</div>' +
+      '</div>';
+
+    const card = item.querySelector('.memory-card');
+    card.addEventListener('click', () => openLightbox(mem));
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(mem); }
+    });
+
+    return item;
+  }
+
+  // ── Memory filters ────────────────────────────────────────────
+  function initMemoryFilters() {
+    document.querySelectorAll('#events-filters .filter-pill').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('#events-filters .filter-pill')
+          .forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        applyMemoryFilter(this.dataset.filter);
+      });
+    });
+  }
+
+  // ── Lightbox ──────────────────────────────────────────────────
+  function initLightbox() {
+    const lb    = document.getElementById('mem-lightbox');
+    const close = document.getElementById('mem-lightbox-close');
+    if (!lb || !close) return;
+
+    close.addEventListener('click', closeLightbox);
+    lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', lbKeyHandler);
+  }
+
+  function openLightbox(mem) {
+    const lb      = document.getElementById('mem-lightbox');
+    const img     = document.getElementById('mem-lightbox-img');
+    const caption = document.getElementById('mem-lightbox-caption');
+    if (!lb || !img || !caption) return;
+
+    const day   = mem.fullDateTime.getDate();
+    const month = MONTHS[mem.fullDateTime.getMonth()];
+    const year  = mem.fullDateTime.getFullYear();
+
+    img.src = mem.image || '';
+    img.alt = mem.title;
+    caption.innerHTML =
+      '<strong>' + esc(mem.title) + '</strong>' +
+      (mem.description ? esc(mem.description) + '<br>' : '') +
+      '<small style="color:rgba(255,255,255,0.5);font-size:0.75rem;margin-top:0.35rem;display:block;">' +
+        day + ' ' + month + ' ' + year +
+      '</small>';
+
+    lb.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    const lb = document.getElementById('mem-lightbox');
+    if (lb) lb.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  }
+
+  function lbKeyHandler(e) {
+    if (e.key === 'Escape') closeLightbox();
+  }
+
+  // ── CSV (upcoming only) ───────────────────────────────────────
   function loadCSV(url, isPast) {
     fetch(url)
       .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
       .then(csv => {
         const events = parseCSV(csv, isPast);
-        if (isPast) cachedPast     = events;
-        else        cachedUpcoming = events;
-
-        if (isPast) {
-          renderPast(events);
-        } else {
+        if (!isPast) {
+          cachedUpcoming = events;
           buildCalEventMap(events);
           renderUpcoming(events, currentFilter);
           refreshCalendars();
@@ -196,17 +389,13 @@ document.addEventListener("DOMContentLoaded", function () {
     return result;
   }
 
-  // ── RENDER UPCOMING (big + small separated) ───────────────────
+  // ── RENDER UPCOMING ───────────────────────────────────────────
   function renderUpcoming(allEvents, filter) {
-    // Hide initial spinner
     const spinner = document.getElementById('events-initial-spinner');
     if (spinner) spinner.style.display = 'none';
 
-    // Apply filter
     const f = (filter || 'all').trim().toLowerCase();
-    const filtered = f === 'all'
-      ? allEvents
-      : allEvents.filter(e => e.category === f);
+    const filtered = f === 'all' ? allEvents : allEvents.filter(e => e.category === f);
 
     const bigEvents   = filtered.filter(e => e.size === 'big');
     const smallEvents = filtered.filter(e => e.size !== 'big');
@@ -214,7 +403,6 @@ document.addEventListener("DOMContentLoaded", function () {
     filteredSmall = smallEvents;
     shownSmall    = 0;
 
-    // ── Big events ──
     const groupBig     = document.getElementById('group-big');
     const containerBig = document.getElementById('container-big');
 
@@ -228,7 +416,6 @@ document.addEventListener("DOMContentLoaded", function () {
       groupBig.style.display = 'none';
     }
 
-    // ── Small events ──
     const groupSmall     = document.getElementById('group-small');
     const containerSmall = document.getElementById('event-container');
 
@@ -245,7 +432,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // ✅ Re-apply language after cards are rendered from CSV data
     reApplyLang();
   }
 
@@ -267,33 +453,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ── RENDER PAST (timeline) ────────────────────────────────────
-  function renderPast(events) {
-    // Hide initial spinner if present
-    const spinner = document.getElementById('events-initial-spinner');
-    if (spinner) spinner.style.display = 'none';
-
-    const container = document.getElementById('event-container');
-    if (!container) return;
-
-    container.innerHTML = '';
-
-    if (events.length === 0) {
-      container.innerHTML = '<div class="events-empty">No past events found.</div>';
-      // ✅ Re-apply language even for empty state
-      reApplyLang();
-      return;
-    }
-
-    const frag = document.createDocumentFragment();
-    events.forEach(ev => frag.appendChild(buildTimelineItem(ev)));
-    container.appendChild(frag);
-
-    // ✅ Re-apply language after timeline items are rendered from CSV data
-    reApplyLang();
-  }
-
-  // ── FILTERS ───────────────────────────────────────────────────
+  // ── FILTERS (upcoming) ────────────────────────────────────────
   function initFilters() {
     document.querySelectorAll('#events-filters .filter-pill').forEach(btn => {
       btn.addEventListener('click', function () {
@@ -301,15 +461,7 @@ document.addEventListener("DOMContentLoaded", function () {
           .forEach(b => b.classList.remove('active'));
         this.classList.add('active');
         currentFilter = this.dataset.filter;
-
-        if (currentPage === 'events-past') {
-          const f = currentFilter.toLowerCase();
-          const filtered = f === 'all' ? cachedPast
-            : cachedPast.filter(e => e.category === f);
-          renderPast(filtered);
-        } else {
-          renderUpcoming(cachedUpcoming, currentFilter);
-        }
+        renderUpcoming(cachedUpcoming, currentFilter);
       });
     });
   }
@@ -330,7 +482,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ── CARD BUILDERS ─────────────────────────────────────────────
+  // ── EVENT CARD (upcoming) ─────────────────────────────────────
   function buildEventCard(ev) {
     const { eventName, fullDateTime, eventLocation, size, description } = ev;
     const day   = fullDateTime.getDate();
@@ -344,60 +496,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let badge = '', bc = '';
     if      (ms <= 0)  { badge = 'Happening Now'; bc = 'urgent'; }
-    else if (days > 0) { badge = `${days}d ${hrs}h`;  bc = days <= 1 ? 'soon' : ''; }
-    else if (hrs > 0)  { badge = `${hrs}h ${mins}m`;  bc = 'soon'; }
-    else               { badge = `${mins}m`;            bc = 'urgent'; }
+    else if (days > 0) { badge = days + 'd ' + hrs + 'h';  bc = days <= 1 ? 'soon' : ''; }
+    else if (hrs > 0)  { badge = hrs + 'h ' + mins + 'm';  bc = 'soon'; }
+    else               { badge = mins + 'm';                bc = 'urgent'; }
 
     const card = document.createElement('div');
-    card.className = `event-card${size === 'big' ? ' big' : ''}`;
-    card.innerHTML = `
-      <div class="event-card-date">
-        <span class="event-card-day">${day}</span>
-        <span class="event-card-month">${month}</span>
-      </div>
-      <div class="event-card-body">
-        <h3 class="event-card-title">${esc(eventName)}</h3>
-        <div class="event-card-meta">
-          <div class="event-card-meta-item"><i class="far fa-clock"></i> ${time}</div>
-          <div class="event-card-meta-item"><i class="fas fa-map-marker-alt"></i> ${esc(eventLocation)}</div>
-        </div>
-        ${description ? `<p class="event-card-desc">${esc(description)}</p>` : ''}
-        <span class="time-left-badge ${bc}">${badge}</span>
-      </div>`;
+    card.className = 'event-card' + (size === 'big' ? ' big' : '');
+    card.innerHTML =
+      '<div class="event-card-date">' +
+        '<span class="event-card-day">' + day + '</span>' +
+        '<span class="event-card-month">' + month + '</span>' +
+      '</div>' +
+      '<div class="event-card-body">' +
+        '<h3 class="event-card-title">' + esc(eventName) + '</h3>' +
+        '<div class="event-card-meta">' +
+          '<div class="event-card-meta-item"><i class="far fa-clock"></i> ' + time + '</div>' +
+          '<div class="event-card-meta-item"><i class="fas fa-map-marker-alt"></i> ' + esc(eventLocation) + '</div>' +
+        '</div>' +
+        (description ? '<p class="event-card-desc">' + esc(description) + '</p>' : '') +
+        '<span class="time-left-badge ' + bc + '">' + badge + '</span>' +
+      '</div>';
     return card;
   }
 
-  function buildTimelineItem(ev) {
-    const { eventName, fullDateTime, eventLocation, description } = ev;
-    const item = document.createElement('div');
-    item.className = 'timeline-item';
-    item.innerHTML = `
-      <div class="timeline-card">
-        <div class="timeline-card-date">
-          <span class="timeline-date-day">${fullDateTime.getDate()}</span>
-          <span class="timeline-date-month">${MONTHS_SHORT[fullDateTime.getMonth()]}</span>
-          <span class="timeline-date-year">${fullDateTime.getFullYear()}</span>
-        </div>
-        <div class="timeline-card-body">
-          <h3 class="timeline-card-title">${esc(eventName)}</h3>
-          <div class="timeline-card-meta">
-            <div class="timeline-meta-item"><i class="far fa-clock"></i> ${fmt(fullDateTime)}</div>
-            <div class="timeline-meta-item"><i class="fas fa-map-marker-alt"></i> ${esc(eventLocation)}</div>
-          </div>
-          ${description ? `<p class="timeline-card-desc">${esc(description)}</p>` : ''}
-        </div>
-      </div>`;
-    return item;
-  }
-
-  // ── CALENDARS (desktop + mobile) ─────────────────────────────
-  // Both calendars share the same month/year state and event data.
+  // ── CALENDARS ─────────────────────────────────────────────────
   function initCalendars() {
     const today = new Date();
     calMonth = today.getMonth();
     calYear  = today.getFullYear();
 
-    // Desktop buttons
     document.getElementById('cal-prev')?.addEventListener('click', () => {
       calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
       refreshCalendars();
@@ -406,8 +533,6 @@ document.addEventListener("DOMContentLoaded", function () {
       calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
       refreshCalendars();
     });
-
-    // Mobile buttons
     document.getElementById('cal-prev-m')?.addEventListener('click', () => {
       calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
       refreshCalendars();
@@ -421,8 +546,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function refreshCalendars() {
-    renderCalGrid('cal-days',   'cal-month-label');    // desktop
-    renderCalGrid('cal-days-m', 'cal-month-label-m');  // mobile
+    renderCalGrid('cal-days',   'cal-month-label');
+    renderCalGrid('cal-days-m', 'cal-month-label-m');
     markCalEvents('cal-days',   'desktop-calendar');
     markCalEvents('cal-days-m', 'mobile-calendar');
   }
@@ -432,7 +557,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const grid  = document.getElementById(gridId);
     if (!label || !grid) return;
 
-    label.textContent = `${MONTHS[calMonth]} ${calYear}`;
+    label.textContent = MONTHS[calMonth] + ' ' + calYear;
     grid.innerHTML = '';
 
     const firstDay    = new Date(calYear, calMonth, 1).getDay();
@@ -457,18 +582,16 @@ document.addEventListener("DOMContentLoaded", function () {
   function buildCalEventMap(events) {
     calEventMap = {};
     events.forEach(ev => {
-      const key = `${ev.fullDateTime.getFullYear()}-${ev.fullDateTime.getMonth()}-${ev.fullDateTime.getDate()}`;
+      const key = ev.fullDateTime.getFullYear() + '-' + ev.fullDateTime.getMonth() + '-' + ev.fullDateTime.getDate();
       if (!calEventMap[key]) calEventMap[key] = [];
       calEventMap[key].push(ev);
     });
   }
 
-  // Mark event days and attach tooltip listener for one calendar grid
   function markCalEvents(gridId, calContainerId) {
     const grid = document.getElementById(gridId);
     if (!grid) return;
 
-    // Fresh clone to remove old listeners
     grid.querySelectorAll('.cal-day:not(.empty)').forEach(cell => {
       const fresh = cell.cloneNode(true);
       cell.parentNode.replaceChild(fresh, cell);
@@ -476,7 +599,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     grid.querySelectorAll('.cal-day:not(.empty)').forEach(cell => {
       const d   = parseInt(cell.dataset.day, 10);
-      const key = `${calYear}-${calMonth}-${d}`;
+      const key = calYear + '-' + calMonth + '-' + d;
       if (calEventMap[key]) {
         cell.classList.add('has-event');
         cell.setAttribute('tabindex', '0');
@@ -495,14 +618,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ── CALENDAR TOOLTIP ──────────────────────────────────────────
-  // Desktop: appended to #desktop-calendar → CSS places it LEFT of card
-  // Mobile:  appended to .mobile-calendar-inner → CSS places it BELOW card
   function showCalTooltip(cell, events, calContainerId) {
     removeCalTooltip();
 
-    // For mobile calendar, anchor to the inner wrapper (not the card)
-    // so the tooltip is positioned relative to the full-width container
     let anchorEl = document.getElementById(calContainerId);
     if (calContainerId === 'mobile-calendar') {
       anchorEl = document.querySelector('.mobile-calendar-inner') || anchorEl;
@@ -514,26 +632,25 @@ document.addEventListener("DOMContentLoaded", function () {
     tip.className = 'cal-tooltip';
     tip.id        = 'cal-tooltip';
 
-    tip.innerHTML = `
-      <div class="cal-tip-header">
-        <span class="cal-tip-date">${d} ${MONTHS[calMonth]}</span>
-        <button class="cal-tip-close" aria-label="Close">&times;</button>
-      </div>
-      <ul class="cal-tip-list">
-        ${events.map(ev => `
-          <li class="cal-tip-item">
-            <span class="cal-tip-name">${esc(ev.eventName)}</span>
-            <span class="cal-tip-time">${fmt(ev.fullDateTime)}</span>
-            ${ev.eventLocation
-              ? `<span class="cal-tip-loc"><i class="fas fa-map-marker-alt"></i> ${esc(ev.eventLocation)}</span>`
-              : ''}
-          </li>`).join('')}
-      </ul>`;
+    tip.innerHTML =
+      '<div class="cal-tip-header">' +
+        '<span class="cal-tip-date">' + d + ' ' + MONTHS[calMonth] + '</span>' +
+        '<button class="cal-tip-close" aria-label="Close">&times;</button>' +
+      '</div>' +
+      '<ul class="cal-tip-list">' +
+        events.map(ev =>
+          '<li class="cal-tip-item">' +
+            '<span class="cal-tip-name">' + esc(ev.eventName) + '</span>' +
+            '<span class="cal-tip-time">' + fmt(ev.fullDateTime) + '</span>' +
+            (ev.eventLocation
+              ? '<span class="cal-tip-loc"><i class="fas fa-map-marker-alt"></i> ' + esc(ev.eventLocation) + '</span>'
+              : '') +
+          '</li>'
+        ).join('') +
+      '</ul>';
 
     anchorEl.style.position = 'relative';
-    if (calContainerId === 'desktop-calendar') {
-      anchorEl.style.overflow = 'visible';
-    }
+    if (calContainerId === 'desktop-calendar') anchorEl.style.overflow = 'visible';
     anchorEl.appendChild(tip);
 
     tip.querySelector('.cal-tip-close').addEventListener('click', e => {

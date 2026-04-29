@@ -3,7 +3,6 @@
 
 <!-- ── Hero ── -->
 <section class="events-past-hero">
-
   <svg class="hero-bg" viewBox="0 0 1400 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <circle cx="700" cy="780" r="480" fill="none" stroke="rgba(160,190,220,0.08)" stroke-width="1.5"/>
     <circle cx="700" cy="780" r="620" fill="none" stroke="rgba(160,190,220,0.05)" stroke-width="1"/>
@@ -26,24 +25,23 @@
     <span class="eyebrow"
           data-en="Dharmikta Mandali"
           data-ne="धार्मिकता मण्डली">Dharmikta Mandali</span>
-    <h1 data-en="Past Events"
-        data-ne="विगतका कार्यक्रमहरू">Past Events</h1>
+    <h1 data-en="Memories"
+        data-ne="सम्झनाहरू">Memories</h1>
     <p class="hero-sub"
-       data-en="A record of the moments, milestones, and memories that have shaped our community."
-       data-ne="ती पलहरू, उपलब्धिहरू र सम्झनाहरूको अभिलेख जसले हाम्रो समुदायलाई आकार दिएको छ।">
-      A record of the moments, milestones, and memories that have shaped our community.
+       data-en="A photographic record of the moments, milestones, and memories that have shaped our community."
+       data-ne="ती पलहरू, उपलब्धिहरू र सम्झनाहरूको तस्बिर अभिलेख जसले हाम्रो समुदायलाई आकार दिएको छ।">
+      A photographic record of the moments, milestones, and memories that have shaped our community.
     </p>
   </div>
-
 </section>
 
-<!-- ── Past events body ── -->
+<!-- ── Memories body ── -->
 <div class="events-body">
 
   <div class="events-section-header">
     <h2 class="events-section-title"
-        data-en="Event History"
-        data-ne="कार्यक्रम इतिहास">Event History</h2>
+        data-en="Our Story in Pictures"
+        data-ne="तस्बिरमा हाम्रो कथा">Our Story in Pictures</h2>
   </div>
 
   <div class="events-filters" id="events-filters">
@@ -59,10 +57,11 @@
             data-en="Others" data-ne="अन्य">Others</button>
   </div>
 
-  <div class="timeline" id="event-container">
+  <!-- Timeline container — JS fills this -->
+  <div class="timeline memories-timeline" id="event-container">
     <div class="events-spinner">
       <div class="spinner-ring"></div>
-      <span data-en="Loading history…" data-ne="इतिहास लोड हुँदैछ…">Loading history…</span>
+      <span data-en="Loading memories…" data-ne="सम्झनाहरू लोड हुँदैछ…">Loading memories…</span>
     </div>
   </div>
 
@@ -71,6 +70,15 @@
             data-en="Load More" data-ne="थप लोड गर्नुहोस्">Load More</button>
   </div>
 
+</div>
+
+<!-- Lightbox overlay (built once, reused) -->
+<div class="mem-lightbox" id="mem-lightbox" role="dialog" aria-modal="true" aria-label="Memory image" hidden>
+  <button class="mem-lightbox-close" id="mem-lightbox-close" aria-label="Close">&times;</button>
+  <div class="mem-lightbox-inner">
+    <img class="mem-lightbox-img" id="mem-lightbox-img" src="" alt="" />
+    <div class="mem-lightbox-caption" id="mem-lightbox-caption"></div>
+  </div>
 </div>
 
 <!-- Re-apply language after partial injection -->
