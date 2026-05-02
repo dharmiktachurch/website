@@ -1,6 +1,20 @@
+// ================================================================
+//  script.js  —  Hero typewriter + burger menu
+//  Fix: track all active intervals and cancel them before any new
+//  typewriter run, preventing mixed-language characters on fast toggle.
+// ================================================================
+
+// Track active typewriter intervals so we can cancel mid-run
+let _typeIntervals = [];
+
+function clearTypeIntervals() {
+  _typeIntervals.forEach(clearInterval);
+  _typeIntervals = [];
+}
+
 // Burger menu toggle logic
 function setupBurgerMenu() {
-  const burger = document.getElementById("burger");
+  const burger   = document.getElementById("burger");
   const navLinks = document.getElementById("nav-links");
   if (burger && navLinks) {
     burger.addEventListener("click", function () {
@@ -12,8 +26,8 @@ function setupBurgerMenu() {
 
 // Hero text per language
 const heroText = {
-  en: { welcome: "Welcome to",   churchName: "Dharmikta Church"    },
-  ne: { welcome: "स्वागत छ",     churchName: "धार्मिकता मण्डलीमा" }
+  en: { welcome: "Welcome to",  churchName: "Dharmikta Church"    },
+  ne: { welcome: "स्वागत छ",    churchName: "धार्मिकता मण्डलीमा" }
 };
 
 // Type a string into an element character by character
@@ -25,12 +39,16 @@ function typeString(el, text, speed, onDone) {
     i++;
     if (i === text.length) {
       clearInterval(interval);
+      // Remove this interval from the tracking array once it finishes naturally
+      _typeIntervals = _typeIntervals.filter(function (id) { return id !== interval; });
       if (onDone) onDone();
     }
   }, speed);
+  // Register this interval so it can be cancelled externally
+  _typeIntervals.push(interval);
 }
 
-// Public: run typewriter for a given language code
+// Public: run typewriter for a given language code.
 // Called by applyLang() in navbar.js on explicit language switch,
 // and by DOMContentLoaded below on initial page load.
 window.runTypeWriter = function (lang) {
@@ -38,7 +56,16 @@ window.runTypeWriter = function (lang) {
   const churchNameEl = document.querySelector(".church-name");
   if (!welcomeEl || !churchNameEl) return;
 
+  // Cancel any in-progress typing intervals immediately
+  clearTypeIntervals();
+
+  // Blank both spans so no stale characters remain
+  welcomeEl.textContent    = "";
+  churchNameEl.textContent = "";
+
   const texts = heroText[lang] || heroText["en"];
+
+  // Type the welcome line first, then the church name after it finishes
   typeString(welcomeEl, texts.welcome, 100, function () {
     typeString(churchNameEl, texts.churchName, 100, null);
   });
@@ -48,7 +75,7 @@ window.runTypeWriter = function (lang) {
 document.addEventListener("DOMContentLoaded", function () {
   setupBurgerMenu();
 
-  // Run typewriter on any page that has the hero spans
+  // Only run on pages that have the hero spans
   const welcomeEl    = document.querySelector(".welcome");
   const churchNameEl = document.querySelector(".church-name");
 
