@@ -1,10 +1,3 @@
-/* ============================================
-   ABOUT PAGE — UNIFIED DESIGN SYSTEM
-   One consistent language across Jesus, Church, Team, Testimony.
-
-   Design tokens (CSS vars) live at the top — change them once,
-   everything updates. Partial-specific rules are clearly labelled.
-   ============================================ */
 
 /* ── 0. DESIGN TOKENS ─────────────────────────────────────────────────── */
 :root {
@@ -57,6 +50,15 @@ body {
 .logo-container { display: flex; align-items: center; gap: 10px; }
 .church-logo { height: 40px; width: auto; object-fit: contain; }
 .logo-text { font-size: 1.4rem; font-weight: 600; color: var(--ink); }
+
+.jt-card,
+.jt-view-btn,
+.jt-card:focus,
+.jt-card:focus-visible {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
 
 .nav-links {
   list-style: none;
@@ -272,6 +274,14 @@ body {
   color: #fff;
   overflow: hidden;
   background: var(--ink);
+}
+
+@media (max-width: 600px) {
+  .about-page-hero {
+    height: auto;
+    min-height: unset;
+    padding: 5rem 1.5rem 3.5rem;
+  }
 }
 
 .about-page-hero::before {
@@ -691,14 +701,20 @@ footer {
   font-size: 0.8rem; color: var(--ink-muted);
 }
 
-.branch-list { list-style: none; columns: 3; column-gap: 2.5rem; margin-top: 1.5rem; }
+.branch-list {
+  list-style: none;
+  columns: 3;
+  column-gap: 2.5rem;
+  margin-top: 1.5rem;
+}
 
 .branch-list li {
   position: relative;
   padding-left: 1.4rem;
   margin-bottom: 0.9rem;
   color: var(--ink-soft);
-  font-size: 0.96rem; line-height: 1.6;
+  font-size: 0.96rem;
+  line-height: 1.6;
   break-inside: avoid;
   transition: color 0.25s ease, transform 0.25s ease;
 }
@@ -709,6 +725,26 @@ footer {
   content: '✝';
   position: absolute; left: 0; top: 1px;
   font-size: 0.72rem; color: var(--ink-muted);
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .branch-list {
+    columns: 2;
+    column-gap: 2rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 560px) {
+  .branch-list {
+    columns: 1;
+    column-gap: 0;
+  }
+
+  .branch-list li {
+    font-size: 0.93rem;
+  }
 }
 
 /* ==================================================================
@@ -1522,40 +1558,40 @@ footer {
 
 .lang-btn.active               { background: var(--ink); color: #fff; }
 .lang-btn:hover:not(.active)   { background: var(--surface-mid); color: var(--ink); }
+/* ================================================================
+   RESPONSIVE — TESTIMONY PAGE
+   ================================================================ */
 
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Tablet (≤768px) ── */
 @media (max-width: 768px) {
+
+  /* Navbar */
   .navbar {
     flex-wrap: wrap;
     padding: 0.65rem 1.25rem;
   }
   .logo-link  { flex: 1; }
   .burger     { flex-shrink: 0; }
-
   .lang-toggle {
     order: 3;
     width: 100%;
     justify-content: center;
     margin: 0.45rem 0 0;
   }
-
   .nav-links { top: 108px; }
-}
 
-@media (max-width: 400px) {
-  .lang-btn { padding: 4px 11px; font-size: 0.72rem; }
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── Testimony responsive ──────────────────────────────────────── */
-@media (max-width: 768px) {
+  /* Carousel */
   .testimonies-carousel { padding: 0 40px; }
 
+  /* Card layout stacks vertically */
   .testimony-content-wrapper {
     flex-direction: column;
     gap: 1.25rem;
   }
 
+  /* Author sidebar becomes a horizontal row */
   .testimony-author-sidebar {
     width: 100%;
     display: flex;
@@ -1569,7 +1605,6 @@ footer {
     width: 64px; height: 64px;
     flex-shrink: 0;
   }
-
   .author-initials { font-size: 1.1rem; }
 
   .author-info { flex: 1; min-width: 0; }
@@ -1579,16 +1614,74 @@ footer {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .author-role  { font-size: 0.8rem; }
+  .author-role    { font-size: 0.8rem; }
   .testimony-date { font-size: 0.78rem; }
 }
 
-@media (max-width: 480px) {
+/* ── Mobile (≤600px) ── */
+@media (max-width: 600px) {
+
+  /* Hero — properly centered with enough height */
+  .about-page-hero {
+    height: auto;
+    min-height: 280px;
+    padding: 4rem 1.5rem 3rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .about-hero-content {
+    padding: 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Outer block — override inline padding so carousel gets full width */
+  .about-block {
+    padding: 1rem 0.5rem !important;
+    border-radius: var(--radius-md);
+  }
+
+  /* Carousel arrows tightened */
   .testimonies-carousel { padding: 0 32px; }
-  .testimony-card { padding: 1.25rem; }
-  .testimony-excerpt p { font-size: 0.97rem; }
-  .testimony-full   p  { font-size: 0.93rem; }
-  .prev-btn { left: 0; }
-  .next-btn { right: 0; }
-  .carousel-nav { width: 36px; height: 36px; font-size: 1.2rem; }
+  .carousel-nav {
+    width: 28px; height: 28px;
+    font-size: 0.95rem;
+  }
+
+  /* Card */
+  .testimony-card { padding: 1.1rem 0.9rem; }
+
+  .testimony-excerpt p {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .testimony-full p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  /* Allow name to wrap instead of truncating */
+  .author-name { white-space: normal; }
+}
+
+/* ── Small mobile (≤400px) ── */
+@media (max-width: 400px) {
+  .lang-btn { padding: 4px 11px; font-size: 0.72rem; }
+
+  .testimonies-carousel { padding: 0 28px; }
+  .carousel-nav {
+    width: 26px; height: 26px;
+    font-size: 0.9rem;
+  }
+
+  .testimony-card { padding: 1rem 0.75rem; }
+}
+
+/* ── Very small (≤360px) ── */
+@media (max-width: 360px) {
+  .testimonies-carousel { padding: 0 24px; }
+  .carousel-nav {
+    width: 24px; height: 24px;
+    font-size: 0.85rem;
+  }
 }
